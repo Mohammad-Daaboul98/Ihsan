@@ -3,14 +3,13 @@ import { body, param, validationResult } from "express-validator";
 import {
   BadRequestError,
   NotFoundError,
-  UnauthenticatedError,
   UnauthorizedError,
 } from "../errors/customErrors.js";
 import {
   STUDENT_ATTENDANCE,
-  STUDENT_JUZ,
+  QURAN_INDEX,
   USER_TYPE,
-} from "../../shared/constants.js";
+} from "../shared/constants.js";
 import { arabicNameRegex } from "../utils/nameRegex.js";
 import User from "../models/UserModel.js";
 import Student from "../models/StudentProfileModel.js";
@@ -83,7 +82,7 @@ export const validateStudentProfileInput = withValidationErrors([
   body("StudentJuz.*.juzName")
     .notEmpty()
     .withMessage("يجب اختيار الجزء")
-    .isIn(STUDENT_JUZ.JUZ.map((juz) => juz.juzName))
+    .isIn(QURAN_INDEX.JUZ.map((juz) => juz.juzName))
     .withMessage("الجزء غير موجود"),
   body("teacherId").custom((teacherId, { req, res }) => {
     if (req.user.role !== "Admin" && teacherId) {

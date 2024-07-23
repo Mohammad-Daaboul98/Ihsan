@@ -1,13 +1,13 @@
 import { Link, useRouteError } from "react-router-dom";
 import { Box, Container, Heading, Text, VStack, Center } from "@chakra-ui/react";
-import Image404 from '../assets/image/dribbble.gif';
+import Image404 from '../assets/image/Image404.gif';
 
 const Error = () => {
   const error = useRouteError();
 
   if (error.status === 404) {
     return (
-      <Box bg="white" h="100vh" display="flex" alignItems="center" justifyContent="center" fontFamily="'Arvo', serif">
+      <Box bg="white" h="100vh" display="flex" alignItems="center" justifyContent="center">
         <Container maxW="container.md">
           <Center>
             <VStack spacing={4} w="100%" textAlign="center">

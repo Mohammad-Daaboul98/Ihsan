@@ -1,18 +1,16 @@
-import Error from "../pages/Error";
-import HomeLayout from "../pages/HomeLayout";
-import Landing from "../pages/Landing";
+import { HomeLayout, Login } from "../pages";
 
 export const Router = [
   {
     path: "/",
     element: <HomeLayout />,
-    errorElement:<Error />,
+    errorElement: <Error />,
 
-    children:[
-        {
-            index:true,
-            element:<Landing />
-        }
-    ]
+    children: [
+      {
+        index: true,
+        element: <Login />,
+      }
+    ],
   },
 ];

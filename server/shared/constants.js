@@ -16,7 +16,7 @@ export const STUDENT_ATTENDANCE = {
   ABSENT: "غياب",
 };
 
-export const STUDENT_JUZ = {
+export const QURAN_INDEX = {
   JUZ: [
     {
       id: "الجزء الثلاثون",

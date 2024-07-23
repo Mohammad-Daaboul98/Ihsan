@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { USER_TYPE } from "../../shared/constants.js";
+import { USER_TYPE } from "../shared/constants.js";
 
 const UserSchema = new mongoose.Schema({
   userName: {
