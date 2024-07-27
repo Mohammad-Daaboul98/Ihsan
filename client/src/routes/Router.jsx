@@ -1,4 +1,6 @@
-import { HomeLayout, Login } from "../pages";
+import { HomeLayout, Login, Error ,DashboardLayout} from "../pages";
+import { action as loginAction } from "../pages/Login";
+import { queryClient } from "../utils/queryClient";
 
 export const Router = [
   {
@@ -10,7 +12,12 @@ export const Router = [
       {
         index: true,
         element: <Login />,
-      }
+        action: loginAction(queryClient),
+      },
+      {
+        path: "dashboard",
+        element: <DashboardLayout />,
+      },
     ],
   },
 ];

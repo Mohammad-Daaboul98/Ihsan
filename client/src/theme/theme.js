@@ -1,9 +1,10 @@
-import { border, color, extendTheme, Input } from "@chakra-ui/react";
+import { extendTheme } from "@chakra-ui/react";
 import { mode } from "@chakra-ui/theme-tools";
+import { headingTheme } from "./components/Heading";
 
 const config = {
-  initialColorMode: "light", // Set initial color mode to 'light' or 'dark'
-  useSystemColorMode: false, // Use the user's system preference
+  initialColorMode: "light",
+  useSystemColorMode: false,
 };
 
 const styles = {
@@ -11,22 +12,51 @@ const styles = {
     body: {
       fontFamily: "'Tajawal', sans-serif",
       margin: 0,
-      bg: mode("#fff", "gray.800")(props),
-      color: mode("#646464", "#e0e0e1")(props),
+      bg: mode("#fcfdfe", "gray.800")(props),
+      color: mode("black", "#e0e0e1")(props),
     },
 
     input: {
-    //   backgroundColor: mode("red !important", "#ffff !important")(props),
+      backgroundColor: mode("#fff !important")(props),
+      borderColor: mode("#cbd5e0 !important")(props),
       "::placeholder": {
-        // color: mode("red", "#ffff")(props),
+        color: mode("black", "#ffff")(props),
       },
     },
   }),
 };
 
+const components = {
+  Button: {
+    variants: {
+      solid: (props) => ({
+        bg: mode("cyan.800")(props),
+        color: mode("white")(props),
+        _hover: {
+          bg: mode("cyan.900")(props),
+        },
+        _active: {
+          bg: mode("cyan.900")(props),
+        },
+      }),
+      mode: (props) => ({
+        bg: "transparent",
+        _hover: {
+          bg: mode("blackAlpha.300", "whiteAlpha.500")(props),
+        },
+      }),
+    },
+    defaultProps: {
+      variant: "solid",
+    },
+  },
+  Heading: headingTheme,
+};
+
 const theme = extendTheme({
   config,
   styles,
+  components,
 });
 
 export default theme;

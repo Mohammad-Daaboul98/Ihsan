@@ -4,12 +4,15 @@ import App from "./App.jsx";
 import "./index.css";
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import theme from "./theme/theme.js";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
-    <ColorModeScript initialColorMode={theme.conf} />
+    <ColorModeScript initialColorMode={theme.config} />
       <App />
+      <ToastContainer position="top-center" />
     </ChakraProvider>
   </React.StrictMode>
 );
