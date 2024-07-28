@@ -1,4 +1,5 @@
-import { HomeLayout, Login, Error ,DashboardLayout} from "../pages";
+import { HomeLayout, Login, Error, DashboardLayout } from "../pages";
+import AddTeacher from "../pages/AddTeacher";
 import { action as loginAction } from "../pages/Login";
 import { queryClient } from "../utils/queryClient";
 
@@ -17,6 +18,12 @@ export const Router = [
       {
         path: "dashboard",
         element: <DashboardLayout />,
+        children: [
+          {
+            path: "add-teacher",
+            element: <AddTeacher />,
+          },
+        ],
       },
     ],
   },

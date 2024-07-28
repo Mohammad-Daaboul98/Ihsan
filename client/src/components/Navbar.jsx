@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import { Button, Flex, useColorModeValue } from "@chakra-ui/react";
 import NavLinks from "./NavLinks";
+import useRootStyles from "../theme/useRootStyles";
 // import sidebarBg from '../assets/bg1.jpg';
 
 const Navbar = ({
@@ -19,7 +20,7 @@ const Navbar = ({
 }) => {
   const bg = useColorModeValue("#fcfdfe", "gray.800");
   const color = useColorModeValue("black", "#e0e0e1");
-
+  const rootStyle = useRootStyles();
   return (
     <Flex h="100vh" bg={bg} color={color}>
       <Sidebar
@@ -28,26 +29,26 @@ const Navbar = ({
         onBackdropClick={() => setToggled(false)}
         breakPoint="md"
         rtl="rtl"
-        backgroundColor={bg} 
-        color={color} 
+        backgroundColor={bg}
+        color={color}
       >
         {/* Header */}
         {!toggled ? (
           <Menu>
-            <MenuItem
-            
-              icon={collapsed ? <FaAngleDoubleRight /> : <FaAngleDoubleLeft />}
-              onClick={showSidebar}
-            >
-              {!collapsed && <Button onClick={showSidebar}>Pro Sidebar</Button>}
+            <MenuItem rootStyles={rootStyle} onClick={showSidebar}>
+              <Flex justifyContent="center" alignItems="center" pt='10px' bg='gray.800' >
+                <Button w='100%' fontSize='20px'>
+                  {!collapsed ? <FaAngleDoubleRight /> : <FaAngleDoubleLeft />}
+                </Button>
+              </Flex>
             </MenuItem>
           </Menu>
         ) : null}
 
         {/* Content */}
-        <NavLinks />
+        <NavLinks  />
         {/* Footer */}
-        <div style={{ textAlign: "center", padding: "16px" }}>
+        {/* <div style={{ textAlign: "center", padding: "16px" }}>
           <Link
             className="sidebar-btn"
             style={{ cursor: "pointer" }}
@@ -56,7 +57,7 @@ const Navbar = ({
             <FaUser />
             <span>My Account</span>
           </Link>
-        </div>
+        </div> */}
       </Sidebar>
     </Flex>
   );

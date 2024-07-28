@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Navbar } from "../components";
 import { Button, HStack } from "@chakra-ui/react";
 import { FaBars } from "react-icons/fa";
+import { Outlet } from "react-router-dom";
 
 function DashboardLayout() {
   const [toggled, setToggled] = useState(false);
@@ -11,10 +12,10 @@ function DashboardLayout() {
     setCollapsed(!collapsed);
   };
 
-  const toggleSidebar = ()=>{
-    setCollapsed(false)
-    setToggled(true)
-  }
+  const toggleSidebar = () => {
+    setCollapsed(false);
+    setToggled(true);
+  };
 
   const sidebarProps = {
     toggled,
@@ -27,15 +28,12 @@ function DashboardLayout() {
     <HStack alignItems="start">
       <Navbar sidebarProps={sidebarProps} />
       {!toggled ? (
-        <Button
-          display={{ lg: "none", md: "flex" }}
-          onClick={toggleSidebar}
-        >
+        <Button display={{ lg: "none", md: "flex" }} onClick={toggleSidebar}>
           <FaBars />
         </Button>
       ) : null}
 
-      <div>DashboardLayout</div>
+      <Outlet />
     </HStack>
   );
 }
