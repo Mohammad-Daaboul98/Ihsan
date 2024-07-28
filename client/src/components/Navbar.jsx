@@ -18,11 +18,11 @@ import useRootStyles from "../theme/useRootStyles";
 const Navbar = ({
   sidebarProps: { toggled, collapsed, setToggled, showSidebar },
 }) => {
-  const bg = useColorModeValue("#fcfdfe", "gray.800");
+  const bg = useColorModeValue("#fcfdfe", "#1a202c");
   const color = useColorModeValue("black", "#e0e0e1");
   const rootStyle = useRootStyles();
   return (
-    <Flex h="100vh" bg={bg} color={color}>
+    <Flex h={{md:'100%' ,base:'auto'}} bg={bg} color={color}>
       <Sidebar
         collapsed={collapsed}
         toggled={toggled}

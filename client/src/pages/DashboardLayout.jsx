@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Navbar } from "../components";
-import { Button, HStack } from "@chakra-ui/react";
+import { Button, Flex, Box } from "@chakra-ui/react";
 import { FaBars } from "react-icons/fa";
 import { Outlet } from "react-router-dom";
 
@@ -25,16 +25,21 @@ function DashboardLayout() {
   };
 
   return (
-    <HStack alignItems="start">
+    <Flex
+      alignItems="start"
+      justifyContent="center"
+      w="100%"
+      h="100vh"
+      flexDirection={{ md: "row", sm: "column" }}
+    >
       <Navbar sidebarProps={sidebarProps} />
       {!toggled ? (
         <Button display={{ lg: "none", md: "flex" }} onClick={toggleSidebar}>
           <FaBars />
         </Button>
       ) : null}
-
       <Outlet />
-    </HStack>
+    </Flex>
   );
 }
 
