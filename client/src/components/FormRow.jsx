@@ -9,7 +9,16 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 
-function FormRow({name, type, id, labelText, defaultValue = "", onChange }) {
+function FormRow({
+  name,
+  type,
+  id,
+  labelText,
+  defaultValue = "",
+  onChange,
+  lang,
+  dir,
+}) {
   const [show, setShow] = useState(false);
 
   return (
@@ -33,6 +42,7 @@ function FormRow({name, type, id, labelText, defaultValue = "", onChange }) {
             defaultValue={defaultValue}
             outline="none"
             size="lg"
+            dir={dir}
           />
           <InputRightElement right="unset" left={0}>
             <Button h="100%" size="lg" onClick={() => setShow(!show)}>
@@ -49,6 +59,7 @@ function FormRow({name, type, id, labelText, defaultValue = "", onChange }) {
           defaultValue={defaultValue}
           outline="none"
           size="lg"
+          lang={lang}
         />
       )}
     </FormControl>

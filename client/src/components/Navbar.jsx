@@ -1,63 +1,44 @@
-import { Link } from "react-router-dom";
-import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-import {
-  FaUser,
-  FaAngleDoubleLeft,
-  FaAngleDoubleRight,
-  FaTachometerAlt,
-  FaGem,
-  FaList,
-  FaRegLaughWink,
-  FaHeart,
-} from "react-icons/fa";
-import { Button, Flex, useColorModeValue } from "@chakra-ui/react";
+import { Sidebar } from "react-pro-sidebar";
+import { Flex, Heading, useColorModeValue } from "@chakra-ui/react";
 import NavLinks from "./NavLinks";
-import useRootStyles from "../theme/useRootStyles";
-// import sidebarBg from '../assets/bg1.jpg';
 
 const Navbar = ({
   sidebarProps: { toggled, collapsed, setToggled, showSidebar },
 }) => {
-  const bg = useColorModeValue("#fcfdfe", "#1a202c");
+  const bg = useColorModeValue("#fcfdfe", "#2D3748");
   const color = useColorModeValue("black", "#e0e0e1");
-  const rootStyle = useRootStyles();
   return (
-    <Flex h={{md:'100%' ,base:'auto'}} bg={bg} color={color}>
+    <Flex
+      h={{ md: "100%", base: "auto" }}
+      bg={bg}
+      color={color}
+      borderColor="transparent"
+      px={'25px'}
+    >
       <Sidebar
         collapsed={collapsed}
         toggled={toggled}
         onBackdropClick={() => setToggled(false)}
-        breakPoint="md"
+        breakPoint="lg"
         rtl="rtl"
         backgroundColor={bg}
         color={color}
+        rootStyles={{
+          borderColor: "transparent",
+        }}
       >
-        {/* Header */}
-        {!toggled ? (
-          <Menu>
-            <MenuItem rootStyles={rootStyle} onClick={showSidebar}>
-              <Flex justifyContent="center" alignItems="center" pt='10px' bg='gray.800' >
-                <Button w='100%' fontSize='20px'>
-                  {!collapsed ? <FaAngleDoubleRight /> : <FaAngleDoubleLeft />}
-                </Button>
-              </Flex>
-            </MenuItem>
-          </Menu>
-        ) : null}
-
-        {/* Content */}
-        <NavLinks  />
-        {/* Footer */}
-        {/* <div style={{ textAlign: "center", padding: "16px" }}>
-          <Link
-            className="sidebar-btn"
-            style={{ cursor: "pointer" }}
-            to="/profile"
+        <Flex w="100%" justifyContent="center" alignItems="center">
+          <Heading
+            as="h1"
+            variant="logo"
+            fontFamily="'Reem Kufi Fun', serif"
+            fontSize={{ base: "20px", sm: "20px", md: "35px" }}
+            p="20px 0 50px"
           >
-            <FaUser />
-            <span>My Account</span>
-          </Link>
-        </div> */}
+            اِحسان
+          </Heading>
+        </Flex>
+        <NavLinks />
       </Sidebar>
     </Flex>
   );

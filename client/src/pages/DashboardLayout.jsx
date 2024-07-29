@@ -25,20 +25,41 @@ function DashboardLayout() {
   };
 
   return (
-    <Flex
-      alignItems="start"
-      justifyContent="center"
-      w="100%"
-      h="100vh"
-      flexDirection={{ md: "row", sm: "column" }}
-    >
-      <Navbar sidebarProps={sidebarProps} />
-      {!toggled ? (
-        <Button display={{ lg: "none", md: "flex" }} onClick={toggleSidebar}>
-          <FaBars />
-        </Button>
-      ) : null}
-      <Outlet />
+    <Flex>
+      <Box h="100vh">
+        <Navbar sidebarProps={sidebarProps} />
+      </Box>
+      <Flex w="100%" flexDirection="column">
+        <Box
+          position="sticky"
+          display="flex"
+          alignItems="center"
+          p="20px 45px"
+          bg="gray.700"
+          h="100px"
+        >
+          <Button
+            bg="transparent"
+            _hover={{ bg: "transparent" }}
+            fontFamily="20px"
+            display={{ base: "flex", md: "flex", lg: "none" }}
+            onClick={toggleSidebar}
+          >
+            <FaBars />
+          </Button>
+
+          <Button
+            bg="transparent"
+            _hover={{ bg: "transparent" }}
+            display={{ base: "none", md: "none", lg: "flex" }}
+            fontSize="25px"
+            onClick={showSidebar}
+          >
+            <FaBars />
+          </Button>
+        </Box>
+        <Outlet />
+      </Flex>
     </Flex>
   );
 }

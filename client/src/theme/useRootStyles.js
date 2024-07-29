@@ -6,7 +6,7 @@ const useRootStyles = (menuTheme = {}) => {
 
   const subMenuBg = useColorModeValue(
     "#fcfdfe",
-    menuDarkBg ? menuDarkBg : "#1a202c"
+    menuDarkBg ? menuDarkBg : "#2D3748"
   );
   const subMenuColor = useColorModeValue("black", "#e0e0e1");
   const subMenuHoverBg = useColorModeValue(
@@ -18,6 +18,8 @@ const useRootStyles = (menuTheme = {}) => {
     ["." + menuClasses.button]: {
       backgroundColor: subMenuBg,
       color: subMenuColor,
+      fontSize:'18px',
+      padding:'0 25px',
       "&:hover": {
         backgroundColor: subMenuHoverBg,
       },

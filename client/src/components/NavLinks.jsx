@@ -6,24 +6,33 @@ import useRootStyles from "../theme/useRootStyles";
 function NavLinks() {
   const menuTheme = {
     menuDarkBg: "#4A5568",
-    menuHoverDarkBg: "#2D3748 !important",
+    menuHoverDarkBg: "#1A202C !important",
   };
 
   const rootStyle = useRootStyles();
   const menuRootStyle = useRootStyles(menuTheme);
+  // const location = useLocation();
 
   return (
-    <Menu >
+    <Menu>
       {links.map((link) => {
         const { text, submenu, icon } = link;
+        {/* const isActiveMenu = submenu.some((item) =>
+          location.pathname.includes(item.subPath)
+        ); */}
         return (
-          <SubMenu key={text} label={text} icon={icon} rootStyles={rootStyle}>
+          <SubMenu
+            key={text}
+            label={text}
+            icon={icon}
+            rootStyles={rootStyle}
+          >
             {submenu.map((item) => {
               const { subText, subPath } = item;
               return (
                 <MenuItem
                   key={subText}
-                  component={<NavLink to={subPath} />}
+                  component={<NavLink to={subPath} end />}
                   rootStyles={menuRootStyle}
                 >
                   {subText}
