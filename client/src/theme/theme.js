@@ -22,6 +22,7 @@ const styles = {
       "::placeholder": {
         color: mode("black", "#ffff")(props),
       },
+ 
     },
   }),
 };

@@ -9,7 +9,7 @@ const Navbar = ({
   const color = useColorModeValue("black", "#e0e0e1");
   return (
     <Flex
-      h={{ md: "100%", base: "auto" }}
+      h={{ lg: "100%",md:'auto' ,base: "auto" }}
       bg={bg}
       color={color}
       borderColor="transparent"

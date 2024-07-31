@@ -1,4 +1,4 @@
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import React, { useState } from "react";
 import {
   Button,
   FormControl,
@@ -7,7 +7,7 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 function FormRow({
   name,
@@ -16,8 +16,6 @@ function FormRow({
   labelText,
   defaultValue = "",
   onChange,
-  lang,
-  dir,
 }) {
   const [show, setShow] = useState(false);
 
@@ -40,9 +38,7 @@ function FormRow({
             name={name}
             placeholder={labelText}
             defaultValue={defaultValue}
-            outline="none"
             size="lg"
-            dir={dir}
           />
           <InputRightElement right="unset" left={0}>
             <Button h="100%" size="lg" onClick={() => setShow(!show)}>
@@ -57,9 +53,8 @@ function FormRow({
           name={name}
           placeholder={labelText}
           defaultValue={defaultValue}
-          outline="none"
           size="lg"
-          lang={lang}
+          textAlign='right'
         />
       )}
     </FormControl>

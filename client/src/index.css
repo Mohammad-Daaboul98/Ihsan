@@ -1,3 +1,10 @@
 .active {
     background-color: #1A202C !important;
 }
+
+
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    left: 10px;
+}
