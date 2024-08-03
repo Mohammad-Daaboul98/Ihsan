@@ -4,14 +4,16 @@ import {
   Flex,
   Heading,
   Image,
-  useColorMode,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import ihsanIconDark from "../assets/image/iconDark.svg";
 import ihsanIconLight from "../assets/image/iconLight.svg";
+import { useOutletContext } from "react-router-dom";
 
 const Header = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const {
+    pageMode: { colorMode, toggleColorMode },
+  } = useOutletContext();
 
   return (
     <Container maxW="full" padding={{ base: "10px 15px", md: "10px 50px" }}>
@@ -40,13 +42,9 @@ const Header = () => {
           </Heading>
         </Flex>
 
-        <Button
-          variant='mode'
-          padding={0}
-          onClick={toggleColorMode}
-        >
+        <Button variant="mode" padding={0} onClick={toggleColorMode}>
           {colorMode === "light" ? (
-            <MoonIcon boxSize={{ base:  5, md: 6 }} color="#234e52" />
+            <MoonIcon boxSize={{ base: 5, md: 6 }} color="#234e52" />
           ) : (
             <SunIcon boxSize={{ base: 5, md: 6 }} color="orange" />
           )}
@@ -55,6 +53,5 @@ const Header = () => {
     </Container>
   );
 };
-
 
 export default Header;

@@ -12,7 +12,7 @@ const styles = {
     body: {
       fontFamily: "'Tajawal', sans-serif",
       margin: 0,
-      bg: mode("#fcfdfe", "gray.800")(props),
+      bg: mode("#f8fafc", "gray.800")(props),
       color: mode("black", "#e0e0e1")(props),
     },
 

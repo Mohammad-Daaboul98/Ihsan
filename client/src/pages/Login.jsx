@@ -21,7 +21,6 @@ export const action = (queryClient) =>
   };
 
 const Login = () => {
-
   return (
     <Box h="100vh" display="flex" flexDirection="column" alignItems="center">
       <Header />

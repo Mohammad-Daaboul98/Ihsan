@@ -3,9 +3,9 @@ import { Flex, Heading, useColorModeValue } from "@chakra-ui/react";
 import NavLinks from "./NavLinks";
 
 const Navbar = ({
-  sidebarProps: { toggled, collapsed, setToggled, showSidebar },
+  sidebarProps: { toggled, collapsed, setToggled },
 }) => {
-  const bg = useColorModeValue("#fcfdfe", "#2D3748");
+  const bg = useColorModeValue("#fff", "#2D3748");
   const color = useColorModeValue("black", "#e0e0e1");
   return (
     <Flex
@@ -14,6 +14,7 @@ const Navbar = ({
       color={color}
       borderColor="transparent"
       px={'25px'}
+      boxShadow='lg'
     >
       <Sidebar
         collapsed={collapsed}

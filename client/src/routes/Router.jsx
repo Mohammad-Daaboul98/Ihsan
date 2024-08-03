@@ -1,12 +1,14 @@
 import { HomeLayout, Login, Error, DashboardLayout } from "../pages";
 import AddTeacher from "../pages/AddTeacher";
 import { action as loginAction } from "../pages/Login";
+import { action as addTeacherAction } from "../pages/AddTeacher";
 import { queryClient } from "../utils/queryClient";
+
 
 export const Router = [
   {
     path: "/",
-    element: <HomeLayout />,
+    element: <HomeLayout  />,
     errorElement: <Error />,
 
     children: [
@@ -22,6 +24,7 @@ export const Router = [
           {
             path: "add-teacher",
             element: <AddTeacher />,
+            action: addTeacherAction(queryClient),
           },
         ],
       },

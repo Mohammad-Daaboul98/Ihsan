@@ -1,5 +1,13 @@
+:root {
+    --hover-color: #e0e0e1;
+}
+
+[data-theme="dark"] {
+    --hover-color: #1A202C;
+}
+
 .active {
-    background-color: #1A202C !important;
+    background-color: var(--hover-color) !important;
 }
 
 
