@@ -11,6 +11,10 @@ import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import mongoSanitize from "express-mongo-sanitize";
 
+//Public
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
+
 //Routers
 import authRouter from "./routes/authRouter.js";
 import studentRouter from "./routes/studentRouter.js";
@@ -23,10 +27,14 @@ import {
   authorizePermissions,
 } from "./middleware/authMiddleware.js";
 
+
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-
+app.use(express.static(path.resolve(__dirname, '../client/dist')));
 app.use(cookieParser());
 app.use(express.json());
 app.use(helmet());
@@ -40,6 +48,10 @@ app.use(
   authorizePermissions("Admin"),
   teacherRouter
 );
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html'));
+});
 
 //Not Found Middleware
 app.use("*", (req, res) => {
