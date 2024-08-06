@@ -41,12 +41,13 @@ function DashboardLayout() {
       <Flex w="100%" flexDirection="column">
         <Box
           position="sticky"
+          top='0'
           display="flex"
           alignItems="center"
           p={{ lg: "20px 45px", md: "10px 20px", base: "10px" }}
           bg={bg}
           h={{ lg: "100px", md: "70px", base: "70px" }}
-          boxShadow='lg'
+          zIndex='1'
         >
         <Flex justifyContent='space-between' alignItems='center' w='100%'>
         <Button

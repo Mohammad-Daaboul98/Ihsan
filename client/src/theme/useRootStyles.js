@@ -20,6 +20,9 @@ const useRootStyles = (menuTheme = {}) => {
       color: subMenuColor,
       fontSize:'18px',
       padding:'0 25px',
+      overflowWrap:'break-word',
+      wordBreak: 'break-all',
+
       "&:hover": {
         backgroundColor: subMenuHoverBg,
       },

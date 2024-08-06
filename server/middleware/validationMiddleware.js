@@ -78,7 +78,12 @@ export const validateStudentProfileInput = withValidationErrors([
     .withMessage("يجب ادخال اسم الأب او الأم")
     .custom((parentName) => arabicNameRegex(parentName, "اسم الأب او الأم")),
   body("parentWork").notEmpty().withMessage("يجب ادخال عمل الأب او الأم"),
-  body("parentPhone").notEmpty().withMessage("يجب ادخال رقم هاتف الأب او الأم"),
+  body("parentPhone")
+    .notEmpty()
+    .withMessage("يجب ادخال رقم هاتف الأب او الأم")
+    .isNumeric()
+    .withMessage("يحب انا يحتوي رقم الهاتف على أرقام فقط"),
+  
   body("StudentJuz.*.juzName")
     .notEmpty()
     .withMessage("يجب اختيار الجزء")
@@ -105,12 +110,15 @@ export const validateTeacherProfileInput = withValidationErrors([
     .withMessage("يجب ادخال اسم الاستاذ")
     .custom((teacherName) => arabicNameRegex(teacherName, "اسم الاستاذ")),
   body("teacherPhone").notEmpty().withMessage("يجب ادخال رقم هاتف الاستاذ"),
-  body().custom((value) => {
-    if (!value.teacherWork && !value.teacherStudy) {
-      throw new BadRequestError("يجب إدخال عمل الأستاذ أو الدراسة");
-    }
-    return true;
-  }),
+  body("teacherPhone")
+    .notEmpty()
+    .withMessage("يجب ادخال رقم هاتف الاستاذ")
+    .isNumeric()
+    .withMessage("يحب انا يحتوي رقم الهاتف على أرقام فقط"),
+  body("teacherWork").notEmpty().withMessage("يجب إدخال عمل الأستاذ"),
+  body("teacherStudy")
+    .notEmpty()
+    .withMessage("يجب إدخال المستوى العلمي للأستاذ"),
 ]);
 
 export const validateLoginInput = withValidationErrors([

@@ -1,14 +1,21 @@
-import { HomeLayout, Login, Error, DashboardLayout } from "../pages";
-import AddTeacher from "../pages/AddTeacher";
+import {
+  HomeLayout,
+  Login,
+  Error,
+  DashboardLayout,
+  AllTeachers,
+  AddTeacher,
+} from "../pages";
 import { action as loginAction } from "../pages/Login";
 import { action as addTeacherAction } from "../pages/AddTeacher";
 import { queryClient } from "../utils/queryClient";
-
+import { loader as teachersLoader } from "../pages/AllTeachers";
+import { ErrorElements } from "../components";
 
 export const Router = [
   {
     path: "/",
-    element: <HomeLayout  />,
+    element: <HomeLayout />,
     errorElement: <Error />,
 
     children: [
@@ -22,9 +29,16 @@ export const Router = [
         element: <DashboardLayout />,
         children: [
           {
+            path: "teachers",
+            element: <AllTeachers />,
+            loader:teachersLoader(queryClient),
+            ErrorElement: <ErrorElements />,
+          },
+          {
             path: "add-teacher",
             element: <AddTeacher />,
             action: addTeacherAction(queryClient),
+
           },
         ],
       },

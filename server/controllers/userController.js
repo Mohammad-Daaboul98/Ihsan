@@ -1,6 +1,7 @@
+import { StatusCodes } from "http-status-codes";
 import User from "../models/UserModel.js";
 import { hashPassword } from "../utils/passwordUtils.js";
-import { login } from "./authController.js";
+
 
 export const createUser = async (req, res, next) => {
   let { userName, name, password, age, role, ...rest } = req.body;
@@ -23,7 +24,7 @@ export const updateUser = async (req, res, next) => {
   const { id } = req.params;
 
   if (req.user.role !== "Admin") {
-    req.updatedUserInfo = {updatedProfileData: rest };
+    req.updatedUserInfo = { updatedProfileData: rest };
     next();
   }
 

@@ -2,6 +2,8 @@ import { Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import links from "../utils/links";
 import { NavLink } from "react-router-dom";
 import useRootStyles from "../theme/useRootStyles";
+import DownloadButton from "./DownloadButton";
+import { LiaFileDownloadSolid } from "react-icons/lia";
 
 function NavLinks() {
   const menuTheme = {
@@ -11,22 +13,13 @@ function NavLinks() {
 
   const rootStyle = useRootStyles();
   const menuRootStyle = useRootStyles(menuTheme);
-  // const location = useLocation();
 
   return (
     <Menu>
       {links.map((link) => {
         const { text, submenu, icon } = link;
-        {/* const isActiveMenu = submenu.some((item) =>
-          location.pathname.includes(item.subPath)
-        ); */}
         return (
-          <SubMenu
-            key={text}
-            label={text}
-            icon={icon}
-            rootStyles={rootStyle}
-          >
+          <SubMenu key={text} label={text} icon={icon} rootStyles={rootStyle}>
             {submenu.map((item) => {
               const { subText, subPath } = item;
               return (
@@ -42,6 +35,18 @@ function NavLinks() {
           </SubMenu>
         );
       })}
+      <SubMenu
+        label="تنزيل الملفات"
+        icon={<LiaFileDownloadSolid />}
+        rootStyles={rootStyle}
+      >
+        <MenuItem rootStyles={menuRootStyle}>
+          <DownloadButton filename="ملف حسابات الأساتذه" />
+        </MenuItem>
+        <MenuItem rootStyles={menuRootStyle}>
+          <DownloadButton filename="ملف حسابات الطلاب" />
+        </MenuItem>
+      </SubMenu>
     </Menu>
   );
 }

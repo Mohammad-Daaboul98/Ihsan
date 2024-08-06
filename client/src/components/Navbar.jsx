@@ -1,20 +1,27 @@
 import { Sidebar } from "react-pro-sidebar";
-import { Flex, Heading, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import NavLinks from "./NavLinks";
 
-const Navbar = ({
-  sidebarProps: { toggled, collapsed, setToggled },
-}) => {
+const Navbar = ({ sidebarProps: { toggled, collapsed, setToggled } }) => {
   const bg = useColorModeValue("#fff", "#2D3748");
   const color = useColorModeValue("black", "#e0e0e1");
   return (
     <Flex
-      h={{ lg: "100%",md:'auto' ,base: "auto" }}
+      h={{lg:'100vh' ,md:'auto',base:'auto'}}
       bg={bg}
       color={color}
       borderColor="transparent"
-      px={'25px'}
-      boxShadow='lg'
+      px={"25px"}
+      boxShadow="lg"
+      position="sticky"
+      top="0"
+      zIndex='1'
     >
       <Sidebar
         collapsed={collapsed}
@@ -26,6 +33,10 @@ const Navbar = ({
         color={color}
         rootStyles={{
           borderColor: "transparent",
+          ["div"]: {
+            display: "flex",
+            flexDirection: "column",
+          },
         }}
       >
         <Flex w="100%" justifyContent="center" alignItems="center">
@@ -40,6 +51,11 @@ const Navbar = ({
           </Heading>
         </Flex>
         <NavLinks />
+        <Box marginTop="auto" p="20px 10px">
+
+
+          <Button>Logout</Button>
+        </Box>
       </Sidebar>
     </Flex>
   );
