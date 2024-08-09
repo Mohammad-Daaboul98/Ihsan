@@ -38,11 +38,6 @@ export const validateUserInput = withValidationErrors([
     .withMessage("كلمة السر يجب ان تتألف على الأقل من (8) أرقام أو أحرف")
     .notEmpty()
     .withMessage("يجب ادخال كلمة السر "),
-  body("age")
-    .notEmpty()
-    .withMessage("يجب اختيار تاريخ الولادة")
-    .isDate()
-    .withMessage("تاريخ الولادة يجب أن يكون بتنسيق صحيح"),
   body("role")
     .isIn(Object.values(USER_TYPE))
     .withMessage("يجب اختيار نوع المستخدم "),
@@ -77,13 +72,21 @@ export const validateStudentProfileInput = withValidationErrors([
     .notEmpty()
     .withMessage("يجب ادخال اسم الأب او الأم")
     .custom((parentName) => arabicNameRegex(parentName, "اسم الأب او الأم")),
-  body("parentWork").notEmpty().withMessage("يجب ادخال عمل الأب او الأم"),
+  body("parentWork")
+    .notEmpty()
+    .withMessage("يجب ادخال عمل الأب او الأم")
+    .custom((parentWork) => arabicNameRegex(parentWork, "عمل الأب او الأم")),
+  body("age")
+    .notEmpty()
+    .withMessage("يجب اختيار تاريخ الولادة")
+    .isDate()
+    .withMessage("تاريخ الولادة يجب أن يكون بتنسيق صحيح"),
   body("parentPhone")
     .notEmpty()
     .withMessage("يجب ادخال رقم هاتف الأب او الأم")
     .isNumeric()
     .withMessage("يحب انا يحتوي رقم الهاتف على أرقام فقط"),
-  
+
   body("StudentJuz.*.juzName")
     .notEmpty()
     .withMessage("يجب اختيار الجزء")
@@ -109,16 +112,26 @@ export const validateTeacherProfileInput = withValidationErrors([
     .notEmpty()
     .withMessage("يجب ادخال اسم الاستاذ")
     .custom((teacherName) => arabicNameRegex(teacherName, "اسم الاستاذ")),
-  body("teacherPhone").notEmpty().withMessage("يجب ادخال رقم هاتف الاستاذ"),
+  body("age")
+    .notEmpty()
+    .withMessage("يجب اختيار تاريخ الولادة")
+    .isDate()
+    .withMessage("تاريخ الولادة يجب أن يكون بتنسيق صحيح"),
   body("teacherPhone")
     .notEmpty()
     .withMessage("يجب ادخال رقم هاتف الاستاذ")
     .isNumeric()
     .withMessage("يحب انا يحتوي رقم الهاتف على أرقام فقط"),
-  body("teacherWork").notEmpty().withMessage("يجب إدخال عمل الأستاذ"),
+  body("teacherWork")
+    .notEmpty()
+    .withMessage("يجب إدخال عمل الأستاذ")
+    .custom((teacherWork) => arabicNameRegex(teacherWork, "عمل الأستاذ")),
   body("teacherStudy")
     .notEmpty()
-    .withMessage("يجب إدخال المستوى العلمي للأستاذ"),
+    .withMessage("يجب إدخال المستوى العلمي للأستاذ")
+    .custom((teacherStudy) =>
+      arabicNameRegex(teacherStudy, "المستوى العلمي للأستاذ")
+    ),
 ]);
 
 export const validateLoginInput = withValidationErrors([

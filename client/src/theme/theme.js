@@ -92,6 +92,7 @@ const components = {
           bg: mode("gray.200", "gray.600")(props),
         },
         
+        
       },
       td: {
         textAlign: "center",

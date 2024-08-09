@@ -1,10 +1,22 @@
 import { StatusCodes } from "http-status-codes";
 import User from "../models/UserModel.js";
 import { hashPassword } from "../utils/passwordUtils.js";
+import Admin from "../models/AdminModel.js";
 
+export const getCurrentUser = async (req, res) => {
+  const [adminUser, normalUser] = await Promise.all([
+    Admin.findById(req.user._id),
+    User.findById(req.user._id),
+  ]);
+
+  const user = adminUser || normalUser;
+
+  const userWithoutPassword = user.toJSON();
+  res.status(StatusCodes.OK).json({ user: userWithoutPassword });
+};
 
 export const createUser = async (req, res, next) => {
-  let { userName, name, password, age, role, ...rest } = req.body;
+  let { userName, password, role, ...rest } = req.body;
   const countUser = await User.find({ role });
   const numOfUser = countUser.length ? countUser.length : 0;
 
@@ -14,13 +26,13 @@ export const createUser = async (req, res, next) => {
   const hashedPassword = await hashPassword(password);
   password = hashedPassword;
 
-  const user = await User.create({ userName, name, password, age, role });
+  const user = await User.create({ userName, password, role });
   req.userInfo = { user, profileData: rest };
 
   next();
 };
 export const updateUser = async (req, res, next) => {
-  let { userName, name, password, age, role, ...rest } = req.body;
+  let { userName, password, role, ...rest } = req.body;
   const { id } = req.params;
 
   if (req.user.role !== "Admin") {
@@ -38,7 +50,7 @@ export const updateUser = async (req, res, next) => {
 
   const updatedUser = await User.findByIdAndUpdate(
     id,
-    { userName, name, password, age, role },
+    { userName, password, role },
     {
       new: true,
     }

@@ -25,6 +25,7 @@ export const action =
           "اسم الاستاذ": data.teacherName,
           "عمل الاستاذ": data.teacherWork,
           "المستوى العلمي": data.teacherStudy,
+          "عمر الاستاذ": data.age,
           "رقم الهاتق": data.teacherPhone,
         },
       ];

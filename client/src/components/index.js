@@ -4,3 +4,4 @@ export { default as Navbar } from "./Navbar";
 export { default as NavLinks } from "./NavLinks";
 export { default as ErrorElements } from "./ErrorElement";
 export { default as DownloadButton } from "./DownloadButton";
+export { default as TableComponent } from "./TableComponent";

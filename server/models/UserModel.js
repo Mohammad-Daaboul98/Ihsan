@@ -7,7 +7,6 @@ const UserSchema = new mongoose.Schema({
     unique: true,
   },
   password: String,
-  age: Date,
   role: {
     type: String,
     enum: Object.values(USER_TYPE),
