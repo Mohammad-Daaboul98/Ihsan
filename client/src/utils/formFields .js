@@ -9,7 +9,7 @@ export const teacherInput = [
     id: "password",
     labelText: "كلمة المرور",
   },
-  { type: "date", id: "age", labelText: "عمر الاستاذ" },
+  { type: "number", id: "age", labelText: "عمر الاستاذ" },
   {
     type: "text",
     id: "teacherName",

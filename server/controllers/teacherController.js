@@ -1,8 +1,17 @@
 import Teacher from "../models/TeacherProfileModel.js";
 import Student from "../models/StudentProfileModel.js";
 import { StatusCodes } from "http-status-codes";
+import day from "dayjs";
 
 export const getAllTeachers = async (req, res) => {
+  const { search } = req.query;
+  const queryObject = {};
+  if (search) {
+    queryObject.$or = [
+      { name: { $regex: search, $options: "i" } },
+      { age: { $regex: search, $options: "i" } },
+    ];
+  }
   const teachers = await Teacher.find({});
   res.status(StatusCodes.OK).json({ teachers });
 };
@@ -14,6 +23,7 @@ export const getTeacher = async (req, res) => {
 
 export const createTeacherProfile = async (req, res) => {
   const { user, profileData } = req.userInfo;
+  profileData.age = day(profileData.age).year();
   const teacherProfile = await Teacher.create({
     _id: user._id,
     ...profileData,
@@ -42,16 +52,13 @@ export const deleteTeacherProfile = async (req, res) => {
 
   const updateStudentTeacher = await Student.updateMany(
     { teacherId: deletedUser._id },
-    { teacherId: "669a98d474ed7a09fdd6fe04" },
+    { teacherId: "669a98d474ed7a09fdd6fe04" }
   );
-  
 
-  res
-    .status(StatusCodes.OK)
-    .json({
-      msg: " تم حذف الاستاذ واضافة الطلاب لدى الاستاذ السابق بدون استاذ",
-      updateStudentTeacher,
-      deletedUser,
-      deletedTeacher,
-    });
+  res.status(StatusCodes.OK).json({
+    msg: " تم حذف الاستاذ واضافة الطلاب لدى الاستاذ السابق بدون استاذ",
+    updateStudentTeacher,
+    deletedUser,
+    deletedTeacher,
+  });
 };

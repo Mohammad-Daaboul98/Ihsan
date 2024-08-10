@@ -116,7 +116,10 @@ export const validateTeacherProfileInput = withValidationErrors([
     .notEmpty()
     .withMessage("يجب اختيار تاريخ الولادة")
     .isDate()
-    .withMessage("تاريخ الولادة يجب أن يكون بتنسيق صحيح"),
+    .withMessage("تاريخ الولادة يجب أن يكون بتنسيق صحيح")
+    .custom((age)=>{
+      
+    }),
   body("teacherPhone")
     .notEmpty()
     .withMessage("يجب ادخال رقم هاتف الاستاذ")

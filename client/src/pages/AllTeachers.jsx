@@ -2,22 +2,21 @@ import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import { useLoaderData } from "react-router-dom";
-import { TableComponent } from "../components";
+import TableComponent from "../components/TableComponent"; // Adjust this import if necessary
 import day from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 day.extend(advancedFormat);
 
-const allTeachersQuery = (params) => {
-  return {
-    queryKey: ["teachers", params],
-    queryFn: async () => {
-      const { data } = await customFetch.get("/teacher", {
-        params,
-      });
-      return data;
-    },
-  };
-};
+const allTeachersQuery = (params) => ({
+  queryKey: ["teachers", params],
+  queryFn: async () => {
+    const { data } = await customFetch.get("/teacher", {
+      params,
+    });
+    return data;
+  },
+});
+
 export const loader =
   (queryClient) =>
   async ({ request }) => {
@@ -30,45 +29,38 @@ export const loader =
     } catch (error) {
       const errorMessage = error?.response?.data?.msg;
       toast.error(errorMessage);
-      return error;
+      throw error;
     }
   };
+
 const AllTeachers = () => {
   const { searchValue } = useLoaderData();
-  const {
-    data: { teachers },
-  } = useQuery(allTeachersQuery(searchValue));
+  const { data: { teachers } = {} } = useQuery(allTeachersQuery(searchValue));
 
-  const tableHeaderName = [
-    "اسم الاستاذ",
-    "عمل الاستاذ",
-    "المستوى العلمي",
-    "عمر الاستاذ",
-    "رقم الهاتق",
+  const columns = [
+    { id: "name", header: "اسم الاستاذ", accessorKey: "teacherName" },
+    { id: "work", header: "عمل الاستاذ", accessorKey: "teacherWork" },
+    { id: "study", header: "المستوى العلمي", accessorKey: "teacherStudy" },
+    { id: "age", header: "عمر الاستاذ", accessorKey: "teacherAge", isNumeric: true },
+    { id: "phone", header: "رقم الهاتق", accessorKey: "teacherPhone" },
   ];
 
-  const tableItem = () => {
-    let item = [];
-    teachers.map((teacher) => {
-      const teacherAge =
-        day(new Date()).format("YYYY") - day(teacher?.age).format("YYYY");
-
-      item.push([
-        teacher?.teacherName,
-        teacher?.teacherWork,
-        teacher?.teacherStudy,
-        teacherAge,
-        teacher?.teacherPhone,
-      ]);
-    });
-    return item;
-  };
+  const data = teachers?.map((teacher) => {
+    const teacherAge = day().year() - day(teacher?.age).year();
+    return {
+      teacherName: teacher?.teacherName,
+      teacherWork: teacher?.teacherWork,
+      teacherStudy: teacher?.teacherStudy,
+      teacherAge,
+      teacherPhone: teacher?.teacherPhone,
+    };
+  }) || [];
 
   return (
     <TableComponent
       title="معلومات الأستاذه"
-      tableHeaderName={tableHeaderName}
-      tableItem={tableItem()}
+      columns={columns}
+      data={data}
     />
   );
 };
