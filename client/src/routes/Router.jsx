@@ -23,12 +23,12 @@ export const Router = [
       {
         index: true,
         element: <Login />,
-        action: loginAction(queryClient),
+      /*  action: loginAction(queryClient),*/
       },
       {
         path: "dashboard",
         element: <DashboardLayout />,
-        loader: dashboardLoader(queryClient),
+       /* loader: dashboardLoader(queryClient),*/
         children: [
           {
             path: "teachers",
