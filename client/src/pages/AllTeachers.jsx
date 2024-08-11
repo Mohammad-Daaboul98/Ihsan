@@ -55,6 +55,8 @@ const AllTeachers = () => {
       teacherPhone: teacher?.teacherPhone,
     };
   }) || [];
+  console.log(data);
+  
 
   return (
     <TableComponent
