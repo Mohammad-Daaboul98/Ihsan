@@ -39,7 +39,7 @@ export const Router = [
           {
             path: "add-teacher",
             element: <AddTeacher />,
-            action: addTeacherAction(queryClient),
+          /*  action: addTeacherAction(queryClient),*/
 
           },
         ],
