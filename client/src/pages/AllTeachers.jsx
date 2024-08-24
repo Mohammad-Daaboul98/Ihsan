@@ -3,9 +3,7 @@ import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import { useLoaderData } from "react-router-dom";
 import TableComponent from "../components/TableComponent"; // Adjust this import if necessary
-import day from "dayjs";
-import advancedFormat from "dayjs/plugin/advancedFormat";
-day.extend(advancedFormat);
+
 
 const allTeachersQuery = (params) => ({
   queryKey: ["teachers", params],
@@ -37,25 +35,25 @@ const AllTeachers = () => {
   const { searchValue } = useLoaderData();
   const { data: { teachers } = {} } = useQuery(allTeachersQuery(searchValue));
 
-  const columns = [
+  let columns = [
     { id: "name", header: "اسم الاستاذ", accessorKey: "teacherName" },
     { id: "work", header: "عمل الاستاذ", accessorKey: "teacherWork" },
     { id: "study", header: "المستوى العلمي", accessorKey: "teacherStudy" },
     { id: "age", header: "عمر الاستاذ", accessorKey: "teacherAge", isNumeric: true },
     { id: "phone", header: "رقم الهاتق", accessorKey: "teacherPhone" },
+    
   ];
+  
 
   const data = teachers?.map((teacher) => {
-    const teacherAge = day().year() - day(teacher?.age).year();
     return {
       teacherName: teacher?.teacherName,
       teacherWork: teacher?.teacherWork,
       teacherStudy: teacher?.teacherStudy,
-      teacherAge,
+      teacherAge:teacher?.age,
       teacherPhone: teacher?.teacherPhone,
     };
   }) || [];
-  console.log(data);
   
 
   return (

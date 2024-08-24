@@ -5,7 +5,7 @@ const TeacherProfile = new mongoose.Schema(
     teacherName: String,
     teacherWork: String,
     teacherStudy: String,
-    age: Date,
+    age: Number,
     teacherPhone: Number,
   },
 );

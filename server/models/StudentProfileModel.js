@@ -11,7 +11,7 @@ const StudentProfileSchema = new mongoose.Schema({
   parentName: String,
   parentWork: String,
   parentPhone: Number,
-  age: Date,
+  age: Number,
   studentPoint: Number,
   StudentJuz: [JuzSchema],
 

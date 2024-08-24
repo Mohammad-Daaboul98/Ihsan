@@ -60,6 +60,9 @@ app.use("*", (req, res) => {
   res.status(404).json({ msg: "not found" });
 });
 
+
+
+
 // Error Middleware
 app.use(errorHandlerMiddleware);
 

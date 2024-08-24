@@ -79,8 +79,8 @@ export const validateStudentProfileInput = withValidationErrors([
   body("age")
     .notEmpty()
     .withMessage("يجب اختيار تاريخ الولادة")
-    .isDate()
-    .withMessage("تاريخ الولادة يجب أن يكون بتنسيق صحيح"),
+    .isNumeric()
+    .withMessage("عمر الطالب يجب ان يكون رقم"),
   body("parentPhone")
     .notEmpty()
     .withMessage("يجب ادخال رقم هاتف الأب او الأم")
@@ -115,10 +115,13 @@ export const validateTeacherProfileInput = withValidationErrors([
   body("age")
     .notEmpty()
     .withMessage("يجب اختيار تاريخ الولادة")
-    .isDate()
-    .withMessage("تاريخ الولادة يجب أن يكون بتنسيق صحيح")
-    .custom((age)=>{
-      
+    .isNumeric()
+    .withMessage("عمر الاستاذ يجب ان يكون رقم")
+    .custom((age) => {
+      if (age < 15) {
+        throw new BadRequestError(" يجب ان يكون عمر الاستاذ أكبر من 15 سنة");
+      }
+      return true;
     }),
   body("teacherPhone")
     .notEmpty()

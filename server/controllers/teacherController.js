@@ -1,7 +1,6 @@
 import Teacher from "../models/TeacherProfileModel.js";
 import Student from "../models/StudentProfileModel.js";
 import { StatusCodes } from "http-status-codes";
-import day from "dayjs";
 
 export const getAllTeachers = async (req, res) => {
   const { search } = req.query;
@@ -12,8 +11,22 @@ export const getAllTeachers = async (req, res) => {
       { age: { $regex: search, $options: "i" } },
     ];
   }
-  const teachers = await Teacher.find({});
-  res.status(StatusCodes.OK).json({ teachers });
+
+  const totalTeachers = await Job.countDocuments(queryObject);
+  //setup pagination
+  const page = Number(req.query.page) > 0 ? Number(req.query.page) : 1;
+  const limit =
+    Number(req.query.limit) > 0 && Number(req.query.limit) <= totalTeachers
+      ? Number(req.query.limit)
+      : 10;
+
+  const skip = (page - 1) * limit;
+  const totalPages = Math.ceil(totalTeachers / limit);
+
+  const teachers = await Teacher.find(queryObject).skip(skip).limit(limit);
+  res
+    .status(StatusCodes.OK)
+    .json({ teachers, totalPages, currentPage: page, totalTeachers });
 };
 export const getTeacher = async (req, res) => {
   const { id } = req.params;
@@ -23,7 +36,6 @@ export const getTeacher = async (req, res) => {
 
 export const createTeacherProfile = async (req, res) => {
   const { user, profileData } = req.userInfo;
-  profileData.age = day(profileData.age).year();
   const teacherProfile = await Teacher.create({
     _id: user._id,
     ...profileData,
