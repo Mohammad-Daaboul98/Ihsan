@@ -1,5 +1,3 @@
-// components/DownloadButton.js
-
 import React from "react";
 import { getFromIndexedDB } from "../utils/indexedDBUtils";
 import { saveAs } from "file-saver";
@@ -12,14 +10,17 @@ const DownloadButton = ({ filename }) => {
 
   const handleDownload = async () => {
     try {
+      console.log("Attempting to download file:", filename);
       const fileData = await getFromIndexedDB(filename);
+      console.log("Retrieved file data:", fileData);
+
       if (fileData && fileData.data) {
         const blob = new Blob([new Uint8Array(fileData.data)], {
-          type: "application/octet-stream",
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         });
         saveAs(blob, `${filename}-${date}.xlsx`);
       } else {
-        toast.error("لايوجد ملف جاهز للتنزيل", { theme: "colored" });
+        toast.error("ايوجد ملف جاهز للتنزيل", { theme: "colored" });
       }
     } catch (error) {
       console.error("Error downloading file:", error);
@@ -29,7 +30,13 @@ const DownloadButton = ({ filename }) => {
   return (
     <Box
       onClick={handleDownload}
-    >{filename}</Box>
+      cursor="pointer"
+      p={2}
+      borderRadius="md"
+      textAlign="center"
+    >
+      {filename}
+    </Box>
   );
 };
 

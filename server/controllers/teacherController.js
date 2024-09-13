@@ -4,30 +4,23 @@ import { StatusCodes } from "http-status-codes";
 
 export const getAllTeachers = async (req, res) => {
   const { search } = req.query;
+
   const queryObject = {};
+
   if (search) {
+    const searchNumeric = parseInt(search, 10);
+    const isNumeric = !isNaN(searchNumeric);
+
     queryObject.$or = [
-      { name: { $regex: search, $options: "i" } },
-      { age: { $regex: search, $options: "i" } },
+      { teacherName: { $regex: search, $options: "i" } },
+      ...(isNumeric ? [{ age: searchNumeric }] : []),
     ];
   }
 
-  const totalTeachers = await Job.countDocuments(queryObject);
-  //setup pagination
-  const page = Number(req.query.page) > 0 ? Number(req.query.page) : 1;
-  const limit =
-    Number(req.query.limit) > 0 && Number(req.query.limit) <= totalTeachers
-      ? Number(req.query.limit)
-      : 10;
-
-  const skip = (page - 1) * limit;
-  const totalPages = Math.ceil(totalTeachers / limit);
-
-  const teachers = await Teacher.find(queryObject).skip(skip).limit(limit);
-  res
-    .status(StatusCodes.OK)
-    .json({ teachers, totalPages, currentPage: page, totalTeachers });
+  const teachers = await Teacher.find(queryObject);
+  res.status(StatusCodes.OK).json({ teachers });
 };
+
 export const getTeacher = async (req, res) => {
   const { id } = req.params;
   const teacher = await Teacher.findById(id);

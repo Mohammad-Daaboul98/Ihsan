@@ -16,6 +16,7 @@ function FormRow({
   labelText,
   defaultValue = "",
   onChange,
+  isRequired,
 }) {
   const [show, setShow] = useState(false);
 
@@ -25,7 +26,7 @@ function FormRow({
       alignItems="center"
       flexWrap="wrap"
       mb={5}
-      isRequired
+      isRequired={isRequired ? false : true}
     >
       <FormLabel htmlFor={id} mb={2} fontWeight="bold">
         {labelText}
@@ -54,7 +55,8 @@ function FormRow({
           placeholder={labelText}
           defaultValue={defaultValue}
           size="lg"
-          textAlign='right'
+          textAlign="right"
+          onChange={onChange}
         />
       )}
     </FormControl>

@@ -5,7 +5,7 @@ import { Box, Button, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 import { createOrUpdateExcelFile } from "../utils/excelUtils";
-import { teacherInput } from "../utils/formFields ";
+import { teacherInput } from "../utils/formFields";
 
 export const action =
   (queryClient) =>
@@ -50,7 +50,7 @@ const AddTeacher = () => {
         base: "20px 10px",
       }}
       m={"auto"}
-      boxShadow="lg"
+      boxShadow="2xl"
       borderRadius="md"
     >
       <Heading mb={"50px"} textAlign="center">

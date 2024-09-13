@@ -3,12 +3,24 @@ import Student from "../models/StudentProfileModel.js";
 import { StatusCodes } from "http-status-codes";
 
 export const getAllStudents = async (req, res) => {
+  const { search } = req.query;
+
   const queryObject =
     req.user.role === "teacher"
       ? {
           teacherId: req.user._id,
         }
       : {};
+
+  if (search) {
+    const searchNumeric = parseInt(search, 10);
+    const isNumeric = !isNaN(searchNumeric);
+
+    queryObject.$or = [
+      { studentName: { $regex: search, $options: "i" } },
+      ...(isNumeric ? [{ age: searchNumeric }] : []),
+    ];
+  }
 
   const student = await Student.find(queryObject);
   res.status(StatusCodes.OK).json({ student });

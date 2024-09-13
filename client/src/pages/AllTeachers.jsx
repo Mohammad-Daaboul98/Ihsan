@@ -1,26 +1,28 @@
-import customFetch from "../utils/customFetch";
-import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import { useLoaderData } from "react-router-dom";
-import TableComponent from "../components/TableComponent"; // Adjust this import if necessary
+import { SearchComponent, TableComponent } from "../components";
+import customFetch from "../utils/customFetch";
 
+// Query function to fetch all teachers
+const allTeachersQuery = (params) => {
+  const { search } = params;
+  return {
+    queryKey: ["teachers", search],
+    queryFn: async () => {
+      const { data } = await customFetch.get("/teacher", { params });
+      return data;
+    },
+  };
+};
 
-const allTeachersQuery = (params) => ({
-  queryKey: ["teachers", params],
-  queryFn: async () => {
-    const { data } = await customFetch.get("/teacher", {
-      params,
-    });
-    return data;
-  },
-});
-
+// Loader for the route
 export const loader =
   (queryClient) =>
   async ({ request }) => {
     const params = Object.fromEntries([
       ...new URL(request.url).searchParams.entries(),
     ]);
+
     try {
       await queryClient.ensureQueryData(allTeachersQuery(params));
       return { searchValue: { ...params } };
@@ -33,35 +35,31 @@ export const loader =
 
 const AllTeachers = () => {
   const { searchValue } = useLoaderData();
-  const { data: { teachers } = {} } = useQuery(allTeachersQuery(searchValue));
 
-  let columns = [
+  const { data: { teachers = [] } = {} } = useQuery(
+    allTeachersQuery(searchValue)
+  );
+
+  const columns = [
     { id: "name", header: "اسم الاستاذ", accessorKey: "teacherName" },
     { id: "work", header: "عمل الاستاذ", accessorKey: "teacherWork" },
     { id: "study", header: "المستوى العلمي", accessorKey: "teacherStudy" },
-    { id: "age", header: "عمر الاستاذ", accessorKey: "teacherAge", isNumeric: true },
-    { id: "phone", header: "رقم الهاتق", accessorKey: "teacherPhone" },
-    
+    { id: "age", header: "عمر الاستاذ", accessorKey: "age", isNumeric: true },
+    { id: "phone", header: "رقم الهاتف", accessorKey: "teacherPhone" },
   ];
-  
-
-  const data = teachers?.map((teacher) => {
-    return {
-      teacherName: teacher?.teacherName,
-      teacherWork: teacher?.teacherWork,
-      teacherStudy: teacher?.teacherStudy,
-      teacherAge:teacher?.age,
-      teacherPhone: teacher?.teacherPhone,
-    };
-  }) || [];
-  
 
   return (
-    <TableComponent
-      title="معلومات الأستاذه"
-      columns={columns}
-      data={data}
-    />
+    <>
+      <SearchComponent
+        searchValue={searchValue}
+        labelText="بحث عن طريق اسم الاستاذ او العمر"
+      />
+      <TableComponent
+        title="معلومات الأستاذه"
+        columns={columns}
+        data={teachers}
+      />
+    </>
   );
 };
 

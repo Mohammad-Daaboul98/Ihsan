@@ -1,11 +1,9 @@
-// utils/excelUtils.js
-
-import * as XLSX from 'xlsx';
-import { saveToIndexedDB, getFromIndexedDB, deleteFromIndexedDB } from './indexedDBUtils';
-
 export const createOrUpdateExcelFile = async (filename, newData) => {
   try {
+    console.log("Creating or updating file:", filename);
+
     const existingFile = await getFromIndexedDB(filename);
+    console.log("Existing file data:", existingFile);
 
     let workbook;
     if (existingFile && existingFile.data) {
@@ -40,15 +38,8 @@ export const createOrUpdateExcelFile = async (filename, newData) => {
     const buffer = s2ab(workbookBinary);
     await saveToIndexedDB(filename, buffer);
 
+    console.log("File saved successfully.");
   } catch (error) {
     console.error("Error creating or updating Excel file:", error);
-  }
-};
-
-export const deleteExcelFileFromIndexedDB = async (filename) => {
-  try {
-    await deleteFromIndexedDB(filename);
-  } catch (error) {
-    console.error("Error deleting Excel file:", error);
   }
 };

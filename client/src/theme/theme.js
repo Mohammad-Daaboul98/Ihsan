@@ -1,4 +1,4 @@
-import { extendTheme } from "@chakra-ui/react";
+import { color, extendTheme } from "@chakra-ui/react";
 import { mode } from "@chakra-ui/theme-tools";
 import { headingTheme } from "./components/Heading";
 
@@ -59,6 +59,9 @@ const components = {
         overflow: "hidden",
         boxShadow: mode("lg", "dark-lg")(props),
       },
+      caption:{
+        bg: mode("#edf2f6", "#2d3748")(props),
+      },
       thead: {
         bg: mode("blue.600", "blue.700")(props),
         color: "white",
@@ -69,6 +72,7 @@ const components = {
         padding: "12px",
         borderBottom: "2px solid",
         borderBottomColor: mode("gray.200", "gray.600")(props),
+        color:mode("#000", "#fff")(props),
       },
       tbody: {
         borderTop: "1px solid",
