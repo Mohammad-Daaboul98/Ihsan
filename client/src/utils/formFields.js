@@ -1,3 +1,5 @@
+import { QURAN_INDEX } from "../../../server/shared/constants";
+
 export const teacherInput = [
   {
     type: "text",
@@ -76,6 +78,13 @@ export const studentInput = [
     type: "select",
     id: "teacherId",
     labelText: "اسم الاستاذ",
+    listItem: "teacherName",
+  },
+  {
+    type: "select",
+    id: "StudentJuz",
+    labelText: "الجزء",
+    list: QURAN_INDEX.JUZ,
+    listItem: "juzName",
   },
 ];
-

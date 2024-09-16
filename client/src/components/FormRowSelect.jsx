@@ -9,7 +9,7 @@ const FormRowSelect = ({
   labelText,
   list,
   defaultValue = "",
-  nameOfListData,
+  listItem,
   onChange,
 }) => {
   return (
@@ -26,7 +26,7 @@ const FormRowSelect = ({
         {list.map((itemValue, index) => {
           return (
             <option key={index}  value={itemValue._id}>
-              {itemValue[nameOfListData]}
+              {itemValue[listItem]}
             </option>
           );
         })}

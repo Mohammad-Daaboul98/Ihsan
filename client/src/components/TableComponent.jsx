@@ -1,4 +1,4 @@
-import React from "react";
+import  { useState } from "react";
 import {
   Box,
   Table,
@@ -31,7 +31,7 @@ const TableComponent = ({ title, columns, data }) => {
   const buttonSize = useBreakpointValue({ base: "sm", md: "md" });
 
   // State for sorting
-  const [sorting, setSorting] = React.useState([]);
+  const [sorting, setSorting] = useState([]);
 
   // Create table instance
   const table = useReactTable({

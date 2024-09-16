@@ -34,6 +34,9 @@ export const action =
   async ({ request }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
+    data.StudentJuz = [{ juzName: data.StudentJuz }];
+    console.log(data.StudentJuz);
+
     const role = "student";
     try {
       const student = await customFetch.post("student", { ...data, role });
@@ -51,8 +54,8 @@ export const action =
           "المستوى العلمي": data.StudentStudy,
           "عمر الطالب": data.age,
           "اسم الاستاذ": data.teacherId,
+          الجزء: data.StudentJuz,
           // "نقاط الطالب": data.studentPoint,
-          // "الجزء":data.StudentJuz,
           // "السورة":data.surahs,
           // "الصفحة":data.pages,
           // "تقيم التسميع":data.rate,
@@ -98,7 +101,7 @@ const AddStudent = () => {
           columns={{ lg: 2, md: 2, sm: 2, base: 1 }}
           spacing={{ md: "10px 20px", base: "10px" }}
         >
-          {studentInput.map(({ type, id, labelText }) => {
+          {studentInput.map(({ type, id, labelText, list, listItem }) => {
             if (type !== "select") {
               return (
                 <FormRow
@@ -116,8 +119,8 @@ const AddStudent = () => {
                   type={type}
                   name={id}
                   labelText={labelText}
-                  list={teachers}
-                  nameOfListData="teacherName"
+                  list={list ? list : teachers}
+                  listItem={listItem}
                 />
               );
             }
