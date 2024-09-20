@@ -6,25 +6,17 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  ModalFooter,
-  Button,
 } from "@chakra-ui/react";
 
-const ModalComponent = ({
-  isOpen,
-  onClose,
-  title,
-  bodyContent,
-  overlay
-}) => {
+const ModalComponent = ({ isOpen, onClose, title, overlay, components }) => {
   return (
-    <Modal  onClose={onClose} isOpen={isOpen} size={'xl'} isCentered>
+    <Modal onClose={onClose} isOpen={isOpen} size={"xl"} isCentered>
       {overlay}
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{title}</ModalHeader>
+        {title ? <ModalHeader>{title}</ModalHeader> : null}
         <ModalCloseButton />
-        <ModalBody>{bodyContent}</ModalBody>
+        <ModalBody>{components}</ModalBody>
       </ModalContent>
     </Modal>
   );

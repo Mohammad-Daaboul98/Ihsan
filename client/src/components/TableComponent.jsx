@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Table,
@@ -27,7 +27,7 @@ import {
   ChevronUpIcon,
 } from "@chakra-ui/icons";
 
-const TableComponent = ({ title, columns, data }) => {
+const TableComponent = ({ title, columns, data, editAndDelete }) => {
   const buttonSize = useBreakpointValue({ base: "sm", md: "md" });
 
   // State for sorting
@@ -119,7 +119,7 @@ const TableComponent = ({ title, columns, data }) => {
                     ) : null}
                   </Th>
                 ))}
-                <Th>تعديل أو حذف</Th>
+                {editAndDelete ? <Th>تعديل أو حذف</Th> : null}
               </Tr>
             ))}
           </Thead>
@@ -138,23 +138,25 @@ const TableComponent = ({ title, columns, data }) => {
                       )}
                     </Td>
                   ))}
-                  <Td>
-                    <IconButton
-                      aria-label="Edit"
-                      icon={<EditIcon />}
-                      variant="outline"
-                      colorScheme="blue"
-                      size={buttonSize}
-                      ml="10px"
-                    />
-                    <IconButton
-                      aria-label="Delete"
-                      icon={<DeleteIcon />}
-                      variant="outline"
-                      colorScheme="red"
-                      size={buttonSize}
-                    />
-                  </Td>
+                  {editAndDelete ? (
+                    <Td>
+                      <IconButton
+                        aria-label="Edit"
+                        icon={<EditIcon />}
+                        variant="outline"
+                        colorScheme="blue"
+                        size={buttonSize}
+                        ml="10px"
+                      />
+                      <IconButton
+                        aria-label="Delete"
+                        icon={<DeleteIcon />}
+                        variant="outline"
+                        colorScheme="red"
+                        size={buttonSize}
+                      />
+                    </Td>
+                  ) : null}
                 </Tr>
               ))
             ) : (

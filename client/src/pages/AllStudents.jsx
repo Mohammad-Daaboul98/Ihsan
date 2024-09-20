@@ -1,9 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { ModalComponent, SearchComponent, TableComponent } from "../components";
 import customFetch from "../utils/customFetch";
 import { BiShow } from "react-icons/bi";
-import { Button, ModalOverlay, useDisclosure } from "@chakra-ui/react";
+import { IoAddCircleSharp } from "react-icons/io5";
+import {
+  Box,
+  Button,
+  IconButton,
+  ModalOverlay,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { useState } from "react";
 
 // Query function to fetch all teachers
 const allStudentsQuery = (params) => {
@@ -37,6 +45,7 @@ export const loader =
 
 const AllStudents = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedAttendance, setSelectedAttendance] = useState([]); // State for storing selected student's attendance
 
   const { searchValue } = useLoaderData();
 
@@ -46,8 +55,8 @@ const AllStudents = () => {
 
   const Overlay = () => (
     <ModalOverlay
-      bg='blackAlpha.100'
-      backdropFilter='blur(10px) hue-rotate(90deg)'
+      bg="blackAlpha.100"
+      backdropFilter="blur(10px) hue-rotate(90deg)"
     />
   );
 
@@ -79,11 +88,48 @@ const AllStudents = () => {
     {
       header: "عرض ايام حضور الطالب",
       accessorKey: "studentAttendance",
-      cell: () => (
-        <Button onClick={()=>onOpen()}>
+      cell: ({ row }) => (
+        <Button
+          onClick={() => {
+            setSelectedAttendance(row.original.studentAttendance); // Set selected student's attendance
+            onOpen(); // Open modal
+          }}
+        >
           <BiShow />
         </Button>
       ),
+    },
+    {
+      header: "اضافة تقيم",
+      accessorKey: "studentDaily",
+      cell: ({ row }) => (
+        <Link to={`../add-student-rate/${row.original._id}`}> 
+          <IconButton icon={<IoAddCircleSharp />} />
+        </Link>
+      ),
+    },
+  ];
+
+  const modalColumns = [
+    {
+      header: "التاريخ",
+      accessorKey: "date",
+      cell: ({ getValue }) => {
+        const attendance = getValue();
+        return attendance && attendance.length > 0
+          ? attendance.map((value) => value.date)
+          : "-";
+      },
+    },
+    {
+      header: "الحالة",
+      accessorKey: "status",
+      cell: ({ getValue }) => {
+        const attendance = getValue();
+        return attendance && attendance.length > 0
+          ? attendance.map((value) => value.status)
+          : "-";
+      },
     },
   ];
 
@@ -93,13 +139,24 @@ const AllStudents = () => {
         searchValue={searchValue}
         labelText="بحث عن طريق اسم الطالب او العمر"
       />
-      <TableComponent title="معلومات الطالب" columns={columns} data={student} />
+      <TableComponent
+        title="معلومات الطالب"
+        columns={columns}
+        data={student}
+        editAndDelete={true}
+      />
       <ModalComponent
         isOpen={isOpen}
         onClose={onClose}
-        title="Modal Title"
-        bodyContent={<p>This is the modal content.</p>}
         overlay={<Overlay />}
+        components={
+          <TableComponent
+            title="معلومات حضور الطالب"
+            columns={modalColumns}
+            data={selectedAttendance}
+            editAndDelete={false}
+          />
+        }
       />
     </>
   );

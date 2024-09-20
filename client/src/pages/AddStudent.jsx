@@ -35,7 +35,6 @@ export const action =
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
     data.StudentJuz = [{ juzName: data.StudentJuz }];
-    console.log(data.StudentJuz);
 
     const role = "student";
     try {

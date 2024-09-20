@@ -1,4 +1,4 @@
-import { QURAN_INDEX } from "../../../server/shared/constants";
+import { QURAN_INDEX, STUDENT_ATTENDANCE, STUDENT_RATE } from "../../../server/shared/constants";
 
 export const teacherInput = [
   {
@@ -88,3 +88,34 @@ export const studentInput = [
     listItem: "juzName",
   },
 ];
+
+export const studentInputRate =[
+  {
+    type: "date",
+    id: "date",
+    labelText: "تاريخ االيوم",
+  },
+
+  {
+    type: "select",
+    id: "status",
+    labelText: "حالة الحضور",
+    list: STUDENT_ATTENDANCE,
+  },
+  {
+    type: "select",
+    id: "surahName",
+    labelText: "السورة",
+  },
+  {
+    type: "select",
+    id: "pages",
+    labelText: "الصفحة",
+  },
+  {
+    type: "select",
+    id: "rate",
+    labelText: "التقيم",
+    list: STUDENT_RATE,
+  },
+]

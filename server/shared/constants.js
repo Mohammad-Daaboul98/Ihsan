@@ -4,17 +4,9 @@ export const USER_TYPE = {
   STUDENT: "student",
 };
 
-export const STUDENT_RATE = {
-  VERY_GOOD: "ممتاز",
-  GOOG: "جيد",
-  NOT_BAD: "وسط",
-  BAD: "سيء",
-};
+export const STUDENT_RATE = ["ممتاز", "جيد", "وسط", "سيء"];
 
-export const STUDENT_ATTENDANCE = {
-  PRESENT: "موجد",
-  ABSENT: "غياب",
-};
+export const STUDENT_ATTENDANCE = ["موجد", "غياب"];
 
 export const QURAN_INDEX = {
   JUZ: [

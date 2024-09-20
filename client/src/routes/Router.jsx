@@ -7,13 +7,15 @@ import {
   AddTeacher,
   AllStudents,
   AddStudent,
+  AddStudentRate,
 } from "../pages";
 import { action as loginAction } from "../pages/Login";
 import { action as addTeacherAction } from "../pages/AddTeacher";
 import { action as addStudentAction } from "../pages/AddStudent";
+import { action as addStudentRateAction } from "../pages/AddStudentRate";
 import { loader as addStudentLoader } from "../pages/AddStudent";
 import { queryClient } from "../utils/queryClient";
-import { loader, loader as teachersLoader } from "../pages/AllTeachers";
+import { loader as teachersLoader } from "../pages/AllTeachers";
 import { loader as studentLoader } from "../pages/AllStudents";
 import { loader as dashboardLoader } from "../pages/DashboardLayout";
 import { ErrorElements } from "../components";
@@ -56,6 +58,12 @@ export const Router = [
             element: <AddStudent />,
             action: addStudentAction(queryClient),
             loader:addStudentLoader(queryClient),
+          },
+          {
+            path: "add-student-rate/:id",
+            element: <AddStudentRate />,
+            action: addStudentRateAction(queryClient),
+            // loader:addStudentLoader(queryClient),
           },
         ],
       },
