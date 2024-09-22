@@ -1,9 +1,10 @@
 // import { studentInputRate } from '../utils/formFields';
 
-import { Form, useActionData } from "react-router-dom";
+import { Form, useActionData, useLocation, useParams } from "react-router-dom";
 import { FormRow, FormRowSelect } from "../components";
 import { studentInputRate } from "../utils/formFields";
 import { Box, Button, Heading, SimpleGrid } from "@chakra-ui/react";
+import { useState } from "react";
 
 export const action =
   (queryClient) =>
@@ -23,8 +24,38 @@ export const action =
   };
 
 const AddStudentRate = () => {
+  const { id } = useParams();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const juzName = queryParams.get("juzName");
+
+  // State to track selected surah and its pages
+  const [selectedSurah, setSelectedSurah] = useState(null);
+  const [surahPages, setSurahPages] = useState([]);
+
   const date = useActionData();
   const errorMessage = date?.response?.data?.msg;
+
+  // Handle selection change for surahName
+  // Handle selection change for surahName
+  const handleSurahChange = (e) => {
+    const selectedSurahId = e.target.value; // Assuming value is the Surah ID (number)
+    setSelectedSurah(selectedSurahId); // Set selected surah ID
+
+    // Find the selected Juz by its juzName
+    const selectedJuz = studentInputRate
+      .find((item) => item.id === "surahName") // Find surahName input item
+      .list.find((juz) => juz.juzName === juzName); // Match juzName
+
+    if (selectedJuz) {
+      // Match surah by its ID, which is a number in your data structure
+      const surah = selectedJuz.surahs.find(
+        (surah) => surah.id.toString() === selectedSurahId // Compare as string for consistency
+      );
+      setSurahPages(surah ? surah.pages : []); // Set pages if surah found
+    }
+  };
+
   return (
     <Box
       padding={{
@@ -60,6 +91,32 @@ const AddStudentRate = () => {
                   name={id}
                   id={id}
                   labelText={labelText}
+                />
+              );
+            } else if (listItem === "surahName") {
+              return (
+                <FormRowSelect
+                  key={id}
+                  type={type}
+                  name={id}
+                  labelText={labelText}
+                  list={list
+                    .filter((value) => value.juzName === juzName)
+                    .flatMap((value) => value.surahs)}
+                  listItem={listItem}
+                  onChange={handleSurahChange} // Handle surah change
+                />
+              );
+            } else if (listItem === "pages") {
+              console.log(surahPages);
+              return (
+                <FormRowSelect
+                  key={id}
+                  type={type}
+                  name={id}
+                  labelText={labelText}
+                  list={surahPages.map((page) => ({ id: page, pages: page }))} // Use surahPages from state
+                  listItem={listItem}
                 />
               );
             } else {

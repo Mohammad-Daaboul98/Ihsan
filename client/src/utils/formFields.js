@@ -1,4 +1,9 @@
-import { QURAN_INDEX, STUDENT_ATTENDANCE, STUDENT_RATE } from "../../../server/shared/constants";
+import { list } from "@chakra-ui/react";
+import {
+  QURAN_INDEX,
+  STUDENT_ATTENDANCE,
+  STUDENT_RATE,
+} from "../../../server/shared/constants";
 
 export const teacherInput = [
   {
@@ -89,7 +94,7 @@ export const studentInput = [
   },
 ];
 
-export const studentInputRate =[
+export const studentInputRate = [
   {
     type: "date",
     id: "date",
@@ -101,21 +106,27 @@ export const studentInputRate =[
     id: "status",
     labelText: "حالة الحضور",
     list: STUDENT_ATTENDANCE,
+    listItem: false,
   },
   {
     type: "select",
     id: "surahName",
     labelText: "السورة",
+    list: QURAN_INDEX.JUZ,
+    listItem: "surahName",
   },
   {
     type: "select",
     id: "pages",
     labelText: "الصفحة",
+    list: QURAN_INDEX.JUZ,
+    listItem: "pages",
   },
   {
     type: "select",
     id: "rate",
     labelText: "التقيم",
     list: STUDENT_RATE,
+    listItem: false,
   },
-]
+];

@@ -98,15 +98,20 @@ const AllStudents = () => {
           <BiShow />
         </Button>
       ),
-    },
+    }, 
     {
       header: "اضافة تقيم",
       accessorKey: "studentDaily",
-      cell: ({ row }) => (
-        <Link to={`../add-student-rate/${row.original._id}`}> 
-          <IconButton icon={<IoAddCircleSharp />} />
-        </Link>
-      ),
+      cell: ({ row }) => {
+        const studentId = row.original._id;
+        const juzName = row.original.StudentJuz?.map(juz => juz.juzName).join(",") || "NoJuz";
+        
+        return (
+          <Link to={`../add-student-rate/${studentId}?juzName=${encodeURIComponent(juzName)}`}>
+            <IconButton icon={<IoAddCircleSharp />} />
+          </Link>
+        );
+      },
     },
   ];
 
