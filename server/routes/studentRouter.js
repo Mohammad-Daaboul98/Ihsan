@@ -9,6 +9,7 @@ import {
 import {
   validateIdParam,
   validateStudentProfileInput,
+  validateStudentRateInput,
   validateUserInput,
 } from "../middleware/validationMiddleware.js";
 import {
@@ -30,6 +31,14 @@ router
     createUser,
     createStudentProfile
   );
+  router
+  .route("/student-rate/:id")
+  .patch(
+    authorizePermissions("Admin", "teacher"),
+    validateStudentRateInput,
+    validateIdParam,
+    updateStudentProfile
+  )
 
 router
   .route("/:id")
@@ -48,5 +57,6 @@ router
     deleteUser,
     deleteStudentProfile
   );
+
 
 export default router;

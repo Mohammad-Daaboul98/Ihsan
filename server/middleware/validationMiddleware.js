@@ -106,6 +106,24 @@ export const validateStudentProfileInput = withValidationErrors([
     .isIn(Object.values(STUDENT_ATTENDANCE))
     .withMessage("يحب اختيار حالة الطالب"),
 ]);
+export const validateStudentRateInput = withValidationErrors([
+  body("StudentJuz.*.surahs.*.surahName")
+    .notEmpty()
+    .withMessage("يجب اختيار السورة"),
+
+  body("StudentJuz.*.surahs.*.pages")
+    .notEmpty()
+    .withMessage("يجب اختيار الصفحة"),
+
+  body("StudentJuz.*.surahs.*.rate")
+    .notEmpty()
+    .withMessage("يجب اختيار التقيم"),
+
+  body("studentAttendance.*.date").notEmpty().withMessage("يجب اختيار التاريخ"),
+  body("studentAttendance.*.status")
+    .isIn(Object.values(STUDENT_ATTENDANCE))
+    .withMessage("يحب اختيار حالة الطالب"),
+]);
 
 export const validateTeacherProfileInput = withValidationErrors([
   body("teacherName")

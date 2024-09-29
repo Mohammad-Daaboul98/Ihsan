@@ -82,7 +82,7 @@ const AllStudents = () => {
         const studentJuz = getValue();
         return studentJuz && studentJuz.length > 0
           ? studentJuz.map((juz) => juz.juzName).join(", ")
-          : "No Juz Assigned";
+          : "لم يتم ادخال الجزء";
       },
     },
     {
@@ -98,16 +98,22 @@ const AllStudents = () => {
           <BiShow />
         </Button>
       ),
-    }, 
+    },
     {
       header: "اضافة تقيم",
       accessorKey: "studentDaily",
       cell: ({ row }) => {
         const studentId = row.original._id;
-        const juzName = row.original.StudentJuz?.map(juz => juz.juzName).join(",") || "NoJuz";
-        
+        const juzName =
+          row.original.StudentJuz?.map((juz) => juz.juzName).join(",") ||
+          "NoJuz";
+
         return (
-          <Link to={`../add-student-rate/${studentId}?juzName=${encodeURIComponent(juzName)}`}>
+          <Link
+            to={`../add-student-rate/${studentId}?juzName=${encodeURIComponent(
+              juzName
+            )}`}
+          >
             <IconButton icon={<IoAddCircleSharp />} />
           </Link>
         );
@@ -121,9 +127,7 @@ const AllStudents = () => {
       accessorKey: "date",
       cell: ({ getValue }) => {
         const attendance = getValue();
-        return attendance && attendance.length > 0
-          ? attendance.map((value) => value.date)
-          : "-";
+        return attendance ? attendance : "-";
       },
     },
     {
@@ -131,9 +135,7 @@ const AllStudents = () => {
       accessorKey: "status",
       cell: ({ getValue }) => {
         const attendance = getValue();
-        return attendance && attendance.length > 0
-          ? attendance.map((value) => value.status)
-          : "-";
+        return attendance ? attendance : "-";
       },
     },
   ];

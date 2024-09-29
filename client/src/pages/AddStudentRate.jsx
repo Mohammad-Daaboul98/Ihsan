@@ -1,20 +1,41 @@
 // import { studentInputRate } from '../utils/formFields';
 
-import { Form, useActionData, useLocation, useParams } from "react-router-dom";
+import { useState } from "react";
+import { Form, useActionData, useLocation } from "react-router-dom";
 import { FormRow, FormRowSelect } from "../components";
 import { studentInputRate } from "../utils/formFields";
-import { Box, Button, Heading, SimpleGrid } from "@chakra-ui/react";
-import { useState } from "react";
+import { Box, Button, Heading, SimpleGrid, Text } from "@chakra-ui/react";
+import customFetch from "../utils/customFetch";
+import { QURAN_INDEX } from "../../../server/shared/constants";
+import { toast } from "react-toastify";
 
 export const action =
   (queryClient) =>
-  async ({ request }) => {
+  async ({ request, params }) => {
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const juzName = queryParams.get("juzName");
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
+    console.log(juzName);
+    
+    data.StudentJuz = [
+      {
+        juzName,
+        surahs: [
+          {
+            surahName: data.surahName,
+            pages: data.pages,
+            rate: data.rate,
+          },
+        ],
+      },
+    ];
+    data.studentAttendance = [{ date: data.date, status: data.status }];
 
     try {
-      const student = await customFetch.post("student", { ...data });
-      queryClient.invalidateQueries(["student"]);
+      await customFetch.patch(`student/student-rate/${params.id}`, data);
+      queryClient.invalidateQueries(["student-rate"]);
       toast.success("تم حفظ التقيم", { theme: "colored" });
       return redirect("../students");
     } catch (error) {
@@ -24,35 +45,27 @@ export const action =
   };
 
 const AddStudentRate = () => {
-  const { id } = useParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const juzName = queryParams.get("juzName");
 
   // State to track selected surah and its pages
-  const [selectedSurah, setSelectedSurah] = useState(null);
   const [surahPages, setSurahPages] = useState([]);
 
   const date = useActionData();
   const errorMessage = date?.response?.data?.msg;
+  console.log(errorMessage);
 
-  // Handle selection change for surahName
   // Handle selection change for surahName
   const handleSurahChange = (e) => {
-    const selectedSurahId = e.target.value; // Assuming value is the Surah ID (number)
-    setSelectedSurah(selectedSurahId); // Set selected surah ID
-
-    // Find the selected Juz by its juzName
-    const selectedJuz = studentInputRate
-      .find((item) => item.id === "surahName") // Find surahName input item
-      .list.find((juz) => juz.juzName === juzName); // Match juzName
+    const selectedSurahId = e.target.value;
+    const selectedJuz = QURAN_INDEX.JUZ.find((juz) => juz.juzName === juzName);
 
     if (selectedJuz) {
-      // Match surah by its ID, which is a number in your data structure
       const surah = selectedJuz.surahs.find(
-        (surah) => surah.id.toString() === selectedSurahId // Compare as string for consistency
+        (surah) => surah.id.toString() === selectedSurahId
       );
-      setSurahPages(surah ? surah.pages : []); // Set pages if surah found
+      setSurahPages(surah ? surah.pages : []);
     }
   };
 
@@ -108,7 +121,6 @@ const AddStudentRate = () => {
                 />
               );
             } else if (listItem === "pages") {
-              console.log(surahPages);
               return (
                 <FormRowSelect
                   key={id}

@@ -41,11 +41,11 @@ export const createStudentProfile = async (req, res) => {
 };
 export const updateStudentProfile = async (req, res) => {
   const { id } = req.params;
-  const { updatedUser, updatedProfileData } = req.updatedUserInfo;
+  const { updatedUser , updatedProfileData } = req.updatedUserInfo || {} ;
 
   const studentProfile = await Student.findByIdAndUpdate(
     id,
-    updatedProfileData,
+    updatedProfileData || req.body,
     {
       new: true,
     }
