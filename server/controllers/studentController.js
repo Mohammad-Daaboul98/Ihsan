@@ -41,19 +41,26 @@ export const createStudentProfile = async (req, res) => {
 };
 export const updateStudentProfile = async (req, res) => {
   const { id } = req.params;
-  const { updatedUser , updatedProfileData } = req.updatedUserInfo || {} ;
+  const { updatedUser, updatedProfileData } = req.updatedUserInfo ||{};
+  let updatedStudent;
 
-  const studentProfile = await Student.findByIdAndUpdate(
-    id,
-    updatedProfileData || req.body,
-    {
-      new: true,
-    }
-  );
+  if (updatedProfileData) {
+    updatedStudent = updatedProfileData;
+  } else {
+    updatedStudent = req.body;
+  }
 
-  res
-    .status(StatusCodes.OK)
-    .json({ msg: "تم تعديل حساب الطالب", updatedUser, studentProfile });
+  
+
+  const studentProfile = await Student.findByIdAndUpdate(id, updatedStudent, {
+    new: true,
+  });
+
+  res.status(StatusCodes.OK).json({
+    msg: "تم تعديل حساب الطالب",
+    updatedUser,
+    mon1,
+  });
 };
 
 export const deleteStudentProfile = async (req, res) => {

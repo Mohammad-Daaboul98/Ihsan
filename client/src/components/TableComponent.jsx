@@ -55,13 +55,15 @@ const TableComponent = ({ title, columns, data, editAndDelete }) => {
       alignItems="center"
       p="4"
       h="100%"
+      
     >
       <TableContainer
-        width="100%"
+        width="6xl"
         borderRadius="lg"
         boxShadow="md"
         border="1px solid"
         borderColor="gray.600"
+        overflowX="scroll"
       >
         <Table variant="unstyled">
           <TableCaption

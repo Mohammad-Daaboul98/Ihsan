@@ -5,15 +5,16 @@ import customFetch from "../utils/customFetch";
 import { BiShow } from "react-icons/bi";
 import { IoAddCircleSharp } from "react-icons/io5";
 import {
-  Box,
   Button,
   IconButton,
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import dayjs from "dayjs";
+import "dayjs/locale/ar";
+dayjs.locale("ar");
 
-// Query function to fetch all teachers
 const allStudentsQuery = (params) => {
   const { search } = params;
   return {
@@ -75,23 +76,14 @@ const AllStudents = () => {
       accessorKey: "StudentStudy",
     },
     { id: "age", header: "عمر الطالب", accessorKey: "age", isNumeric: true },
+
     {
-      header: "الجزء",
-      accessorKey: "StudentJuz",
-      cell: ({ getValue }) => {
-        const studentJuz = getValue();
-        return studentJuz && studentJuz.length > 0
-          ? studentJuz.map((juz) => juz.juzName).join(", ")
-          : "لم يتم ادخال الجزء";
-      },
-    },
-    {
-      header: "عرض ايام حضور الطالب",
+      header: "عرض تقيم الطالب",
       accessorKey: "studentAttendance",
       cell: ({ row }) => (
         <Button
           onClick={() => {
-            setSelectedAttendance(row.original.studentAttendance); // Set selected student's attendance
+            setSelectedAttendance(row.original.StudentJuz); // Set selected student's attendance
             onOpen(); // Open modal
           }}
         >
@@ -104,16 +96,12 @@ const AllStudents = () => {
       accessorKey: "studentDaily",
       cell: ({ row }) => {
         const studentId = row.original._id;
-        const juzName =
-          row.original.StudentJuz?.map((juz) => juz.juzName).join(",") ||
-          "NoJuz";
+        // const juzName =
+        //   row.original.StudentJuz?.map((juz) => juz.juzName).join(",") ||
+        //   "NoJuz";
 
         return (
-          <Link
-            to={`../add-student-rate/${studentId}?juzName=${encodeURIComponent(
-              juzName
-            )}`}
-          >
+          <Link to={`../add-student-rate/${studentId}`}>
             <IconButton icon={<IoAddCircleSharp />} />
           </Link>
         );
@@ -124,21 +112,67 @@ const AllStudents = () => {
   const modalColumns = [
     {
       header: "التاريخ",
-      accessorKey: "date",
+      accessorKey: "studentAttendance.date",
       cell: ({ getValue }) => {
-        const attendance = getValue();
-        return attendance ? attendance : "-";
+        const date = getValue();
+        return date ? dayjs(date).format("D MMMM YYYY") : "-";
       },
     },
     {
       header: "الحالة",
-      accessorKey: "status",
+      accessorKey: "studentAttendance.status",
       cell: ({ getValue }) => {
-        const attendance = getValue();
-        return attendance ? attendance : "-";
+        const status = getValue();
+        return status ? status : "-";
+      },
+    },
+    {
+      header: "الجزء",
+      accessorKey: "juzName",
+      cell: ({ getValue }) => {
+        const juzName = getValue();
+        return juzName ? juzName : "-";
+      },
+    },
+    {
+      header: "السورة",
+      accessorKey: "surahName",
+      cell: ({ getValue }) => {
+        const surahName = getValue();
+        return surahName ? surahName : "-";
+      },
+    },
+    {
+      header: "الصفحة",
+      accessorKey: "pages",
+      cell: ({ getValue }) => {
+        const pages = getValue();
+        return pages ? pages : "-";
+      },
+    },
+
+    {
+      header: "التقيم",
+      accessorKey: "rate",
+      cell: ({ getValue }) => {
+        const rate = getValue();
+        return rate ? rate : "-";
       },
     },
   ];
+
+  const flattenData = (data) => {
+    return data.flatMap((item) =>
+      item.surahs.map((surah) => ({
+        juzName: item.juzName,
+        surahName: surah.surahName,
+        pages: surah.pages,
+        rate: surah.rate,
+        studentAttendance: surah.studentAttendance,
+      }))
+    );
+  };
+  const flattenedData = flattenData(selectedAttendance);
 
   return (
     <>
@@ -160,7 +194,7 @@ const AllStudents = () => {
           <TableComponent
             title="معلومات حضور الطالب"
             columns={modalColumns}
-            data={selectedAttendance}
+            data={flattenedData}
             editAndDelete={false}
           />
         }

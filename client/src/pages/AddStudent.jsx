@@ -1,5 +1,4 @@
-import React from "react";
-import { Form, useActionData } from "react-router-dom";
+import { Form, redirect, useActionData } from "react-router-dom";
 import { FormRow, FormRowSelect } from "../components";
 import { Box, Button, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import customFetch from "../utils/customFetch";
@@ -40,7 +39,7 @@ export const action =
     try {
       const student = await customFetch.post("student", { ...data, role });
       const studentData = student?.data?.user;
-      queryClient.invalidateQueries(["student"]);
+      queryClient.invalidateQueries(["students"]);
       toast.success("تم انشاء طالب جديد", { theme: "colored" });
       const newStudentData = [
         {

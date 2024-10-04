@@ -4,10 +4,10 @@ const FormRowSelect = ({
   name,
   labelText,
   list = [],
-  defaultValue = "",
+  initialDefaultValue,
   listItem,
   onChange,
-  placeholder = "اختر الخيار", 
+  placeholder = "اختر الخيار",
 }) => {
   return (
     <FormControl className="form-row">
@@ -18,16 +18,19 @@ const FormRowSelect = ({
         name={name}
         id={name}
         className="form-select"
-        defaultValue={defaultValue}
         onChange={onChange}
-        placeholder={placeholder} // Display placeholder if no option selected
+        placeholder={placeholder}
       >
+        <option value={initialDefaultValue}>{initialDefaultValue}</option>
         {list.length === 0 ? (
           <option value="">{placeholder}</option>
         ) : (
           list.map((itemValue, index) => {
             return (
-              <option key={index} value={itemValue._id || itemValue.id}>
+              <option
+                key={index}
+                value={itemValue._id || itemValue.id || itemValue[listItem]}
+              >
                 {listItem ? itemValue[listItem] : itemValue}
               </option>
             );

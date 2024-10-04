@@ -31,15 +31,6 @@ router
     createUser,
     createStudentProfile
   );
-  router
-  .route("/student-rate/:id")
-  .patch(
-    authorizePermissions("Admin", "teacher"),
-    validateStudentRateInput,
-    validateIdParam,
-    updateStudentProfile
-  )
-
 router
   .route("/:id")
   .get(validateIdParam, getStudent)
@@ -58,5 +49,13 @@ router
     deleteStudentProfile
   );
 
+router
+  .route("/student-rate/:id")
+  .patch(
+    authorizePermissions("Admin", "teacher"),
+    // validateStudentRateInput,
+    validateIdParam,
+    updateStudentProfile
+  );
 
 export default router;

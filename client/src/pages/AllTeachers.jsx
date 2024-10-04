@@ -58,6 +58,7 @@ const AllTeachers = () => {
         title="معلومات الأستاذه"
         columns={columns}
         data={teachers}
+        editAndDelete={true}
       />
     </>
   );

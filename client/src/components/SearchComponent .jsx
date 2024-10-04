@@ -20,7 +20,7 @@ const SearchComponent = ({labelText}) => {
       borderWidth={1}
       borderRadius="lg"
       boxShadow="xl"
-      width='8xl'
+      width='4xl'
       mx="auto"
     >
       <Form>

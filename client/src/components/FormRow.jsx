@@ -14,7 +14,7 @@ function FormRow({
   type,
   id,
   labelText,
-  defaultValue = "",
+  defaultValue,
   onChange,
   isRequired,
 }) {
@@ -38,8 +38,8 @@ function FormRow({
             type={show ? "text" : "password"}
             name={name}
             placeholder={labelText}
-            defaultValue={defaultValue}
             size="lg"
+            defaultValue={defaultValue || ''}
           />
           <InputRightElement right="unset" left={0}>
             <Button h="100%" size="lg" onClick={() => setShow(!show)}>

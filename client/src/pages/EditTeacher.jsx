@@ -7,12 +7,12 @@ import { createOrUpdateExcelFile } from "../utils/excelUtils";
 
 export const action =
   (queryClient) =>
-  async ({ request }) => {
+  async ({ request,params }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
     const role = "teacher";
     try {
-      const teacher = await customFetch.post("teacher", { ...data, role });
+      const teacher = await customFetch.patch(`teacher/${params.id}`, { ...data, role });
       const teacherData = teacher?.data?.user;
       queryClient.invalidateQueries(["teachers"]);
       toast.success("تم انشاء استاذ جديد", { theme: "colored" });
@@ -36,18 +36,17 @@ export const action =
     }
   };
 
-const AddTeacher = () => {
-  const date = useActionData();
-  const errorMessage = date?.response?.data?.msg;
-
+const EditTeacher = () => {
+    const date = useActionData();
+    const errorMessage = date?.response?.data?.msg;
   return (
     <TeacherFrom
-      title="انشاء استاذ"
-      btnTitle="انشاء"
-      errorMessage={errorMessage}
-      defaultValue=""
-    />
-  );
-};
+    title="انشاء استاذ"
+    btnTitle="انشاء"
+    errorMessage={errorMessage}
+    defaultValue=""
+  />
+  )
+}
 
-export default AddTeacher;
+export default EditTeacher

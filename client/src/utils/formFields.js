@@ -1,4 +1,3 @@
-import { list } from "@chakra-ui/react";
 import {
   QURAN_INDEX,
   STUDENT_ATTENDANCE,
@@ -99,6 +98,7 @@ export const studentInputRate = [
     type: "date",
     id: "date",
     labelText: "تاريخ االيوم",
+    defaultValue: new Date().toISOString().split("T")[0],
   },
 
   {
@@ -107,20 +107,28 @@ export const studentInputRate = [
     labelText: "حالة الحضور",
     list: STUDENT_ATTENDANCE,
     listItem: false,
+
+  },
+  {
+    type: "select",
+    id: "juzName",
+    labelText: "الجزء",
+    listItem: "juzName",
+    defaultValue: "لايوجد",
   },
   {
     type: "select",
     id: "surahName",
     labelText: "السورة",
-    list: QURAN_INDEX.JUZ,
     listItem: "surahName",
+    defaultValue: "لايوجد",
   },
   {
     type: "select",
     id: "pages",
     labelText: "الصفحة",
-    list: QURAN_INDEX.JUZ,
     listItem: "pages",
+    defaultValue: 0,
   },
   {
     type: "select",
@@ -128,5 +136,6 @@ export const studentInputRate = [
     labelText: "التقيم",
     list: STUDENT_RATE,
     listItem: false,
+    defaultValue: "لايوجد",
   },
 ];
