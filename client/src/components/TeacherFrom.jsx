@@ -31,7 +31,7 @@ const TeacherFrom = ({ title, btnTitle, errorMessage, defaultValue }) => {
           columns={{ lg: 2, md: 2, sm: 2, base: 1 }}
           spacing={{ md: "10px 20px", base: "10px" }}
         >
-          {teacherInput.map(({ type, id, labelText }) => (
+          {teacherInput.map(({ type, id, labelText, defaultKey }) => (
             <FormRow
               key={id}
               type={type}
@@ -39,6 +39,7 @@ const TeacherFrom = ({ title, btnTitle, errorMessage, defaultValue }) => {
               id={id}
               labelText={labelText}
               defaultValue={defaultValue}
+              defaultKey={defaultKey}
             />
           ))}
         </SimpleGrid>

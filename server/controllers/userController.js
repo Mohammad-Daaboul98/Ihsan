@@ -4,13 +4,14 @@ import { hashPassword } from "../utils/passwordUtils.js";
 import Admin from "../models/AdminModel.js";
 
 export const getCurrentUser = async (req, res) => {
+
   const [adminUser, normalUser] = await Promise.all([
     Admin.findById(req.user._id),
     User.findById(req.user._id),
   ]);
-
+  
   const user = adminUser || normalUser;
-
+  
   const userWithoutPassword = user.toJSON();
   res.status(StatusCodes.OK).json({ user: userWithoutPassword });
 };

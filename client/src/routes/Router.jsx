@@ -10,16 +10,24 @@ import {
   AddStudentRate,
   EditTeacher,
 } from "../pages";
+import { queryClient } from "../utils/queryClient";
 import { action as loginAction } from "../pages/Login";
 import { action as addTeacherAction } from "../pages/AddTeacher";
-import { action as editTeacherAction } from "../pages/EditTeacher";
-import { action as addStudentAction } from "../pages/AddStudent";
-import { action as addStudentRateAction } from "../pages/AddStudentRate";
-import { loader as addStudentLoader } from "../pages/AddStudent";
-import { queryClient } from "../utils/queryClient";
+import {
+  action as editTeacherAction,
+  loader as editTeacherLoader,
+} from "../pages/EditTeacher";
+import {
+  action as addStudentAction,
+  loader as addStudentLoader,
+} from "../pages/AddStudent";
+import {
+  action as addStudentRateAction,
+  loader as studentRateLoader,
+} from "../pages/AddStudentRate";
+import { action as deleteTeacherAction } from "../pages/DeleteTeacher";
 import { loader as teachersLoader } from "../pages/AllTeachers";
 import { loader as studentLoader } from "../pages/AllStudents";
-import { loader as studentRateLoader } from "../pages/AddStudentRate";
 import { loader as dashboardLoader } from "../pages/DashboardLayout";
 import { ErrorElements } from "../components";
 
@@ -52,9 +60,14 @@ export const Router = [
             action: addTeacherAction(queryClient),
           },
           {
-            path: "edit-teacher",
+            path: "edit-teacher/:id",
             element: <EditTeacher />,
             action: editTeacherAction(queryClient),
+            loader: editTeacherLoader(queryClient),
+          },
+          {
+            path: "delete-teacher/:id",
+            action: deleteTeacherAction(queryClient),
           },
           {
             path: "students",

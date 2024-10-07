@@ -59,7 +59,7 @@ export const updateStudentProfile = async (req, res) => {
   res.status(StatusCodes.OK).json({
     msg: "تم تعديل حساب الطالب",
     updatedUser,
-    mon1,
+    studentProfile,
   });
 };
 

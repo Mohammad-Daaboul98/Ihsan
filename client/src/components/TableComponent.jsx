@@ -26,8 +26,16 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
 } from "@chakra-ui/icons";
+import { Form, Link } from "react-router-dom";
 
-const TableComponent = ({ title, columns, data, editAndDelete }) => {
+const TableComponent = ({
+  title,
+  columns,
+  data,
+  editAndDelete,
+  editPage,
+  deletePage,
+}) => {
   const buttonSize = useBreakpointValue({ base: "sm", md: "md" });
 
   // State for sorting
@@ -46,6 +54,7 @@ const TableComponent = ({ title, columns, data, editAndDelete }) => {
     onSortingChange: setSorting,
     initialState: { pagination: { pageIndex: 0, pageSize: 10 } },
   });
+  
 
   return (
     <Box
@@ -55,7 +64,6 @@ const TableComponent = ({ title, columns, data, editAndDelete }) => {
       alignItems="center"
       p="4"
       h="100%"
-      
     >
       <TableContainer
         width="6xl"
@@ -63,7 +71,7 @@ const TableComponent = ({ title, columns, data, editAndDelete }) => {
         boxShadow="md"
         border="1px solid"
         borderColor="gray.600"
-        overflowX="scroll"
+        overflowX="auto"
       >
         <Table variant="unstyled">
           <TableCaption
@@ -142,21 +150,35 @@ const TableComponent = ({ title, columns, data, editAndDelete }) => {
                   ))}
                   {editAndDelete ? (
                     <Td>
-                      <IconButton
-                        aria-label="Edit"
-                        icon={<EditIcon />}
-                        variant="outline"
-                        colorScheme="blue"
-                        size={buttonSize}
-                        ml="10px"
-                      />
-                      <IconButton
-                        aria-label="Delete"
-                        icon={<DeleteIcon />}
-                        variant="outline"
-                        colorScheme="red"
-                        size={buttonSize}
-                      />
+                      <Link to={`../${editPage}/${row.original._id}`}>
+                        <IconButton
+                          aria-label="Edit"
+                          icon={<EditIcon />}
+                          variant="outline"
+                          colorScheme="blue"
+                          size={buttonSize}
+                          ml="10px"
+                        />
+                      </Link>
+                      <Form
+                        method="post"
+                        action={`../${deletePage}/${row.original._id}`}
+                        style={{ display: "inline-block" }}
+                      >
+                        <Button
+                          type="submit"
+                          bg="transparent"
+                          _hover={{ bg: "transparent" }}
+                        >
+                          <IconButton
+                            aria-label="Delete"
+                            icon={<DeleteIcon />}
+                            variant="outline"
+                            colorScheme="red"
+                            size={buttonSize}
+                          />
+                        </Button>
+                      </Form>
                     </Td>
                   ) : null}
                 </Tr>

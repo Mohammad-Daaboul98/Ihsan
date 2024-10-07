@@ -15,10 +15,11 @@ function FormRow({
   id,
   labelText,
   defaultValue,
+  defaultKey,
   onChange,
   isRequired,
 }) {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false);  
 
   return (
     <FormControl
@@ -39,7 +40,7 @@ function FormRow({
             name={name}
             placeholder={labelText}
             size="lg"
-            defaultValue={defaultValue || ''}
+            defaultValue=""
           />
           <InputRightElement right="unset" left={0}>
             <Button h="100%" size="lg" onClick={() => setShow(!show)}>
@@ -53,10 +54,11 @@ function FormRow({
           type={type}
           name={name}
           placeholder={labelText}
-          defaultValue={defaultValue}
+          defaultValue={defaultKey ? defaultValue[defaultKey] : defaultValue  }
           size="lg"
           textAlign="right"
           onChange={onChange}
+          
         />
       )}
     </FormControl>

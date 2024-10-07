@@ -9,3 +9,4 @@ export { default as TableComponent } from "./TableComponent";
 export { default as SearchComponent  } from "./SearchComponent ";
 export { default as ModalComponent  } from "./ModalComponent";
 export { default as TeacherFrom  } from "./TeacherFrom";
+export { default as StudentForm  } from "./StudentForm";

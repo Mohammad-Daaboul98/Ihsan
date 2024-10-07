@@ -16,12 +16,15 @@ import "dayjs/locale/ar";
 dayjs.locale("ar");
 
 const allStudentsQuery = (params) => {
-  const { search } = params;
   return {
-    queryKey: ["students", search],
+    queryKey: ["students", "teachers", params],
     queryFn: async () => {
-      const { data } = await customFetch.get("/student", { params });
-      return data;
+      const [students, teachers] = await Promise.all([
+        customFetch.get("/student", { params }),
+        customFetch.get("/teacher"), // Fetch all teachers
+      ]);
+
+      return { students: students.data, teachers: teachers.data };
     },
   };
 };
@@ -50,9 +53,15 @@ const AllStudents = () => {
 
   const { searchValue } = useLoaderData();
 
-  const { data: { student = [] } = {} } = useQuery(
+  const { data: { students, teachers  } = {} } = useQuery(
     allStudentsQuery(searchValue)
   );
+
+  const teacherMap = new Map(
+    teachers.teachers.map((teacher) => [teacher._id, teacher.teacherName])
+  );
+  
+  
 
   const Overlay = () => (
     <ModalOverlay
@@ -63,6 +72,16 @@ const AllStudents = () => {
 
   const columns = [
     { id: "studentName", header: "اسم الطالب", accessorKey: "studentName" },
+    {
+      header: "اسم الاستاذ",
+      accessorKey: "teacherId",
+      cell: ({ getValue }) => {
+        const teacherId = getValue();
+        const teacherName = teacherMap.get(teacherId) || "-";
+        return teacherName;
+      },
+    },
+
     { id: "parentName", header: "اسم الأب او الأم", accessorKey: "parentName" },
     { id: "parentWork", header: "عمل الأب او الأم", accessorKey: "parentWork" },
     {
@@ -96,10 +115,6 @@ const AllStudents = () => {
       accessorKey: "studentDaily",
       cell: ({ row }) => {
         const studentId = row.original._id;
-        // const juzName =
-        //   row.original.StudentJuz?.map((juz) => juz.juzName).join(",") ||
-        //   "NoJuz";
-
         return (
           <Link to={`../add-student-rate/${studentId}`}>
             <IconButton icon={<IoAddCircleSharp />} />
@@ -183,7 +198,7 @@ const AllStudents = () => {
       <TableComponent
         title="معلومات الطالب"
         columns={columns}
-        data={student}
+        data={students.student}
         editAndDelete={true}
       />
       <ModalComponent

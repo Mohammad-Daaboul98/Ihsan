@@ -18,7 +18,12 @@ export const getAllTeachers = async (req, res) => {
   }
 
   const teachers = await Teacher.find(queryObject);
-  res.status(StatusCodes.OK).json({ teachers });
+
+  const teacher = teachers.filter(
+    (teacher) => teacher._id.toString() !== "669a98d474ed7a09fdd6fe04"
+  );
+
+  res.status(StatusCodes.OK).json({ teachers: teacher });
 };
 
 export const getTeacher = async (req, res) => {
@@ -52,6 +57,7 @@ export const updateTeacherProfile = async (req, res) => {
 
 export const deleteTeacherProfile = async (req, res) => {
   const { deletedUser } = req.deletedUserInfo;
+  console.log(req.deletedUserInfo);
 
   const deletedTeacher = await Teacher.findByIdAndDelete(deletedUser._id);
 
@@ -61,7 +67,6 @@ export const deleteTeacherProfile = async (req, res) => {
   );
 
   res.status(StatusCodes.OK).json({
-    msg: " تم حذف الاستاذ واضافة الطلاب لدى الاستاذ السابق بدون استاذ",
     updateStudentTeacher,
     deletedUser,
     deletedTeacher,

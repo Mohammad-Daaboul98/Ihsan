@@ -80,8 +80,8 @@ export const action =
 
 const AddStudentRate = () => {
   const date = useActionData();
-
   const id = useLoaderData();
+  
   const {
     data: { student },
   } = useQuery(singleStudentQuery(id));
@@ -93,19 +93,16 @@ const AddStudentRate = () => {
   const errorMessage = date?.response?.data?.msg;
 
   // Handle selection change for surahName
-  const handleSurahChange = (e) => {
-    const selectedSurah = e.target.value;
+  const handleSurahChange = (selectedSurah) => {
     const surah = juzSurah.find((surah) => surah.id === selectedSurah);
     setSurahPages(surah ? surah.pages : []);
   };
 
-  const handleJuzChange = (e) => {
-    const selectedJuz = e.target.value;
+  const handleJuzChange = (selectedJuz) => {
+    
     const juz = QURAN_INDEX.JUZ.find((juz) => juz.juzName === selectedJuz);
     setJuzSurah(juz ? juz.surahs : []);
   };
-
-
 
   return (
     <Box
@@ -160,6 +157,7 @@ const AddStudentRate = () => {
                     listItem={listItem}
                     onChange={handleSurahChange}
                     initialDefaultValue={defaultValue}
+                    isMulti={true}
                   />
                 );
               } else if (listItem === "pages") {
@@ -172,6 +170,7 @@ const AddStudentRate = () => {
                     list={surahPages.map((page) => ({ id: page, pages: page }))}
                     listItem={listItem}
                     initialDefaultValue={defaultValue}
+                    isMulti={true}
                   />
                 );
               } else {
@@ -185,6 +184,7 @@ const AddStudentRate = () => {
                     listItem={listItem}
                     initialDefaultValue={defaultValue}
                     onChange={listItem === "juzName" ? handleJuzChange : null}
+                    isMulti={listItem === "juzName" ?true : false}
                   />
                 );
               }

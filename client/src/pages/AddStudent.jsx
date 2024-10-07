@@ -1,10 +1,8 @@
-import { Form, redirect, useActionData } from "react-router-dom";
-import { FormRow, FormRowSelect } from "../components";
-import { Box, Button, Heading, SimpleGrid, Text } from "@chakra-ui/react";
+import { redirect, useActionData } from "react-router-dom";
+import { StudentForm } from "../components";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 import { createOrUpdateExcelFile } from "../utils/excelUtils";
-import { studentInput } from "../utils/formFields";
 import { useQuery } from "@tanstack/react-query";
 
 const getTeachersQuery = () => {
@@ -74,67 +72,12 @@ const AddStudent = () => {
   const { data: { teachers = [] } = {} } = useQuery(getTeachersQuery());
 
   return (
-    <Box
-      padding={{
-        md: "25px 50px",
-        sm: "20px",
-        base: "20px 10px",
-      }}
-      m={"auto"}
-      boxShadow="2xl"
-      borderRadius="md"
-    >
-      <Heading mb={"50px"} textAlign="center">
-        انشاء طالب
-      </Heading>
-
-      {errorMessage ? (
-        <Text fontSize="md" color="tomato" py="25px">
-          {errorMessage}
-        </Text>
-      ) : null}
-
-      <Form method="post">
-        <SimpleGrid
-          columns={{ lg: 2, md: 2, sm: 2, base: 1 }}
-          spacing={{ md: "10px 20px", base: "10px" }}
-        >
-          {studentInput.map(({ type, id, labelText, list, listItem }) => {
-            if (type !== "select") {
-              return (
-                <FormRow
-                  key={id}
-                  type={type}
-                  name={id}
-                  id={id}
-                  labelText={labelText}
-                />
-              );
-            } else {
-              return (
-                <FormRowSelect
-                  key={id}
-                  type={type}
-                  name={id}
-                  labelText={labelText}
-                  list={list ? list : teachers}
-                  listItem={listItem}
-                />
-              );
-            }
-          })}
-        </SimpleGrid>
-        <Button
-          mt="15px"
-          type="submit"
-          colorScheme="teal"
-          size="lg"
-          width="full"
-        >
-          انشاء
-        </Button>
-      </Form>
-    </Box>
+    <StudentForm
+      title="انشاء طالب"
+      btnTitle="انشاء"
+      errorMessage={errorMessage}
+      teachers={teachers}
+    />
   );
 };
 

@@ -9,32 +9,42 @@ export const teacherInput = [
     type: "text",
     id: "userName",
     labelText: "اسم المستخدم",
+    defaultKey: "teacherName",
   },
   {
     type: "password",
     id: "password",
     labelText: "كلمة المرور",
   },
-  { type: "number", id: "age", labelText: "عمر الاستاذ" },
+  {
+    type: "number",
+    id: "age",
+    labelText: "عمر الاستاذ",
+    defaultKey: "age",
+  },
   {
     type: "text",
     id: "teacherName",
     labelText: "اسم الاستاذ",
+    defaultKey: "teacherName",
   },
   {
     type: "text",
     id: "teacherWork",
     labelText: "عمل الاستاذ",
+    defaultKey: "teacherWork",
   },
   {
     type: "text",
     id: "teacherStudy",
     labelText: "المستوى العلمي",
+    defaultKey: "teacherStudy",
   },
   {
     type: "tel",
     id: "teacherPhone",
     labelText: "رقم الهاتق",
+    defaultKey: "teacherPhone",
   },
 ];
 export const studentInput = [
@@ -42,6 +52,7 @@ export const studentInput = [
     type: "text",
     id: "userName",
     labelText: "اسم المستخدم",
+    defaultKey: "studentName",
   },
   {
     type: "password",
@@ -52,37 +63,44 @@ export const studentInput = [
     type: "text",
     id: "studentName",
     labelText: "اسم الطالب",
+    defaultKey: "studentName",
   },
   {
     type: "text",
     id: "parentName",
     labelText: "اسم الأب او الأم",
+    defaultKey: "parentName",
   },
   {
     type: "text",
     id: "parentWork",
     labelText: "عمل الأب او الأم",
+    defaultKey: "parentWork",
   },
   {
     type: "tel",
     id: "parentPhone",
     labelText: "رقم هاتف الأب أو الأم",
+    defaultKey: "parentPhone",
   },
   {
     type: "text",
     id: "StudentStudy",
     labelText: "المستوى العلمي",
+    defaultKey: "StudentStudy",
   },
   {
     type: "number",
     id: "age",
     labelText: "عمر الطالب",
+    defaultKey: "age",
   },
   {
     type: "select",
     id: "teacherId",
     labelText: "اسم الاستاذ",
     listItem: "teacherName",
+    defaultKey: "teacherName",
   },
   {
     type: "select",
@@ -90,6 +108,7 @@ export const studentInput = [
     labelText: "الجزء",
     list: QURAN_INDEX.JUZ,
     listItem: "juzName",
+    defaultKey: "juzName",
   },
 ];
 
@@ -107,7 +126,6 @@ export const studentInputRate = [
     labelText: "حالة الحضور",
     list: STUDENT_ATTENDANCE,
     listItem: false,
-
   },
   {
     type: "select",

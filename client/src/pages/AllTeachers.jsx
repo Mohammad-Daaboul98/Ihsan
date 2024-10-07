@@ -59,6 +59,8 @@ const AllTeachers = () => {
         columns={columns}
         data={teachers}
         editAndDelete={true}
+        editPage = 'edit-teacher'
+        deletePage = 'delete-teacher'
       />
     </>
   );
