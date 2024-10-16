@@ -8,21 +8,30 @@ export const findOrCreateJuz = (studentJuz, juzName) => {
   return juz;
 };
 
+// utils/juzHelpers.js
 export const findOrUpdateSurah = (juz, newSurah) => {
-  console.log("juz", juz);
-  console.log("newSurah", newSurah);
-
   let surah = juz.surahs.find((s) => s.surahName === newSurah.surahName);
-  console.log("11:", surah);
+  
   if (surah) {
-    // Update existing surah
-    surah.pages = [...new Set([...surah.pages, ...newSurah.pages])]; // Merge pages
-    surah.rate = newSurah.rate; // Update rate
+    // Loop through newSurah pages and either update or add new pages
+    
+    newSurah.pages.forEach((newPage) => {
+      const existingPage = surah.pages.find((p) => p.pageNumber === newPage.pageNumber);
+      
+      if (existingPage) {
+        // Update the existing page's rate and attendance
+        existingPage.rate = newPage.rate;
+        existingPage.attendance = newPage.attendance;
+      } else {
+        // Add new page if it doesn't exist
+        surah.pages.push(newPage);
+      }
+    });
   } else {
-    // Add new surah
+    // Add new Surah if it doesn't exist
     juz.surahs.push(newSurah);
   }
-  console.log("12:", juz);
 
-  return surah;
+  return surah || newSurah; // Return the updated or newly added Surah
 };
+

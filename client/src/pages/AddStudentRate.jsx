@@ -52,12 +52,17 @@ export const action =
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
 
-    const studentAttendance = { date: data.date, status: data.status };
+    const pageStatus = [
+      {
+        pageNumber: data.pages,
+        rate: data.rate,
+        date: data.date,
+      },
+    ];
+
     const newSurah = {
       surahName: data.surahName,
-      pages: data.pages.split(",").map(Number),
-      rate: data.rate,
-      studentAttendance,
+      pages: pageStatus,
     };
 
     try {
@@ -69,7 +74,7 @@ export const action =
       await customFetch.patch(`student/student-rate/${params.id}`, {
         ...studentProfile,
       });
-      queryClient.invalidateQueries(["students"]);
+      queryClient.invalidateQueries(["students&Teachers"]);
       toast.success("تم حفظ التقيم", { theme: "colored" });
       return redirect("../students");
     } catch (error) {
@@ -81,7 +86,7 @@ export const action =
 const AddStudentRate = () => {
   const date = useActionData();
   const id = useLoaderData();
-  
+
   const {
     data: { student },
   } = useQuery(singleStudentQuery(id));
@@ -99,7 +104,6 @@ const AddStudentRate = () => {
   };
 
   const handleJuzChange = (selectedJuz) => {
-    
     const juz = QURAN_INDEX.JUZ.find((juz) => juz.juzName === selectedJuz);
     setJuzSurah(juz ? juz.surahs : []);
   };
@@ -111,7 +115,7 @@ const AddStudentRate = () => {
         sm: "20px",
         base: "20px 10px",
       }}
-      m={"auto"}
+      m={{ lg: "auto", md: "auto", sm: "auto" }}
       boxShadow="2xl"
       borderRadius="md"
     >
@@ -184,7 +188,7 @@ const AddStudentRate = () => {
                     listItem={listItem}
                     initialDefaultValue={defaultValue}
                     onChange={listItem === "juzName" ? handleJuzChange : null}
-                    isMulti={listItem === "juzName" ?true : false}
+                    isMulti={listItem === "juzName" ? true : false}
                   />
                 );
               }

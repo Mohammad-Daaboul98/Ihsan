@@ -16,20 +16,16 @@ import "dayjs/locale/ar";
 dayjs.locale("ar");
 
 const allStudentsQuery = (params) => {
+  const { search } = params;
   return {
-    queryKey: ["students", "teachers", params],
+    queryKey: ["students&Teachers", search],
     queryFn: async () => {
-      const [students, teachers] = await Promise.all([
-        customFetch.get("/student", { params }),
-        customFetch.get("/teacher"), // Fetch all teachers
-      ]);
-
-      return { students: students.data, teachers: teachers.data };
+      const data = customFetch.get("/student-with-teacher", { params });
+      return data;
     },
   };
 };
 
-// Loader for the route
 export const loader =
   (queryClient) =>
   async ({ request }) => {
@@ -51,17 +47,11 @@ const AllStudents = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedAttendance, setSelectedAttendance] = useState([]); // State for storing selected student's attendance
 
-  const { searchValue } = useLoaderData();
+    const { searchValue } = useLoaderData();
 
-  const { data: { students, teachers  } = {} } = useQuery(
+  const { data: { students = [] } = {} } = useQuery(
     allStudentsQuery(searchValue)
-  );
-
-  const teacherMap = new Map(
-    teachers.teachers.map((teacher) => [teacher._id, teacher.teacherName])
-  );
-  
-  
+  ).data;
 
   const Overlay = () => (
     <ModalOverlay
@@ -71,22 +61,22 @@ const AllStudents = () => {
   );
 
   const columns = [
-    { id: "studentName", header: "اسم الطالب", accessorKey: "studentName" },
+    { id: "studentName", header: "الطالب", accessorKey: "studentName" },
     {
-      header: "اسم الاستاذ",
+      header: "الاستاذ",
       accessorKey: "teacherId",
       cell: ({ getValue }) => {
         const teacherId = getValue();
-        const teacherName = teacherMap.get(teacherId) || "-";
+        const teacherName = teacherId.teacherName;
         return teacherName;
       },
     },
 
-    { id: "parentName", header: "اسم الأب او الأم", accessorKey: "parentName" },
-    { id: "parentWork", header: "عمل الأب او الأم", accessorKey: "parentWork" },
+    { id: "parentName", header: "ولي الأمر", accessorKey: "parentName" },
+    { id: "parentWork", header: "عمل ولي الأمر", accessorKey: "parentWork" },
     {
       id: "parentPhone",
-      header: "رقم هاتف الأب أو الأم",
+      header: "هاتف ولي الأمر",
       accessorKey: "parentPhone",
     },
     {
@@ -97,28 +87,25 @@ const AllStudents = () => {
     { id: "age", header: "عمر الطالب", accessorKey: "age", isNumeric: true },
 
     {
-      header: "عرض تقيم الطالب",
-      accessorKey: "studentAttendance",
-      cell: ({ row }) => (
-        <Button
-          onClick={() => {
-            setSelectedAttendance(row.original.StudentJuz); // Set selected student's attendance
-            onOpen(); // Open modal
-          }}
-        >
-          <BiShow />
-        </Button>
-      ),
-    },
-    {
-      header: "اضافة تقيم",
-      accessorKey: "studentDaily",
+      header: "التقييم",
+      accessorKey: "View&Add",
       cell: ({ row }) => {
         const studentId = row.original._id;
         return (
-          <Link to={`../add-student-rate/${studentId}`}>
-            <IconButton icon={<IoAddCircleSharp />} />
-          </Link>
+          <>
+            <Button
+              ml="10px"
+              onClick={() => {
+                setSelectedAttendance(row.original.StudentJuz);
+                onOpen();
+              }}
+            >
+              <BiShow />
+            </Button>
+            <Link to={`../add-student-rate/${studentId}`}>
+              <IconButton icon={<IoAddCircleSharp />} />
+            </Link>
+          </>
         );
       },
     },
@@ -127,18 +114,10 @@ const AllStudents = () => {
   const modalColumns = [
     {
       header: "التاريخ",
-      accessorKey: "studentAttendance.date",
-      cell: ({ getValue }) => {
-        const date = getValue();
+      cell: ({ row }) => {
+        const date = row.original.page.date; 
         return date ? dayjs(date).format("D MMMM YYYY") : "-";
-      },
-    },
-    {
-      header: "الحالة",
-      accessorKey: "studentAttendance.status",
-      cell: ({ getValue }) => {
-        const status = getValue();
-        return status ? status : "-";
+        
       },
     },
     {
@@ -154,23 +133,23 @@ const AllStudents = () => {
       accessorKey: "surahName",
       cell: ({ getValue }) => {
         const surahName = getValue();
+        
         return surahName ? surahName : "-";
       },
     },
     {
       header: "الصفحة",
-      accessorKey: "pages",
-      cell: ({ getValue }) => {
-        const pages = getValue();
+      cell: ({ row }) => {
+        const pages = row.original.page.pageNumber;        
         return pages ? pages : "-";
+
       },
     },
 
     {
       header: "التقيم",
-      accessorKey: "rate",
-      cell: ({ getValue }) => {
-        const rate = getValue();
+      cell: ({ row }) => {
+        const rate = row.original.page.rate; 
         return rate ? rate : "-";
       },
     },
@@ -178,15 +157,18 @@ const AllStudents = () => {
 
   const flattenData = (data) => {
     return data.flatMap((item) =>
-      item.surahs.map((surah) => ({
-        juzName: item.juzName,
-        surahName: surah.surahName,
-        pages: surah.pages,
-        rate: surah.rate,
-        studentAttendance: surah.studentAttendance,
-      }))
+      item.surahs.flatMap((surah) =>
+        surah.pages.map((page) => ({
+          juzName: item.juzName,
+          surahName: surah.surahName,
+          page: page,
+          rate: surah.rate,
+          studentAttendance: surah.studentAttendance,
+        }))
+      )
     );
   };
+
   const flattenedData = flattenData(selectedAttendance);
 
   return (
@@ -198,8 +180,10 @@ const AllStudents = () => {
       <TableComponent
         title="معلومات الطالب"
         columns={columns}
-        data={students.student}
+        data={students}
         editAndDelete={true}
+        editPage="edit-student"
+        deletePage="delete-student"
       />
       <ModalComponent
         isOpen={isOpen}

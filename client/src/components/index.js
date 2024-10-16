@@ -10,3 +10,6 @@ export { default as SearchComponent  } from "./SearchComponent ";
 export { default as ModalComponent  } from "./ModalComponent";
 export { default as TeacherFrom  } from "./TeacherFrom";
 export { default as StudentForm  } from "./StudentForm";
+export { default as QrReader  } from "./QrReader";
+export { default as RadioGroup  } from "./RadioGroup";
+export { default as RadioCard  } from "./RadioCard";

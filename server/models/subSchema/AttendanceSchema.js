@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { STUDENT_ATTENDANCE } from "../../shared/constants.js";
 
-const StudentAttendanceSchema = new mongoose.Schema(
+export const AttendanceSchema = new mongoose.Schema(
   {
     date: {
       type: Date,
@@ -15,4 +15,3 @@ const StudentAttendanceSchema = new mongoose.Schema(
   },
   { _id: false }
 );
-export default StudentAttendanceSchema;

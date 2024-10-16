@@ -101,28 +101,26 @@ export const validateStudentProfileInput = withValidationErrors([
     }
     return true;
   }),
-  body("studentAttendance.*.date").notEmpty().withMessage("يجب اختيار التاريخ"),
-  body("studentAttendance.*.status")
-    .isIn(Object.values(STUDENT_ATTENDANCE))
-    .withMessage("يحب اختيار حالة الطالب"),
 ]);
 export const validateStudentRateInput = withValidationErrors([
   body("StudentJuz.*.surahs.*.surahName")
     .notEmpty()
     .withMessage("يجب اختيار السورة"),
 
-  body("StudentJuz.*.surahs.*.pages")
+  body("StudentJuz.*.surahs.*.pages.*.pageNumber")
     .notEmpty()
     .withMessage("يجب اختيار الصفحة"),
 
-  body("StudentJuz.*.surahs.*.rate")
+  body("StudentJuz.*.surahs.*.pages.*.rate")
     .notEmpty()
     .withMessage("يجب اختيار التقيم"),
 
-  body("studentAttendance.*.date").notEmpty().withMessage("يجب اختيار التاريخ"),
-  body("studentAttendance.*.status")
-    .isIn(Object.values(STUDENT_ATTENDANCE))
-    .withMessage("يحب اختيار حالة الطالب"),
+  body("StudentJuz.*.surahs.*.pages.*.date")
+    .notEmpty()
+    .withMessage("يجب اختيار التاريخ"),
+  // body("StudentJuz.*.surahs.*.pages.*.attendance.*.status")
+  //   .isIn(Object.values(STUDENT_ATTENDANCE))
+  //   .withMessage("يحب اختيار حالة الطالب"),
 ]);
 
 export const validateTeacherProfileInput = withValidationErrors([

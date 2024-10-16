@@ -1,4 +1,4 @@
-import { Box, Button, Heading, SimpleGrid } from "@chakra-ui/react";
+import { Box, Button, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import React from "react";
 import { Form } from "react-router-dom";
 import FormRow from "./FormRow";

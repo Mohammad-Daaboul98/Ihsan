@@ -120,13 +120,13 @@ export const studentInputRate = [
     defaultValue: new Date().toISOString().split("T")[0],
   },
 
-  {
-    type: "select",
-    id: "status",
-    labelText: "حالة الحضور",
-    list: STUDENT_ATTENDANCE,
-    listItem: false,
-  },
+  // {
+  //   type: "select",
+  //   id: "status",
+  //   labelText: "حالة الحضور",
+  //   list: STUDENT_ATTENDANCE,
+  //   listItem: false,
+  // },
   {
     type: "select",
     id: "juzName",

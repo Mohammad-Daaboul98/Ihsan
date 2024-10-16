@@ -15,6 +15,7 @@ export const registerAdmin = async (req, res) => {
 
 export const login = async (req, res) => {
   const { userName, password } = req.body;
+  
 
   const [adminUser, normalUser] = await Promise.all([
     Admin.findOne({ userName }),

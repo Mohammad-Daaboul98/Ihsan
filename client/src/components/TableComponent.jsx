@@ -54,7 +54,6 @@ const TableComponent = ({
     onSortingChange: setSorting,
     initialState: { pagination: { pageIndex: 0, pageSize: 10 } },
   });
-  
 
   return (
     <Box
@@ -64,9 +63,10 @@ const TableComponent = ({
       alignItems="center"
       p="4"
       h="100%"
+      overflow="hidden"
     >
       <TableContainer
-        width="6xl"
+        width={{ base: "100%", md: "80%" }}
         borderRadius="lg"
         boxShadow="md"
         border="1px solid"
@@ -165,19 +165,14 @@ const TableComponent = ({
                         action={`../${deletePage}/${row.original._id}`}
                         style={{ display: "inline-block" }}
                       >
-                        <Button
+                        <IconButton
                           type="submit"
-                          bg="transparent"
-                          _hover={{ bg: "transparent" }}
-                        >
-                          <IconButton
-                            aria-label="Delete"
-                            icon={<DeleteIcon />}
-                            variant="outline"
-                            colorScheme="red"
-                            size={buttonSize}
-                          />
-                        </Button>
+                          aria-label="Delete"
+                          icon={<DeleteIcon />}
+                          variant="outline"
+                          colorScheme="red"
+                          size={buttonSize}
+                        />
                       </Form>
                     </Td>
                   ) : null}
@@ -186,7 +181,7 @@ const TableComponent = ({
             ) : (
               <Tr>
                 <Td colSpan={columns.length + 1} textAlign="center">
-                  No data available.
+                  لايوجد بيانات
                 </Td>
               </Tr>
             )}
@@ -205,17 +200,17 @@ const TableComponent = ({
             onClick={() => table.previousPage()}
             isDisabled={!table.getCanPreviousPage()}
           >
-            Previous
+            السابق
           </Button>
           <Box flex="1" textAlign="center">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
+            الصفحة {table.getState().pagination.pageIndex + 1} من{" "}
             {table.getPageCount()}
           </Box>
           <Button
             onClick={() => table.nextPage()}
             isDisabled={!table.getCanNextPage()}
           >
-            Next
+            التالي
           </Button>
         </Box>
       </TableContainer>

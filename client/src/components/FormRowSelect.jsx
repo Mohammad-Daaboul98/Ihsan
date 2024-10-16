@@ -10,13 +10,12 @@ const FormRowSelect = ({
   name,
   labelText,
   list = [],
-  initialDefaultValue,
-  defaultKey,
   listItem,
   onChange,
   placeholder = "اختر الخيار",
   isMulti = false,
 }) => {
+  
   const [options, setOptions] = useState([]);
   const [selectedValue, setSelectedValue] = useState(isMulti ? [] : null);
   const customStyles = useSelectStyles(); // Use custom styles

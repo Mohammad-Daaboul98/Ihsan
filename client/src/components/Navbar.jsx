@@ -8,12 +8,15 @@ import {
 } from "@chakra-ui/react";
 import NavLinks from "./NavLinks";
 
-const Navbar = ({ sidebarProps: { toggled, collapsed, setToggled } }) => {
+const Navbar = ({
+  sidebarProps: { toggled, collapsed, setToggled, logoutUser },
+}) => {
   const bg = useColorModeValue("#fff", "#2D3748");
   const color = useColorModeValue("black", "#e0e0e1");
+
   return (
     <Flex
-      h={{lg:'100vh' ,md:'auto',base:'auto'}}
+      h={{ lg: "100vh", md: "auto", base: "auto" }}
       bg={bg}
       color={color}
       borderColor="transparent"
@@ -21,7 +24,7 @@ const Navbar = ({ sidebarProps: { toggled, collapsed, setToggled } }) => {
       boxShadow="lg"
       position="sticky"
       top="0"
-      zIndex='1'
+      zIndex="1"
     >
       <Sidebar
         collapsed={collapsed}
@@ -50,11 +53,9 @@ const Navbar = ({ sidebarProps: { toggled, collapsed, setToggled } }) => {
             اِحسان
           </Heading>
         </Flex>
-        <NavLinks />
+        <NavLinks setToggled ={setToggled}  />
         <Box marginTop="auto" p="20px 10px">
-
-
-          <Button>Logout</Button>
+          <Button onClick={() => logoutUser()}>تسجيل الخروج</Button>
         </Box>
       </Sidebar>
     </Flex>

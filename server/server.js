@@ -20,6 +20,7 @@ import authRouter from "./routes/authRouter.js";
 import usersRouter from "./routes/userRouter.js";
 import studentRouter from "./routes/studentRouter.js";
 import teacherRouter from "./routes/teacherRouter.js";
+import studentTeacherRouter from "./routes/studentTeacherRouter.js";
 
 //Middleware
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
@@ -28,21 +29,19 @@ import {
   authorizePermissions,
 } from "./middleware/authMiddleware.js";
 
-
-
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-app.use(express.static(path.resolve(__dirname, '../client/dist')));
+app.use(express.static(path.resolve(__dirname, "../client/dist")));
 app.use(cookieParser());
 app.use(express.json());
 app.use(helmet());
 app.use(mongoSanitize());
 
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/users",authenticateUser ,usersRouter);
+app.use("/api/v1/users", authenticateUser, usersRouter);
 app.use("/api/v1/student", authenticateUser, studentRouter);
 app.use(
   "/api/v1/teacher",
@@ -50,18 +49,21 @@ app.use(
   authorizePermissions("Admin"),
   teacherRouter
 );
+app.use(
+  "/api/v1/student-with-teacher",
+  authenticateUser,
+  authorizePermissions("Admin", "teacher"),
+  studentTeacherRouter
+);
 
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html'));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../client/dist", "index.html"));
 });
 
 //Not Found Middleware
 app.use("*", (req, res) => {
   res.status(404).json({ msg: "not found" });
 });
-
-
-
 
 // Error Middleware
 app.use(errorHandlerMiddleware);

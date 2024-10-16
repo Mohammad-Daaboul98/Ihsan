@@ -56,7 +56,7 @@ const components = {
         borderCollapse: "collapse",
         width: "100%",
         borderRadius: "md",
-        overflow: "hidden",
+        overflowX: "auto", // Enable horizontal scroll for responsiveness
         boxShadow: mode("lg", "dark-lg")(props),
       },
       caption: {
@@ -73,24 +73,18 @@ const components = {
         borderBottom: "2px solid",
         borderBottomColor: mode("gray.200", "gray.600")(props),
         color: mode("#000", "#fff")(props),
+        whiteSpace: "nowrap", // Prevent headers from breaking into multiple lines
       },
       tbody: {
         borderTop: "1px solid",
         borderTopColor: mode("gray.200", "gray.600")(props),
       },
       tr: {
-        // cursor:'pointer',
         _even: {
           bg: mode("gray.100", "gray.700")(props),
-          _hover: {
-            bg: mode("gray.200", "blackAlpha.900")(props),
-          },
         },
         _odd: {
           bg: mode("white", "gray.800")(props),
-          _hover: {
-            bg: mode("gray.200", "blackAlpha.900")(props),
-          },
         },
         _hover: {
           bg: mode("gray.200", "gray.600")(props),
@@ -101,10 +95,12 @@ const components = {
         padding: "12px",
         borderBottom: "1px solid",
         borderBottomColor: mode("gray.200", "gray.600")(props),
+        whiteSpace: "nowrap", // Prevent cell contents from breaking into multiple lines
       },
     }),
   },
 };
+
 
 const theme = extendTheme({
   config,

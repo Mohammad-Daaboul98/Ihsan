@@ -8,7 +8,7 @@ const StudentForm = ({
   title,
   btnTitle,
   errorMessage,
-  defaultValue,
+  defaultValue = "",
   teachers,
 }) => {
   
@@ -39,7 +39,7 @@ const StudentForm = ({
           spacing={{ md: "10px 20px", base: "10px" }}
         >
           {studentInput.map(
-            ({ type, id, labelText, list, listItem }) => {
+            ({ type, id, labelText, list, listItem, defaultKey }) => {
               if (type !== "select") {
                 return (
                   <FormRow
@@ -48,7 +48,8 @@ const StudentForm = ({
                     name={id}
                     id={id}
                     labelText={labelText}
-                    initialDefaultValue={defaultValue}
+                    defaultValue={defaultValue}
+                    defaultKey={defaultKey}
                   />
                 );
               } else {
@@ -60,7 +61,6 @@ const StudentForm = ({
                     labelText={labelText}
                     list={list ? list : teachers}
                     listItem={listItem}
-                    initialDefaultValue={defaultValue}
                   />
                 );
               }

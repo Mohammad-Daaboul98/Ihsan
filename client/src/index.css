@@ -1,7 +1,9 @@
 :root {
     --hover-color: #e0e0e1;
 }
-
+/* body{
+    overflow: hidden !important;
+} */
 [data-theme="dark"] {
     --hover-color: #1A202C;
 }

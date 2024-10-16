@@ -2,10 +2,17 @@ import { useEffect, useState } from "react";
 import { Navbar } from "../components";
 import { Button, Flex, Box, useColorModeValue } from "@chakra-ui/react";
 import { FaBars } from "react-icons/fa";
-import { Outlet, redirect, useOutletContext } from "react-router-dom";
+import {
+  Navigate,
+  Outlet,
+  redirect,
+  useNavigate,
+  useOutletContext,
+} from "react-router-dom";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import customFetch from "../utils/customFetch";
 import { useQuery } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 const userQuery = {
   queryKey: ["user"],
@@ -23,10 +30,9 @@ export const loader = (queryClient) => async () => {
   }
 };
 
-function DashboardLayout() {
-  const [isAuthError, setIsAuthError] = useState(false);
-
-  const {user} = useQuery(userQuery).data;
+function DashboardLayout({ queryClient }) {
+  const { user } = useQuery(userQuery).data;
+  const navigate = useNavigate();
 
   const {
     pageMode: { colorMode, toggleColorMode },
@@ -35,6 +41,7 @@ function DashboardLayout() {
   const bg = useColorModeValue("#fff", "#2D3748");
   const color = useColorModeValue("black", "#e0e0e1");
 
+  const [isAuthError, setIsAuthError] = useState(false);
   const [toggled, setToggled] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
 
@@ -47,11 +54,21 @@ function DashboardLayout() {
     setToggled(true);
   };
 
+  const logoutUser = async () => {
+    console.log("hi");
+
+    navigate("/");
+    await customFetch.get("/auth/logout");
+    queryClient.invalidateQueries();
+    toast.success("تم تسجيل الخروج");
+  };
+
   const sidebarProps = {
     toggled,
     collapsed,
     setToggled,
     showSidebar,
+    logoutUser,
   };
 
   customFetch.interceptors.response.use(
@@ -68,6 +85,7 @@ function DashboardLayout() {
 
   useEffect(() => {
     if (!isAuthError) return;
+    logoutUser();
   }, [isAuthError]);
 
   return (
@@ -118,7 +136,7 @@ function DashboardLayout() {
             </Button>
           </Flex>
         </Box>
-        <Outlet context={{user}} />
+        <Outlet context={{ user }} />
       </Flex>
     </Flex>
   );

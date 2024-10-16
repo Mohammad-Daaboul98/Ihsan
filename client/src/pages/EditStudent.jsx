@@ -1,30 +1,39 @@
-import { redirect, useActionData } from "react-router-dom";
+import { redirect, useActionData, useLoaderData } from "react-router-dom";
 import { StudentForm } from "../components";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 import { createOrUpdateExcelFile } from "../utils/excelUtils";
 import { useQuery } from "@tanstack/react-query";
 
-const getTeachersQuery = () => {
+const studentsTeachersQuery = (id) => {
   return {
-    queryKey: ["get-teachers"],
+    queryKey: ["students", "teachers", id],
     queryFn: async () => {
-      const { data } = await customFetch.get("/teacher");
-      return data;
+      const [students, teachers] = await Promise.all([
+        customFetch.get(`/student/${id}`),
+        customFetch.get("/teacher"),
+      ]);
+
+      return {
+        students: students.data.student,
+        teachers: teachers.data.teachers,
+      };
     },
   };
 };
 
-export const loader = (queryClient) => async () => {
-  try {
-    const teachers = await queryClient.ensureQueryData(getTeachersQuery());
-    return teachers;
-  } catch (error) {
-    const errorMessage = error?.response?.data?.msg;
-    toast.error(errorMessage);
-    throw error;
-  }
-};
+export const loader =
+  (queryClient) =>
+  async ({ params }) => {
+    try {
+      await queryClient.ensureQueryData(studentsTeachersQuery(params.id));
+      return params.id;
+    } catch (error) {
+      const errorMessage = error?.response?.data?.msg;
+      toast.error(errorMessage);
+      throw error;
+    }
+  };
 
 export const action =
   (queryClient) =>
@@ -37,7 +46,7 @@ export const action =
     try {
       const student = await customFetch.post("student", { ...data, role });
       const studentData = student?.data?.user;
-      queryClient.invalidateQueries(["students&Teachers"]);
+      queryClient.invalidateQueries(["students"]);
       toast.success("تم انشاء طالب جديد", { theme: "colored" });
       const newStudentData = [
         {
@@ -64,21 +73,23 @@ export const action =
       return error;
     }
   };
-
-const AddStudent = () => {
+const EditStudent = () => {
   const date = useActionData();
+  const id = useLoaderData();
   const errorMessage = date?.response?.data?.msg;
 
-  const { data: { teachers = [] } = {} } = useQuery(getTeachersQuery());
-
+  const { data: { students, teachers } = {} } = useQuery(
+    studentsTeachersQuery(id)
+  );
   return (
     <StudentForm
-      title="انشاء طالب"
-      btnTitle="انشاء"
+      title="تعديل طالب"
+      btnTitle="تعديل"
       errorMessage={errorMessage}
       teachers={teachers}
+      defaultValue={students}
     />
   );
 };
 
-export default AddStudent;
+export default EditStudent;

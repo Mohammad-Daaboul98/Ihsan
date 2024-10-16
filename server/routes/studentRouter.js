@@ -53,7 +53,7 @@ router
   .route("/student-rate/:id")
   .patch(
     authorizePermissions("Admin", "teacher"),
-    // validateStudentRateInput,
+    validateStudentRateInput,
     validateIdParam,
     updateStudentProfile
   );

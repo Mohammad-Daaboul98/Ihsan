@@ -3,7 +3,7 @@ import { Form, useSubmit } from "react-router-dom";
 import useDebounce from "../hooks/useDebounce"; // Adjust the import path as needed
 import { Box } from "@chakra-ui/react";
 
-const SearchComponent = ({labelText}) => {
+const SearchComponent = ({ labelText }) => {
   const submit = useSubmit();
 
   const debouncedSubmit = useDebounce((form) => submit(form), 1000);
@@ -15,12 +15,12 @@ const SearchComponent = ({labelText}) => {
 
   return (
     <Box
-      p='20px'
-      m='50px'
+      p="20px"
+      m="50px"
       borderWidth={1}
       borderRadius="lg"
       boxShadow="xl"
-      width='4xl'
+      width={{ base: "90%", md: "80%", lg: "xl", xl: "2xl", "2xl": "4xl" }}
       mx="auto"
     >
       <Form>
@@ -30,7 +30,7 @@ const SearchComponent = ({labelText}) => {
           name="search"
           onChange={handleSearch}
           labelText={labelText}
-          isRequired='no'
+          isRequired="no"
         />
       </Form>
     </Box>

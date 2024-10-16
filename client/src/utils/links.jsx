@@ -3,14 +3,7 @@ import { PiStudentDuotone } from "react-icons/pi";
 import { GiTeacher } from "react-icons/gi";
 
 const links = [
-  // {
-  //   text: "المستخدمين",
-  //   icon: <FaUsers />,
-  //   submenu: [
-  //     { subText: "عرض الأساتذه", subPath: "." },
-  //     { subText: "عرض الطلاب", subPath: "." },
-  //   ],
-  // },
+
   {
     text: "الأساتذه",
     icon: <GiTeacher />,
@@ -24,6 +17,7 @@ const links = [
     icon: <PiStudentDuotone />,
     submenu: [
       { subText: "عرض الطلاب", subPath: "students" },
+      { subText: "جدول الحضور", subPath: "students-attendance" },
       { subText: "انشاء طالب", subPath: "add-student" },
     ],
   },

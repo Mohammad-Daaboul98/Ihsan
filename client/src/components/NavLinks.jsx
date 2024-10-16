@@ -5,7 +5,7 @@ import useRootStyles from "../theme/useRootStyles";
 import DownloadButton from "./DownloadButton";
 import { LiaFileDownloadSolid } from "react-icons/lia";
 
-function NavLinks() {
+function NavLinks({setToggled}) {
   const menuTheme = {
     menuDarkBg: "#4A5568",
     menuHoverDarkBg: "#1A202C !important",
@@ -27,6 +27,7 @@ function NavLinks() {
                   key={subText}
                   component={<NavLink to={subPath} end />}
                   rootStyles={menuRootStyle}
+                  onClick={() => setToggled(false)}
                 >
                   {subText}
                 </MenuItem>

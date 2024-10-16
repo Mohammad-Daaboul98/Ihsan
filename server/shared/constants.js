@@ -6,7 +6,7 @@ export const USER_TYPE = {
 
 export const STUDENT_RATE = ["ممتاز", "جيد", "وسط", "سيء","لايوجد"];
 
-export const STUDENT_ATTENDANCE = ["موجد", "غياب"];
+export const STUDENT_ATTENDANCE = ["موجود", "غائب"];
 
 export const QURAN_INDEX = {
   JUZ: [

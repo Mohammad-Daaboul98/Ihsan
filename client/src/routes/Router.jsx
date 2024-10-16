@@ -9,6 +9,8 @@ import {
   AddStudent,
   AddStudentRate,
   EditTeacher,
+  EditStudent,
+  StudentsAttendance,
 } from "../pages";
 import { queryClient } from "../utils/queryClient";
 import { action as loginAction } from "../pages/Login";
@@ -25,10 +27,16 @@ import {
   action as addStudentRateAction,
   loader as studentRateLoader,
 } from "../pages/AddStudentRate";
+import {
+  action as editStudentAction,
+  loader as editStudentLoader,
+} from "../pages/EditStudent";
 import { action as deleteTeacherAction } from "../pages/DeleteTeacher";
+import { action as deleteStudentAction } from "../pages/DeletesStudent";
 import { loader as teachersLoader } from "../pages/AllTeachers";
 import { loader as studentLoader } from "../pages/AllStudents";
 import { loader as dashboardLoader } from "../pages/DashboardLayout";
+import { loader as studentAttendanceLoader } from "../pages/StudentsAttendance";
 import { ErrorElements } from "../components";
 
 export const Router = [
@@ -45,7 +53,7 @@ export const Router = [
       },
       {
         path: "dashboard",
-        element: <DashboardLayout />,
+        element: <DashboardLayout queryClient={queryClient} />,
         loader: dashboardLoader(queryClient),
         children: [
           {
@@ -75,10 +83,25 @@ export const Router = [
             loader: studentLoader(queryClient),
           },
           {
+            path: "students-attendance",
+            element: <StudentsAttendance />,
+            loader: studentAttendanceLoader(queryClient),
+          },
+          {
             path: "add-student",
             element: <AddStudent />,
             action: addStudentAction(queryClient),
             loader: addStudentLoader(queryClient),
+          },
+          {
+            path: "edit-student/:id",
+            element: <EditStudent />,
+            action: editStudentAction(queryClient),
+            loader: editStudentLoader(queryClient),
+          },
+          {
+            path: "delete-student/:id",
+            action: deleteStudentAction(queryClient),
           },
           {
             path: "add-student-rate/:id",
