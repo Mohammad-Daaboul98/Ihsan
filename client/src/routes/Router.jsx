@@ -11,6 +11,7 @@ import {
   EditTeacher,
   EditStudent,
   StudentsAttendance,
+  StudentProfile,
 } from "../pages";
 import { queryClient } from "../utils/queryClient";
 import { action as loginAction } from "../pages/Login";
@@ -31,12 +32,16 @@ import {
   action as editStudentAction,
   loader as editStudentLoader,
 } from "../pages/EditStudent";
+import {
+  loader as studentAttendanceLoader,
+  action as studentAttendanceAction,
+} from "../pages/StudentsAttendance";
 import { action as deleteTeacherAction } from "../pages/DeleteTeacher";
 import { action as deleteStudentAction } from "../pages/DeletesStudent";
 import { loader as teachersLoader } from "../pages/AllTeachers";
 import { loader as studentLoader } from "../pages/AllStudents";
 import { loader as dashboardLoader } from "../pages/DashboardLayout";
-import { loader as studentAttendanceLoader } from "../pages/StudentsAttendance";
+
 import { ErrorElements } from "../components";
 
 export const Router = [
@@ -85,6 +90,7 @@ export const Router = [
           {
             path: "students-attendance",
             element: <StudentsAttendance />,
+            action: studentAttendanceAction(queryClient),
             loader: studentAttendanceLoader(queryClient),
           },
           {
@@ -108,6 +114,12 @@ export const Router = [
             element: <AddStudentRate />,
             action: addStudentRateAction(queryClient),
             loader: studentRateLoader(queryClient),
+          },
+          {
+            path: "student-profile/:id",
+            element: <StudentProfile />,
+            // action: addStudentRateAction(queryClient),
+            // loader: studentRateLoader(queryClient),
           },
         ],
       },

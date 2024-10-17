@@ -15,7 +15,6 @@ export const registerAdmin = async (req, res) => {
 
 export const login = async (req, res) => {
   const { userName, password } = req.body;
-  
 
   const [adminUser, normalUser] = await Promise.all([
     Admin.findOne({ userName }),
@@ -25,7 +24,8 @@ export const login = async (req, res) => {
   const user = adminUser || normalUser;
 
   const isValidUser = user && (await comparePassword(password, user.password));
-  if (!isValidUser) throw new UnauthenticatedError("كلمة السر او الاسم غير صحيح");
+  if (!isValidUser)
+    throw new UnauthenticatedError("كلمة السر او الاسم غير صحيح");
 
   const token = createJWT({ _id: user._id, role: user.role });
 
@@ -35,10 +35,10 @@ export const login = async (req, res) => {
     expires: new Date(Date.now() + oneDay),
     secure: process.env.NODE_ENV === "production",
   });
-  res.status(StatusCodes.OK).json({ msg: "تم تسجيل الدخول" });
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: "تم تسجيل الدخول", role: user.role, id: user._id });
 };
-
-
 
 export const logout = (req, res) => {
   res.cookie("token", "logout", {
@@ -47,4 +47,3 @@ export const logout = (req, res) => {
   });
   res.json({ msg: "تم تسجيل الخروج" });
 };
-

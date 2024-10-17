@@ -13,3 +13,4 @@ export { default as StudentForm  } from "./StudentForm";
 export { default as QrReader  } from "./QrReader";
 export { default as RadioGroup  } from "./RadioGroup";
 export { default as RadioCard  } from "./RadioCard";
+export { default as CardComponents  } from "./CardComponents";

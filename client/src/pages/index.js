@@ -10,3 +10,4 @@ export { default as AddStudent } from "./AddStudent";
 export { default as AddStudentRate } from "./AddStudentRate";
 export { default as EditTeacher } from "./EditTeacher";
 export { default as EditStudent } from "./EditStudent";
+export { default as StudentProfile } from "./StudentProfile";

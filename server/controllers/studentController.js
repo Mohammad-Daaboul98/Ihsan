@@ -39,9 +39,40 @@ export const createStudentProfile = async (req, res) => {
   });
   res.status(StatusCodes.CREATED).json({ user, studentProfile });
 };
+
+export const updateMultipleStudentsAttendance = async (req, res) => {
+  const { date, attendance } = req.body;
+  console.log(date);
+  console.log(attendance);
+
+  try {
+    await Promise.all(
+      attendance.map(async ({ studentId, status }) => {
+        const student = await Student.findById(studentId);
+
+        const existingAttendance = student.studentAttendance.find(
+          (attendance) => attendance.date.toISOString().split("T")[0] === date
+        );
+
+        if (existingAttendance) {
+          existingAttendance.status = status;
+        } else {
+          student.studentAttendance.push({ date, status });
+        }
+        await student.save();
+      })
+    );
+
+    res.status(StatusCodes.OK).json({ message: "تم تعديل حالة حضور الطالاب" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "يوجد خطأ في ادخال حضور الطلاب" });
+  }
+};
+
 export const updateStudentProfile = async (req, res) => {
   const { id } = req.params;
-  const { updatedUser, updatedProfileData } = req.updatedUserInfo ||{};
+  const { updatedUser, updatedProfileData } = req.updatedUserInfo || {};
   let updatedStudent;
 
   if (updatedProfileData) {
@@ -49,8 +80,6 @@ export const updateStudentProfile = async (req, res) => {
   } else {
     updatedStudent = req.body;
   }
-
-  
 
   const studentProfile = await Student.findByIdAndUpdate(id, updatedStudent, {
     new: true,

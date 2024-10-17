@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { Navbar } from "../components";
-import { Button, Flex, Box, useColorModeValue } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Box,
+  useColorModeValue,
+  Heading,
+} from "@chakra-ui/react";
 import { FaBars } from "react-icons/fa";
 import {
   Navigate,
@@ -91,7 +97,9 @@ function DashboardLayout({ queryClient }) {
   return (
     <Flex>
       <Box minHeight="100vh" w={{ base: "0", md: "0", lg: "auto" }}>
-        <Navbar sidebarProps={sidebarProps} />
+        {user?.role === "student" ? null : (
+          <Navbar sidebarProps={sidebarProps} />
+        )}
       </Box>
       <Flex w="100%" flexDirection="column">
         <Box
@@ -105,29 +113,46 @@ function DashboardLayout({ queryClient }) {
           zIndex="1"
         >
           <Flex justifyContent="space-between" alignItems="center" w="100%">
-            <Button
-              bg="transparent"
-              color={color}
-              _hover={{ bg: "transparent" }}
-              fontSize="25px"
-              display={{ base: "flex", md: "flex", lg: "none" }}
-              onClick={toggleSidebar}
-            >
-              <FaBars />
-            </Button>
+            {user?.role === "student" ? (
+              <Heading
+                as="h1"
+                fontFamily="'Reem Kufi Fun', serif"
+                fontSize={{ base: "20px", sm: "20px", md: "35px" }}
+              >
+                اِحسان
+              </Heading>
+            ) : (
+              <>
+                <Button
+                  bg="transparent"
+                  color={color}
+                  _hover={{ bg: "transparent" }}
+                  fontSize="25px"
+                  display={{ base: "flex", md: "flex", lg: "none" }}
+                  onClick={toggleSidebar}
+                ></Button>
+
+                <Button
+                  mr="auto"
+                  bg="transparent"
+                  color={color}
+                  _hover={{ bg: "transparent" }}
+                  display={{ base: "none", md: "none", lg: "flex" }}
+                  fontSize="25px"
+                  onClick={showSidebar}
+                >
+                  <FaBars />
+                </Button>
+              </>
+            )}
+            {/* <Button onClick={() => logoutUser()}>تسجيل الخروج</Button> */}
 
             <Button
-              bg="transparent"
-              color={color}
-              _hover={{ bg: "transparent" }}
-              display={{ base: "none", md: "none", lg: "flex" }}
-              fontSize="25px"
-              onClick={showSidebar}
+              variant="mode"
+              padding={0}
+              onClick={toggleColorMode}
+              // mr="auto"
             >
-              <FaBars />
-            </Button>
-
-            <Button variant="mode" padding={0} onClick={toggleColorMode}>
               {colorMode === "light" ? (
                 <MoonIcon boxSize={{ base: 5, md: 6 }} color="#234e52" />
               ) : (

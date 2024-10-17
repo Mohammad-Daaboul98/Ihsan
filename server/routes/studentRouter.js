@@ -4,6 +4,7 @@ import {
   deleteStudentProfile,
   getAllStudents,
   getStudent,
+  updateMultipleStudentsAttendance,
   updateStudentProfile,
 } from "../controllers/studentController.js";
 import {
@@ -30,7 +31,12 @@ router
     validateStudentProfileInput,
     createUser,
     createStudentProfile
+  )
+  .patch(
+    authorizePermissions("Admin", "teacher"),
+    updateMultipleStudentsAttendance
   );
+
 router
   .route("/:id")
   .get(validateIdParam, getStudent)

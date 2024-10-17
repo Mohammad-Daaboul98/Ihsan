@@ -1,21 +1,24 @@
-import {Form, redirect } from "react-router-dom";
+import { Form, redirect } from "react-router-dom";
 import { FormRow, Header } from "../components";
 import { Box, Button, Container } from "@chakra-ui/react";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 
-
-export const action = (queryClient) =>
+export const action =
+  (queryClient) =>
   async ({ request }) => {
     const formDate = await request.formData();
     const data = Object.fromEntries(formDate);
     try {
-      await customFetch.post("/auth/login", data);
-      queryClient.invalidateQueries()
-      toast.success('تم تسجيل الدخول',{theme: "colored",})
-      return redirect("/dashboard");
+      const user = await customFetch.post("/auth/login", data);
+      const { id, role } = user?.data;
+      queryClient.invalidateQueries();
+      toast.success("تم تسجيل الدخول", { theme: "colored" });
+      return redirect(
+        role === "student" ? `/dashboard/student-profile/${id}` : "/dashboard"
+      );
     } catch (error) {
-      toast.error(error?.response?.data?.msg,{theme: "colored",});
+      toast.error(error?.response?.data?.msg, { theme: "colored" });
       return error;
     }
   };
