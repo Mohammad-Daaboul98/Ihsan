@@ -44,7 +44,7 @@ function DashboardLayout({ queryClient }) {
     pageMode: { colorMode, toggleColorMode },
   } = useOutletContext();
 
-  const bg = useColorModeValue("#fff", "#2D3748");
+  const bg = useColorModeValue("gray.100", "#2D3748");
   const color = useColorModeValue("black", "#e0e0e1");
 
   const [isAuthError, setIsAuthError] = useState(false);
@@ -122,7 +122,7 @@ function DashboardLayout({ queryClient }) {
                 اِحسان
               </Heading>
             ) : (
-              <>
+              <Box>
                 <Button
                   bg="transparent"
                   color={color}
@@ -143,7 +143,7 @@ function DashboardLayout({ queryClient }) {
                 >
                   <FaBars />
                 </Button>
-              </>
+              </Box>
             )}
             {/* <Button onClick={() => logoutUser()}>تسجيل الخروج</Button> */}
 

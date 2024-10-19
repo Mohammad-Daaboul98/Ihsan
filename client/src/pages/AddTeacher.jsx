@@ -18,16 +18,19 @@ export const action =
       toast.success("تم انشاء استاذ جديد", { theme: "colored" });
       const newTeacherData = [
         {
-          "اسم المستخدم": teacherData?.userName,
-          "كلمة السر": data.password,
-          "اسم الاستاذ": data.teacherName,
-          "عمل الاستاذ": data.teacherWork,
-          "المستوى العلمي": data.teacherStudy,
-          "عمر الاستاذ": data.age,
-          "رقم الهاتق": data.teacherPhone,
+          "اسم المستخدم": teacherData?.userName || 'N/A',  // Default to 'N/A' if undefined
+          "كلمة السر": data?.password || 'N/A',
+          "اسم الاستاذ": data?.teacherName || 'N/A',
+          "عمل الاستاذ": data?.teacherWork || 'N/A',
+          "المستوى العلمي": data?.teacherStudy || 'N/A',
+          "عمر الاستاذ": data?.age || 'N/A',
+          "رقم الهاتق": data?.teacherPhone || 'N/A',
         },
       ];
+      
+      // Call the function to save or update the Excel file
       await createOrUpdateExcelFile("ملف حسابات الاساتذه", newTeacherData);
+      
 
       return redirect("../teachers");
     } catch (error) {

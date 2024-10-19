@@ -46,7 +46,7 @@ export const action =
       await customFetch.patch("student", studentAttendance);
       queryClient.invalidateQueries(["students&Teachers"]);
       toast.success("تم تعديل حالة حضور الطالاب", { theme: "colored" });
-      return redirect("../");
+      return redirect("../students");
     } catch (error) {
       to("Error:", error);
       return error;

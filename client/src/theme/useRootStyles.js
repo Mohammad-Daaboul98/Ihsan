@@ -5,7 +5,7 @@ const useRootStyles = (menuTheme = {}) => {
   const { menuDarkBg, menuHoverDarkBg } = menuTheme;
 
   const subMenuBg = useColorModeValue(
-    "#fcfdfe",
+    "#EDF2F7",
     menuDarkBg ? menuDarkBg : "#2D3748"
   );
   const subMenuColor = useColorModeValue("black", "#e0e0e1");

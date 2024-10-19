@@ -7,11 +7,12 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import NavLinks from "./NavLinks";
+import { IoLogOutOutline } from "react-icons/io5";
 
 const Navbar = ({
   sidebarProps: { toggled, collapsed, setToggled, logoutUser },
 }) => {
-  const bg = useColorModeValue("#fff", "#2D3748");
+  const bg = useColorModeValue("gray.100", "#2D3748");
   const color = useColorModeValue("black", "#e0e0e1");
 
   return (
@@ -47,15 +48,20 @@ const Navbar = ({
             as="h1"
             variant="logo"
             fontFamily="'Reem Kufi Fun', serif"
-            fontSize={{ base: "20px", sm: "20px", md: "35px" }}
+            fontSize={
+              !collapsed ? { base: "20px", sm: "20px", md: "45px" } : "32px"
+            }
+            transition="all .5s ease-out"
             p="20px 0 50px"
           >
             اِحسان
           </Heading>
         </Flex>
-        <NavLinks setToggled ={setToggled}  />
+        <NavLinks setToggled={setToggled} />
         <Box marginTop="auto" p="20px 10px">
-          <Button onClick={() => logoutUser()}>تسجيل الخروج</Button>
+          <Button onClick={() => logoutUser()}>
+            {collapsed ? <IoLogOutOutline /> : "تسجيل الخروج"}
+          </Button>
         </Box>
       </Sidebar>
     </Flex>
