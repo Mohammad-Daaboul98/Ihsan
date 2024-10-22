@@ -1,9 +1,11 @@
-import { redirect, useActionData, useLoaderData } from "react-router-dom";
-import { StudentForm } from "../components";
+import { Form, redirect, useActionData, useLoaderData } from "react-router-dom";
+import { AccordionComponents, FormRowSelect, StudentForm } from "../components";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 import { createOrUpdateExcelFile } from "../utils/excelUtils";
 import { useQuery } from "@tanstack/react-query";
+import { Box, Button } from "@chakra-ui/react";
+import { QURAN_INDEX } from "../../../server/shared/constants";
 
 const studentsTeachersQuery = (id) => {
   return {
@@ -37,17 +39,18 @@ export const loader =
 
 export const action =
   (queryClient) =>
-  async ({ request }) => {
+  async ({ request, params }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
     data.StudentJuz = [{ juzName: data.StudentJuz }];
 
-    const role = "student";
     try {
-      const student = await customFetch.patch("student", { ...data, role });
-      const studentData = student?.data?.user;
+      const student = await customFetch.patch(`student/${params.id}`, {
+        ...data,
+      });
+      // const studentData = student?.data?.user;
       queryClient.invalidateQueries(["students"]);
-      toast.success("تم انشاء طالب جديد", { theme: "colored" });
+      toast.success("تم تعديل معلومات الطالب", { theme: "colored" });
       // const newStudentData = [
       //   {
       //     "اسم المستخدم": studentData?.userName,
@@ -81,14 +84,56 @@ const EditStudent = () => {
   const { data: { students, teachers } = {} } = useQuery(
     studentsTeachersQuery(id)
   );
+
+  const JuzForm = () => {
+    return (
+      <Box>
+        <Form method="post">
+          <FormRowSelect
+            name={"juzName"}
+            labelText={"الجزء"}
+            list={QURAN_INDEX.JUZ}
+            listItem={"juzName"}
+            // PlacementTop={true}
+          />
+          <Button mt={'10px'}>
+            حفظ
+          </Button>
+        </Form>
+      </Box>
+    );
+  };
+
+  const accordionItems = [
+    {
+      title: "اضافة جزء",
+      component: <JuzForm />,
+    },
+    {
+      title: "تعديل طالب",
+      component: (
+        <StudentForm
+
+          btnTitle="تعديل"
+          errorMessage={errorMessage}
+          teachers={teachers}
+          defaultValue={students}
+          disable={true}
+          checkBox={true}
+        />
+      ),
+    },
+  ];
   return (
-    <StudentForm
-      title="تعديل طالب"
-      btnTitle="تعديل"
-      errorMessage={errorMessage}
-      teachers={teachers}
-      defaultValue={students}
-    />
+    <Box
+      padding={{
+        md: "25px 50px",
+        sm: "20px",
+        base: "20px 10px",
+      }}
+    >
+      <AccordionComponents items={accordionItems} defaultIndex={1} />
+    </Box>
   );
 };
 

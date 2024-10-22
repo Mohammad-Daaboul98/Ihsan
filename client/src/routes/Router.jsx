@@ -41,6 +41,7 @@ import { action as deleteStudentAction } from "../pages/DeletesStudent";
 import { loader as teachersLoader } from "../pages/AllTeachers";
 import { loader as studentLoader } from "../pages/AllStudents";
 import { loader as dashboardLoader } from "../pages/DashboardLayout";
+import { loader as studentProfileLoader } from "../pages/StudentProfile";
 
 import { ErrorElements } from "../components";
 
@@ -116,10 +117,10 @@ export const Router = [
             loader: studentRateLoader(queryClient),
           },
           {
-            path: "student-profile/:id",
+            path: "student-profile",
             element: <StudentProfile />,
             // action: addStudentRateAction(queryClient),
-            // loader: studentRateLoader(queryClient),
+            loader: studentProfileLoader(queryClient),
           },
         ],
       },

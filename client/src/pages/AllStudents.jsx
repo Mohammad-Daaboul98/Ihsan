@@ -195,6 +195,7 @@ const AllStudents = () => {
             columns={modalColumns}
             data={flattenedData}
             editAndDelete={false}
+            width='6xl'
           />
         }
       />

@@ -10,13 +10,19 @@ import {
 
 const ModalComponent = ({ isOpen, onClose, title, overlay, components }) => {
   return (
-    <Modal onClose={onClose} isOpen={isOpen} size={"4xl"} isCentered>
+    <Modal onClose={onClose} isOpen={isOpen} size="full" isCentered>
       {overlay}
       <ModalOverlay />
       <ModalContent>
         {title ? <ModalHeader>{title}</ModalHeader> : null}
         <ModalCloseButton />
-        <ModalBody>{components}</ModalBody>
+        <ModalBody
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        >
+          {components}
+        </ModalBody>
       </ModalContent>
     </Modal>
   );

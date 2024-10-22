@@ -12,15 +12,16 @@ const FormRowSelect = ({
   list = [],
   listItem,
   onChange,
+  defaultValue,
+  defaultKey,
   placeholder = "اختر الخيار",
-  isMulti = false,
+  disable = false,
+  PlacementTop,
 }) => {
-  
   const [options, setOptions] = useState([]);
-  const [selectedValue, setSelectedValue] = useState(isMulti ? [] : null);
-  const customStyles = useSelectStyles(); // Use custom styles
+  const [selectedValue, setSelectedValue] = useState();
+  const customStyles = useSelectStyles();
 
-  // Format options from the list when it changes
   useEffect(() => {
     const formattedOptions = list.map((item) => ({
       value: item._id || item.id || item[listItem] || item,
@@ -29,35 +30,37 @@ const FormRowSelect = ({
     setOptions(formattedOptions);
   }, [list, listItem]);
 
-  // Handle selection changes
   const handleChange = (selected) => {
-    const selectedValues = isMulti
-      ? selected?.map((option) => option.value) // For multi-select
-      : selected?.value || null; // For single select
-
-    setSelectedValue(selected); // Update local state
-    onChange && onChange(selectedValues[0]); // Trigger onChange with raw values
+    setSelectedValue(selected);
+    onChange && onChange(selected.value);
   };
-
+  // console.log(defaultValue);
+  // console.log(defaultKey);
+  
   return (
-    <FormControl className="form-row">
-      <FormLabel htmlFor={name} mb={2} fontWeight="bold">
-        {labelText || name}
-      </FormLabel>
-      <Select
-        styles={customStyles}
-        closeMenuOnSelect={false}
-        components={animatedComponents}
-        isMulti
-        name={name}
-        id={name}
-        className="form-select"
-        onChange={handleChange}
-        placeholder={placeholder}
-        options={options}
-        value={selectedValue}
-      ></Select>
-    </FormControl>
+    <>
+      {name === "StudentJuz" && disable ? null : (
+        <FormControl className="form-row">
+          <FormLabel htmlFor={name} mb={2} fontWeight="bold">
+            {labelText || name}
+          </FormLabel>
+          <Select
+            menuPlacement={PlacementTop ? "top" : "bottom"}
+            styles={customStyles}
+            components={animatedComponents}
+            isMulti={false}
+            name={name}
+            id={name}
+            className="form-select"
+            onChange={handleChange}
+            placeholder={placeholder}
+            options={options}
+            value={selectedValue}
+            // defaultValue={defaultValue[defaultKey]}
+          ></Select>
+        </FormControl>
+      )}
+    </>
   );
 };
 

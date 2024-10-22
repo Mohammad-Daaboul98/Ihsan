@@ -1,8 +1,16 @@
-import { Box, Button, Heading, SimpleGrid } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Heading,
+  SimpleGrid,
+  Text,
+} from "@chakra-ui/react";
 import { Form } from "react-router-dom";
 import { studentInput } from "../utils/formFields";
 import FormRow from "./FormRow";
 import FormRowSelect from "./FormRowSelect";
+import { useState } from "react";
 
 const StudentForm = ({
   title,
@@ -10,8 +18,14 @@ const StudentForm = ({
   errorMessage,
   defaultValue = "",
   teachers,
+  disable = false,
+  checkBox,
 }) => {
-  
+  const [disableInput, setDisableInput] = useState({
+    userName: disable,
+    password: disable,
+  });
+
   return (
     <Box
       padding={{
@@ -23,9 +37,11 @@ const StudentForm = ({
       boxShadow="2xl"
       borderRadius="md"
     >
-      <Heading mb={"50px"} textAlign="center">
-        {title}
-      </Heading>
+      {title ? (
+        <Heading mb={"50px"} textAlign="center">
+          {title}
+        </Heading>
+      ):'koko'}
 
       {errorMessage ? (
         <Text fontSize="md" color="tomato" py="25px">
@@ -34,12 +50,45 @@ const StudentForm = ({
       ) : null}
 
       <Form method="post">
+        {checkBox ? (
+          <Box display="flex" gap="20px" m="30px 0">
+            <Checkbox
+              onChange={() =>
+                setDisableInput((preVal) => ({
+                  ...preVal,
+                  userName: !disableInput.userName,
+                }))
+              }
+            >
+              اسم المستخدم
+            </Checkbox>
+            <Checkbox
+              onChange={() =>
+                setDisableInput((preVal) => ({
+                  ...preVal,
+                  password: !disableInput.password,
+                }))
+              }
+            >
+              كلمة السر
+            </Checkbox>
+          </Box>
+        ) : null}
+
         <SimpleGrid
           columns={{ lg: 2, md: 2, sm: 2, base: 1 }}
           spacing={{ md: "10px 20px", base: "10px" }}
         >
           {studentInput.map(
-            ({ type, id, labelText, list, listItem, defaultKey }) => {
+            ({
+              type,
+              id,
+              labelText,
+              list,
+              listItem,
+              defaultKey,
+              btnPassword,
+            }) => {
               if (type !== "select") {
                 return (
                   <FormRow
@@ -50,6 +99,13 @@ const StudentForm = ({
                     labelText={labelText}
                     defaultValue={defaultValue}
                     defaultKey={defaultKey}
+                    btnPassword={btnPassword}
+                    isRequired={true}
+                    disable={
+                      id === "userName" || id === "password"
+                        ? disableInput
+                        : false
+                    }
                   />
                 );
               } else {
@@ -61,6 +117,10 @@ const StudentForm = ({
                     labelText={labelText}
                     list={list ? list : teachers}
                     listItem={listItem}
+                    defaultValue={defaultValue}
+                    defaultKey={defaultKey}
+                    disable={disable}
+                    PlacementTop={true}
                   />
                 );
               }

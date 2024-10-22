@@ -1,4 +1,4 @@
-import { useColorModeValue } from "@chakra-ui/react";
+import { position, useColorModeValue } from "@chakra-ui/react";
 
 export const useSelectStyles = () => {
   const bg = useColorModeValue("white", "#1A202C");
@@ -33,6 +33,7 @@ export const useSelectStyles = () => {
       zIndex: 9999,
       borderRadius: "6px",  // Smooth border for dropdown
       boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",  // Subtle shadow for dropdown
+      
     }),
     option: (provided, state) => ({
       ...provided,

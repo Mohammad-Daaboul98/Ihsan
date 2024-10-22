@@ -3,6 +3,7 @@ import {
   createStudentProfile,
   deleteStudentProfile,
   getAllStudents,
+  getCurrentStudent,
   getStudent,
   updateMultipleStudentsAttendance,
   updateStudentProfile,
@@ -37,13 +38,15 @@ router
     updateMultipleStudentsAttendance
   );
 
+  router.get("/current-student", getCurrentStudent);
+
 router
   .route("/:id")
   .get(validateIdParam, getStudent)
   .patch(
     authorizePermissions("Admin", "teacher"),
-    validateUserInput,
-    validateStudentProfileInput,
+    // validateUserInput,
+    // validateStudentProfileInput,
     validateIdParam,
     updateUser,
     updateStudentProfile

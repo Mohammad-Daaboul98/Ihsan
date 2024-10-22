@@ -5,4 +5,4 @@ const router = Router();
 
 router.get("/current-user", getCurrentUser);
 
-export default router
+export default router;

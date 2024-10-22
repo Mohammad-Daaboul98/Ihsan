@@ -161,7 +161,6 @@ const AddStudentRate = () => {
                     listItem={listItem}
                     onChange={handleSurahChange}
                     initialDefaultValue={defaultValue}
-                    isMulti={true}
                   />
                 );
               } else if (listItem === "pages") {

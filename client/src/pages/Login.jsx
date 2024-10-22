@@ -11,11 +11,11 @@ export const action =
     const data = Object.fromEntries(formDate);
     try {
       const user = await customFetch.post("/auth/login", data);
-      const { id, role } = user?.data;
+      const { role } = user?.data;
       queryClient.invalidateQueries();
       toast.success("تم تسجيل الدخول", { theme: "colored" });
       return redirect(
-        role === "student" ? `/dashboard/student-profile/${id}` : "/dashboard"
+        role === "student" ? `/dashboard/student-profile` : "/dashboard"
       );
     } catch (error) {
       toast.error(error?.response?.data?.msg, { theme: "colored" });
@@ -46,6 +46,7 @@ const Login = () => {
               name="password"
               id="password"
               labelText="كلمة السر"
+              btnPassword={false}
             />
             <Button type="submit" w="100%">
               تسجيل الدخول

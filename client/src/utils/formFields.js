@@ -15,6 +15,7 @@ export const teacherInput = [
     type: "password",
     id: "password",
     labelText: "كلمة المرور",
+    btnPassword: true,
   },
   {
     type: "number",
@@ -58,6 +59,7 @@ export const studentInput = [
     type: "password",
     id: "password",
     labelText: "كلمة السر",
+    btnPassword: true,
   },
   {
     type: "text",
@@ -120,13 +122,6 @@ export const studentInputRate = [
     defaultValue: new Date().toISOString().split("T")[0],
   },
 
-  // {
-  //   type: "select",
-  //   id: "status",
-  //   labelText: "حالة الحضور",
-  //   list: STUDENT_ATTENDANCE,
-  //   listItem: false,
-  // },
   {
     type: "select",
     id: "juzName",

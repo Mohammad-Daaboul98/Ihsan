@@ -51,14 +51,9 @@ export const validateIdParam = withValidationErrors([
     const user = await User.findById(id);
     if (!user) throw new NotFoundError(`لا يوجد مستخدم بالمعرف: ${id}`);
 
-    const student =
-      user.role === "student"
-        ? await Student.findOne({ teacherId: req.user._id })
-        : false;
-
     const isAdmin = req.user.role === "Admin";
-    const isTeacher = student ? student._id.toString() === id : false;
-
+    const isTeacher = req.user._id === Student.teacherId?.toString();
+    
     if (!isAdmin && !isTeacher)
       throw new UnauthorizedError("ليس لديك الصلاحية للوصول إلى هذا المسار");
   }),

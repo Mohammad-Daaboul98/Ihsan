@@ -21,6 +21,8 @@ function FormRow({
   defaultKey,
   onChange,
   isRequired,
+  btnPassword,
+  disable,
 }) {
   const [show, setShow] = useState(false);
   const [password, setPassword] = useState("");
@@ -28,8 +30,8 @@ function FormRow({
   let randomPassword = generator.generate({
     length: 8,
     numbers: true,
-    symbols: false, 
-    uppercase: false, 
+    symbols: false,
+    uppercase: false,
     lowercase: true,
   });
 
@@ -55,6 +57,7 @@ function FormRow({
             onChange={(e) => setPassword(e.target.value)}
             size="lg"
             pl="6rem"
+            disabled={disable ? disable.password : false}
           />
           <InputRightElement
             right="unset"
@@ -62,18 +65,26 @@ function FormRow({
             display="flex"
             gap="2px"
             justifyContent="flex-start"
-            width="6rem"
+            width={btnPassword ? "6rem" : "auto"}
           >
-            <Button h="100%" size="md" onClick={() => setShow(!show)}>
-              {show ? <ViewOffIcon /> : <ViewIcon />}
-            </Button>
             <Button
               h="100%"
               size="md"
-              onClick={() => setPassword(randomPassword)} // Update password state
+              onClick={() => setShow(!show)}
+              isDisabled={disable ? disable.password : false}
             >
-              <Icon as={GiPerspectiveDiceSixFacesRandom} />
+              {show ? <ViewOffIcon /> : <ViewIcon />}
             </Button>
+            {btnPassword ? (
+              <Button
+                h="100%"
+                size="md"
+                onClick={() => setPassword(randomPassword)}
+                isDisabled={disable ? disable.password : false}
+              >
+                <Icon as={GiPerspectiveDiceSixFacesRandom} />
+              </Button>
+            ) : null}
           </InputRightElement>
         </InputGroup>
       ) : (
@@ -86,6 +97,7 @@ function FormRow({
           size="lg"
           textAlign="right"
           onChange={onChange}
+          disabled={disable ? disable.userName : false}
         />
       )}
     </FormControl>

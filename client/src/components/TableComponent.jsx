@@ -35,6 +35,7 @@ const TableComponent = ({
   editAndDelete,
   editPage,
   deletePage,
+  width
 }) => {
   const buttonSize = useBreakpointValue({ base: "sm", md: "md" });
 
@@ -64,6 +65,7 @@ const TableComponent = ({
       p="4"
       h="100%"
       overflow="hidden"
+      width={width}
     >
       <TableContainer
         width={{ base: "100%", md: "80%" }}

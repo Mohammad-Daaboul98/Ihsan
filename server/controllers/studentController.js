@@ -2,6 +2,14 @@
 import Student from "../models/StudentProfileModel.js";
 import { StatusCodes } from "http-status-codes";
 
+export const getCurrentStudent = async (req, res) => {
+  const id = req.user._id;
+  
+  const student =await Student.findById(id);
+  console.log(student);
+  res.status(StatusCodes.OK).json({ student });
+};
+
 export const getAllStudents = async (req, res) => {
   const { search } = req.query;
 
@@ -26,7 +34,7 @@ export const getAllStudents = async (req, res) => {
   res.status(StatusCodes.OK).json({ student });
 };
 export const getStudent = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.currentUserId || req.params;
   const student = await Student.findById(id);
   res.status(StatusCodes.OK).json({ student });
 };
@@ -72,6 +80,7 @@ export const updateMultipleStudentsAttendance = async (req, res) => {
 
 export const updateStudentProfile = async (req, res) => {
   const { id } = req.params;
+  
   const { updatedUser, updatedProfileData } = req.updatedUserInfo || {};
   let updatedStudent;
 
