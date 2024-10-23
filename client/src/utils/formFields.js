@@ -152,3 +152,18 @@ export const studentInputRate = [
     defaultValue: "لايوجد",
   },
 ];
+
+export const StudentCheckBox = [
+  {
+    title: "اسم المستخدم",
+    listItem: "userName",
+  },
+  {
+    title: "كلمة السر",
+    listItem: "password",
+  },
+  {
+    title: "الجزء",
+    listItem: "juzName",
+  },
+];

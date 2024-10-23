@@ -11,17 +11,6 @@ import { findOrCreateJuz, findOrUpdateSurah } from "../utils/juzHelpers";
 import { useQuery } from "@tanstack/react-query";
 import { QURAN_INDEX } from "../../../server/shared/constants";
 
-const fetchStudentProfile = async (studentId) => {
-  try {
-    const { data } = await customFetch.get(`/student/${studentId}`);
-
-    return data.student;
-  } catch (error) {
-    const errorMessage = error?.response?.data?.msg;
-    toast.error(errorMessage);
-    throw error;
-  }
-};
 
 const singleStudentQuery = (id) => {
   return {
@@ -66,13 +55,13 @@ export const action =
     };
 
     try {
-      const studentProfile = await fetchStudentProfile(params.id);
+      const { student } = queryClient.getQueryData(["students", params.id]);
 
-      const juz = findOrCreateJuz(studentProfile?.StudentJuz, data.juzName);
+      const juz = findOrCreateJuz(student?.StudentJuz, data.juzName);
       findOrUpdateSurah(juz, newSurah);
 
       await customFetch.patch(`student/student-rate/${params.id}`, {
-        ...studentProfile,
+        ...student,
       });
       queryClient.invalidateQueries(["students&Teachers"]);
       toast.success("تم حفظ التقيم", { theme: "colored" });

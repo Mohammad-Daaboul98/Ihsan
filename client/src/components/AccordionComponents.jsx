@@ -14,19 +14,21 @@ const AccordionComponents = ({ items, defaultIndex }) => {
       defaultIndex={[defaultIndex]}
       border="1px solid #2D3748"
       borderRadius="10px"
-      padding='20px'
+      padding="20px"
     >
       {items.map((value, index) => (
-        <AccordionItem key={index}>
+        <AccordionItem
+          key={index}
+        >
           <h2>
             <AccordionButton>
-              <Box as="span" flex="1" textAlign="right" fontSize='24px'>
+              <Box as="span" flex="1" textAlign="right" fontSize="24px">
                 {value.title}
               </Box>
               <AccordionIcon />
             </AccordionButton>
           </h2>
-          <AccordionPanel pb={4}>{value.component}</AccordionPanel>
+          <AccordionPanel pb={4} >{value.component}</AccordionPanel>
         </AccordionItem>
       ))}
     </Accordion>

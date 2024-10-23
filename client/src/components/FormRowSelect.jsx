@@ -15,8 +15,8 @@ const FormRowSelect = ({
   defaultValue,
   defaultKey,
   placeholder = "اختر الخيار",
-  disable = false,
   PlacementTop,
+  disable,
 }) => {
   const [options, setOptions] = useState([]);
   const [selectedValue, setSelectedValue] = useState();
@@ -36,30 +36,30 @@ const FormRowSelect = ({
   };
   // console.log(defaultValue);
   // console.log(defaultKey);
-  
+
   return (
     <>
-      {name === "StudentJuz" && disable ? null : (
-        <FormControl className="form-row">
-          <FormLabel htmlFor={name} mb={2} fontWeight="bold">
-            {labelText || name}
-          </FormLabel>
-          <Select
-            menuPlacement={PlacementTop ? "top" : "bottom"}
-            styles={customStyles}
-            components={animatedComponents}
-            isMulti={false}
-            name={name}
-            id={name}
-            className="form-select"
-            onChange={handleChange}
-            placeholder={placeholder}
-            options={options}
-            value={selectedValue}
-            // defaultValue={defaultValue[defaultKey]}
-          ></Select>
-        </FormControl>
-      )}
+      <FormControl className="form-row">
+        <FormLabel htmlFor={name} mb={2} fontWeight="bold">
+          {labelText || name}
+        </FormLabel>
+        <Select
+          menuPlacement={PlacementTop ? "top" : "bottom"}
+          styles={customStyles}
+          components={animatedComponents}
+          isMulti={false}
+          name={name}
+          id={name}
+          className="form-select"
+          onChange={handleChange}
+          placeholder={placeholder}
+          options={options}
+          value={selectedValue}
+          // defaultValue={defaultValue[defaultKey]}
+          menuPortalTarget={document.body}
+          isDisabled={disable ? disable.juzName : false}
+        ></Select>
+      </FormControl>
     </>
   );
 };

@@ -1,11 +1,11 @@
-import { Form, redirect, useActionData, useLoaderData } from "react-router-dom";
-import { AccordionComponents, FormRowSelect, StudentForm } from "../components";
+import { redirect, useActionData, useLoaderData } from "react-router-dom";
+import { AccordionComponents, JuzForm, StudentForm } from "../components";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 import { createOrUpdateExcelFile } from "../utils/excelUtils";
 import { useQuery } from "@tanstack/react-query";
-import { Box, Button } from "@chakra-ui/react";
-import { QURAN_INDEX } from "../../../server/shared/constants";
+import { Box } from "@chakra-ui/react";
+import { findOrCreateJuz } from "../utils/juzHelpers";
 
 const studentsTeachersQuery = (id) => {
   return {
@@ -42,35 +42,51 @@ export const action =
   async ({ request, params }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
-    data.StudentJuz = [{ juzName: data.StudentJuz }];
-
+    const { juzName } = data;
+    const { students } = queryClient.getQueryData([
+      "students",
+      "teachers",
+      params.id,
+    ]);
+    let toastMsg;
     try {
-      const student = await customFetch.patch(`student/${params.id}`, {
-        ...data,
-      });
-      // const studentData = student?.data?.user;
-      queryClient.invalidateQueries(["students"]);
-      toast.success("تم تعديل معلومات الطالب", { theme: "colored" });
-      // const newStudentData = [
-      //   {
-      //     "اسم المستخدم": studentData?.userName,
-      //     "كلمة السر": data.password,
-      //     "اسم الطالب": data.studentName,
-      //     "اسم الأب او الأم": data.parentName,
-      //     "عمل الأب او الأم": data.parentWork,
-      //     "رقم هاتف الأب أو الأم": data.parentPhone,
-      //     "المستوى العلمي": data.StudentStudy,
-      //     "عمر الطالب": data.age,
-      //     "اسم الاستاذ": data.teacherId,
-      //     الجزء: data.StudentJuz,
-      //     // "نقاط الطالب": data.studentPoint,
-      //     // "السورة":data.surahs,
-      //     // "الصفحة":data.pages,
-      //     // "تقيم التسميع":data.rate,
-      //   },
-      // ];
-      // await createOrUpdateExcelFile("ملف حسابات الطالب", newStudentData);
-      return redirect("../students");
+      if (juzName) {
+        findOrCreateJuz(students?.StudentJuz, data.juzName);
+        await customFetch.patch(`student/${params.id}`, {
+          ...students,
+        });
+        toastMsg = "تم اضافة جزء جديد للطالب";
+      } else {
+        data.StudentJuz = [{ juzName: data.StudentJuz }];
+        const student = await customFetch.patch(`student/${params.id}`, {
+          ...data,
+        });
+
+        toastMsg = "تم تعديل معلومات الطالب";
+        // const studentData = student?.data?.user;
+        // const newStudentData = [
+        //   {
+        //     "اسم المستخدم": studentData?.userName,
+        //     "كلمة السر": data.password,
+        //     "اسم الطالب": data.studentName,
+        //     "اسم الأب او الأم": data.parentName,
+        //     "عمل الأب او الأم": data.parentWork,
+        //     "رقم هاتف الأب أو الأم": data.parentPhone,
+        //     "المستوى العلمي": data.StudentStudy,
+        //     "عمر الطالب": data.age,
+        //     "اسم الاستاذ": data.teacherId,
+        //     الجزء: data.StudentJuz,
+        //     // "نقاط الطالب": data.studentPoint,
+        //     // "السورة":data.surahs,
+        //     // "الصفحة":data.pages,
+        //     // "تقيم التسميع":data.rate,
+        //   },
+        // ];
+        // await createOrUpdateExcelFile("ملف حسابات الطالب", newStudentData);
+      }
+      queryClient.invalidateQueries(["students&Teachers"]);
+      toast.success(toastMsg, { theme: "colored" });
+      return juzName ? null : redirect("../students");
     } catch (error) {
       console.error("Error:", error);
       return error;
@@ -85,24 +101,6 @@ const EditStudent = () => {
     studentsTeachersQuery(id)
   );
 
-  const JuzForm = () => {
-    return (
-      <Box>
-        <Form method="post">
-          <FormRowSelect
-            name={"juzName"}
-            labelText={"الجزء"}
-            list={QURAN_INDEX.JUZ}
-            listItem={"juzName"}
-            // PlacementTop={true}
-          />
-          <Button mt={'10px'}>
-            حفظ
-          </Button>
-        </Form>
-      </Box>
-    );
-  };
 
   const accordionItems = [
     {
@@ -110,10 +108,9 @@ const EditStudent = () => {
       component: <JuzForm />,
     },
     {
-      title: "تعديل طالب",
+      title: "تعديل معلومات الطالب",
       component: (
         <StudentForm
-
           btnTitle="تعديل"
           errorMessage={errorMessage}
           teachers={teachers}

@@ -7,7 +7,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Form } from "react-router-dom";
-import { studentInput } from "../utils/formFields";
+import { StudentCheckBox, studentInput } from "../utils/formFields";
 import FormRow from "./FormRow";
 import FormRowSelect from "./FormRowSelect";
 import { useState } from "react";
@@ -24,6 +24,7 @@ const StudentForm = ({
   const [disableInput, setDisableInput] = useState({
     userName: disable,
     password: disable,
+    juzName: disable,
   });
 
   return (
@@ -37,11 +38,11 @@ const StudentForm = ({
       boxShadow="2xl"
       borderRadius="md"
     >
-      {title ? (
+      {title && (
         <Heading mb={"50px"} textAlign="center">
           {title}
         </Heading>
-      ):'koko'}
+      )}
 
       {errorMessage ? (
         <Text fontSize="md" color="tomato" py="25px">
@@ -52,26 +53,19 @@ const StudentForm = ({
       <Form method="post">
         {checkBox ? (
           <Box display="flex" gap="20px" m="30px 0">
-            <Checkbox
-              onChange={() =>
-                setDisableInput((preVal) => ({
-                  ...preVal,
-                  userName: !disableInput.userName,
-                }))
-              }
-            >
-              اسم المستخدم
-            </Checkbox>
-            <Checkbox
-              onChange={() =>
-                setDisableInput((preVal) => ({
-                  ...preVal,
-                  password: !disableInput.password,
-                }))
-              }
-            >
-              كلمة السر
-            </Checkbox>
+            {StudentCheckBox.map(({ title, listItem }, index) => (
+              <Checkbox
+                key={index}
+                onChange={() =>
+                  setDisableInput((preVal) => ({
+                    ...preVal,
+                    [listItem]: !disableInput[listItem],
+                  }))
+                }
+              >
+                {title}
+              </Checkbox>
+            ))}
           </Box>
         ) : null}
 
@@ -119,8 +113,8 @@ const StudentForm = ({
                     listItem={listItem}
                     defaultValue={defaultValue}
                     defaultKey={defaultKey}
-                    disable={disable}
                     PlacementTop={true}
+                    disable={id === "StudentJuz" ? disableInput : false}
                   />
                 );
               }
