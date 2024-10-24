@@ -71,7 +71,14 @@ app.use(errorHandlerMiddleware);
 const port = process.env.PORT | 5100;
 
 try {
-  await mongoose.connect(process.env.MONGO_URL);
+  await mongoose.connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+
+  // Log if the connection is successful
+  console.log('Connected to MongoDB successfully');
+
   app.listen(port, () => {
     console.log(`server running on port ${port}....`);
   });

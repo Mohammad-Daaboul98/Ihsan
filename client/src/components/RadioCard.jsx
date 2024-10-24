@@ -18,7 +18,6 @@ const RadioCard = (props) => {
         _checked={{
           bg: props.children === "غائب" ? "red.600" : "teal.600",
           color: "white",
-          borderColor: props.children === "غائب" ? "red.600" : "teal.600",
           borderColor: "transparent",
         }}
         _focus={{
