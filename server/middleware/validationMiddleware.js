@@ -51,10 +51,10 @@ export const validateIdParam = withValidationErrors([
     const user = await User.findById(id);
     if (!user) throw new NotFoundError(`لا يوجد مستخدم بالمعرف: ${id}`);
 
-    const isAdmin = req.user.role === "Admin";
+    const isadmin = req.user.role === "admin";
     const isTeacher = req.user._id === Student.teacherId?.toString();
-    
-    if (!isAdmin && !isTeacher)
+
+    if (!isadmin && !isTeacher)
       throw new UnauthorizedError("ليس لديك الصلاحية للوصول إلى هذا المسار");
   }),
 ]);
@@ -82,16 +82,16 @@ export const validateStudentProfileInput = withValidationErrors([
     .isNumeric()
     .withMessage("يحب انا يحتوي رقم الهاتف على أرقام فقط"),
 
-  body("StudentJuz.*.juzName")
-    .notEmpty()
-    .withMessage("يجب اختيار الجزء")
-    .isIn(QURAN_INDEX.JUZ.map((juz) => juz.juzName))
-    .withMessage("الجزء غير موجود"),
+  // body("StudentJuz.*.juzName")
+  //   .notEmpty()
+  //   .withMessage("يجب اختيار الجزء")
+  //   .isIn(QURAN_INDEX.JUZ.map((juz) => juz.juzName))
+  //   .withMessage("الجزء غير موجود"),
   body("teacherId").custom((teacherId, { req, res }) => {
-    if (req.user.role !== "Admin" && teacherId) {
+    if (req.user.role !== "admin" && teacherId) {
       throw new UnauthorizedError("Unauthorized to update teacher name");
     }
-    if (req.user.role === "Admin" && !teacherId) {
+    if (req.user.role === "admin" && !teacherId) {
       throw new BadRequestError("يجب اختيار المدرس");
     }
     return true;
@@ -101,21 +101,18 @@ export const validateStudentRateInput = withValidationErrors([
   body("StudentJuz.*.surahs.*.surahName")
     .notEmpty()
     .withMessage("يجب اختيار السورة"),
+  // body("StudentJuz.*.surahs.*.pages.*.pageFrom")
+  //   .notEmpty()
+  //   .withMessage("يجب اختيار الصفحة"),
 
-  body("StudentJuz.*.surahs.*.pages.*.pageNumber")
-    .notEmpty()
-    .withMessage("يجب اختيار الصفحة"),
 
-  body("StudentJuz.*.surahs.*.pages.*.rate")
-    .notEmpty()
-    .withMessage("يجب اختيار التقيم"),
+  // body("StudentJuz.*.surahs.*.pages.*.rate")
+  //   .notEmpty()
+  //   .withMessage("يجب اختيار التقيم"),
 
-  body("StudentJuz.*.surahs.*.pages.*.date")
-    .notEmpty()
-    .withMessage("يجب اختيار التاريخ"),
-  // body("StudentJuz.*.surahs.*.pages.*.attendance.*.status")
-  //   .isIn(Object.values(STUDENT_ATTENDANCE))
-  //   .withMessage("يحب اختيار حالة الطالب"),
+  // body("StudentJuz.*.surahs.*.pages.*.date")
+  //   .notEmpty()
+  //   .withMessage("يجب اختيار التاريخ"),
 ]);
 
 export const validateTeacherProfileInput = withValidationErrors([

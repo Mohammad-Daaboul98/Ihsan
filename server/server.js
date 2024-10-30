@@ -46,13 +46,13 @@ app.use("/api/v1/student", authenticateUser, studentRouter);
 app.use(
   "/api/v1/teacher",
   authenticateUser,
-  authorizePermissions("Admin"),
+  authorizePermissions("admin"),
   teacherRouter
 );
 app.use(
   "/api/v1/student-with-teacher",
   authenticateUser,
-  authorizePermissions("Admin", "teacher"),
+  authorizePermissions("admin", "teacher"),
   studentTeacherRouter
 );
 

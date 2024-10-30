@@ -2,10 +2,11 @@ import { redirect, useActionData, useLoaderData } from "react-router-dom";
 import { AccordionComponents, JuzForm, StudentForm } from "../components";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
-import { createOrUpdateExcelFile } from "../utils/excelUtils";
 import { useQuery } from "@tanstack/react-query";
 import { Box } from "@chakra-ui/react";
 import { findOrCreateJuz } from "../utils/juzHelpers";
+import { QURAN_INDEX } from "../../../server/shared/constants";
+import { patchData } from "../utils/excelDBHandler";
 
 const studentsTeachersQuery = (id) => {
   return {
@@ -63,28 +64,30 @@ export const action =
         });
 
         toastMsg = "تم تعديل معلومات الطالب";
-        // const studentData = student?.data?.user;
-        // const newStudentData = [
-        //   {
-        //     "اسم المستخدم": studentData?.userName,
-        //     "كلمة السر": data.password,
-        //     "اسم الطالب": data.studentName,
-        //     "اسم الأب او الأم": data.parentName,
-        //     "عمل الأب او الأم": data.parentWork,
-        //     "رقم هاتف الأب أو الأم": data.parentPhone,
-        //     "المستوى العلمي": data.StudentStudy,
-        //     "عمر الطالب": data.age,
-        //     "اسم الاستاذ": data.teacherId,
-        //     الجزء: data.StudentJuz,
-        //     // "نقاط الطالب": data.studentPoint,
-        //     // "السورة":data.surahs,
-        //     // "الصفحة":data.pages,
-        //     // "تقيم التسميع":data.rate,
-        //   },
-        // ];
-        // await createOrUpdateExcelFile("ملف حسابات الطالب", newStudentData);
+        const studentData = student?.data?.updatedUser;
+        const oldUserName = student?.data?.oldUserName;
+
+        const updateStudentData = [
+          {
+            "اسم الطالب": data.studentName,
+            "اسم الأب او الأم": data.parentName,
+            "عمل الأب او الأم": data.parentWork,
+            "رقم هاتف الأب أو الأم": data.parentPhone,
+          },
+        ];
+
+        data.password
+          ? (updateStudentData[0]["كلمة السر"] = data.password)
+          : null;
+        data.userName
+          ? (updateStudentData[0]["اسم المستخدم"] = studentData?.userName)
+          : null;
+
+        await patchData(updateStudentData, "students", oldUserName);
       }
       queryClient.invalidateQueries(["students&Teachers"]);
+      queryClient.invalidateQueries(["teachers"]);
+
       toast.success(toastMsg, { theme: "colored" });
       return juzName ? null : redirect("../students");
     } catch (error) {
@@ -101,11 +104,20 @@ const EditStudent = () => {
     studentsTeachersQuery(id)
   );
 
+  const { StudentJuz } = students;
+  const quranJuzName = QURAN_INDEX.JUZ.map((i) => {
+    return i.juzName;
+  });
+  const currentJuz = StudentJuz.map((i) => {
+    return i?.juzName;
+  });
+
+  const juzName = quranJuzName?.filter((juz) => !currentJuz.includes(juz));
 
   const accordionItems = [
     {
       title: "اضافة جزء",
-      component: <JuzForm />,
+      component: <JuzForm juzName={juzName} />,
     },
     {
       title: "تعديل معلومات الطالب",

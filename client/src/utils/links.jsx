@@ -1,8 +1,7 @@
-import { FaUsers } from "react-icons/fa";
 import { PiStudentDuotone } from "react-icons/pi";
 import { GiTeacher } from "react-icons/gi";
 
-const links = [
+const Links = [
 
   {
     text: "الأساتذه",
@@ -23,4 +22,4 @@ const links = [
   },
 ];
 
-export default links;
+export default Links;

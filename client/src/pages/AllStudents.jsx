@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useLoaderData } from "react-router-dom";
-import { ModalComponent, SearchComponent, TableComponent } from "../components";
+import { ModalComponent, QRCodePDFGenerator, SearchComponent, TableComponent } from "../components";
 import customFetch from "../utils/customFetch";
 import { BiShow } from "react-icons/bi";
 import { IoAddCircleSharp } from "react-icons/io5";
@@ -47,7 +47,7 @@ const AllStudents = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedAttendance, setSelectedAttendance] = useState([]); // State for storing selected student's attendance
 
-    const { searchValue } = useLoaderData();
+  const { searchValue } = useLoaderData();
 
   const { data: { students = [] } = {} } = useQuery(
     allStudentsQuery(searchValue)
@@ -115,9 +115,8 @@ const AllStudents = () => {
     {
       header: "التاريخ",
       cell: ({ row }) => {
-        const date = row.original.page.date; 
+        const date = row.original.page.date;
         return date ? dayjs(date).format("D MMMM YYYY") : "-";
-        
       },
     },
     {
@@ -133,23 +132,27 @@ const AllStudents = () => {
       accessorKey: "surahName",
       cell: ({ getValue }) => {
         const surahName = getValue();
-        
+
         return surahName ? surahName : "-";
       },
     },
     {
       header: "الصفحة",
       cell: ({ row }) => {
-        const pages = row.original.page.pageNumber;        
-        return pages ? pages : "-";
-
+        const pageFrom = row.original.page.pageFrom;
+        const pageTo = row.original.page.pageTo;
+        return pageFrom && pageTo
+          ? `${pageFrom} - ${pageTo}`
+          : pageFrom
+          ? pageFrom
+          : "-";
       },
     },
 
     {
       header: "التقيم",
       cell: ({ row }) => {
-        const rate = row.original.page.rate; 
+        const rate = row.original.page.rate;
         return rate ? rate : "-";
       },
     },
@@ -177,6 +180,7 @@ const AllStudents = () => {
         searchValue={searchValue}
         labelText="بحث عن طريق اسم الطالب او العمر"
       />
+      <QRCodePDFGenerator list={students} id="_id" name="studentName" />
       <TableComponent
         title="معلومات الطالب"
         columns={columns}
@@ -195,11 +199,11 @@ const AllStudents = () => {
             columns={modalColumns}
             data={flattenedData}
             editAndDelete={false}
-            width='6xl'
+            width="6xl"
           />
         }
       />
-    </>
+    </> 
   );
 };
 

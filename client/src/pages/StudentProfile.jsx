@@ -10,7 +10,7 @@ import {
 import { CardComponents } from "../components";
 import { useQuery } from "@tanstack/react-query";
 import customFetch from "../utils/customFetch";
-import dayjs from "dayjs"; // Importing dayjs for date formatting
+import dayjs from "dayjs"; 
 
 const singleStudentQuery = {
   queryKey: ["currentStudent"],

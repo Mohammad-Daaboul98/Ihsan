@@ -16,3 +16,4 @@ export { default as RadioCard } from "./RadioCard";
 export { default as CardComponents } from "./CardComponents";
 export { default as AccordionComponents } from "./AccordionComponents";
 export { default as JuzForm } from "./JuzFrom";
+export { default as QRCodePDFGenerator } from "./QRCodePDFGenerator";

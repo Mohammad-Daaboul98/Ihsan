@@ -28,7 +28,7 @@ export const action =
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
     let studentAttendance = Object.entries(data).map(
-      ([studentId, attendance], date) => {
+      ([studentId, attendance]) => {
         return {
           studentId,
           status: attendance,
@@ -40,7 +40,6 @@ export const action =
       date: data.date,
       attendance: studentAttendance,
     };
-    console.log(studentAttendance);
 
     try {
       await customFetch.patch("student", studentAttendance);
@@ -99,7 +98,7 @@ const StudentsAttendance = () => {
     },
     {
       header: "عدد ايام الحضور",
-      accessorKey:'present',
+      accessorKey: "present",
       isNumeric: true,
       cell: ({ row }) => {
         let presentCount = 0;
@@ -116,7 +115,7 @@ const StudentsAttendance = () => {
     },
     {
       header: "عدد ايام الغياب",
-      accessorKey:'absent',
+      accessorKey: "absent",
       isNumeric: true,
       cell: ({ row }) => {
         let absentCount = 0;
@@ -171,7 +170,11 @@ const StudentsAttendance = () => {
               value={attendance}
             />
           ))}
-          <Box display="flex">
+          <Box
+            display="flex"
+            gap={"20px 10px"}
+            flexWrap={{ base: "wrap", lg: "nowrap", md: "nowrap", sm: "wrap" }}
+          >
             <Input
               type="date"
               name="date"
@@ -179,17 +182,23 @@ const StudentsAttendance = () => {
               width={"auto"}
               size="lg"
               textAlign="right"
+              w={{ base: "100%", lg: "auto", md: "auto", sm: "100%" }}
             />
             <Button
               colorScheme="green"
-              mx="10px"
               size="lg"
+              w={{ base: "48%", lg: "auto", md: "auto", sm: "48%" }}
               // onClick={<QrReader />}
             >
               تصوير الباركود
             </Button>
-            <Button type="submit" colorScheme="teal" mx="10px" size="lg">
-              حفظ حضور الطلاب
+            <Button
+              type="submit"
+              colorScheme="teal"
+              size="lg"
+              w={{ base: "48%", lg: "auto", md: "auto", sm: "48%" }}
+            >
+              حفظ الحضور
             </Button>
           </Box>
         </Form>

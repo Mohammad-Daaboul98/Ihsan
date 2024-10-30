@@ -128,9 +128,11 @@ function DashboardLayout({ queryClient }) {
                   color={color}
                   _hover={{ bg: "transparent" }}
                   fontSize="25px"
-                  display={{ base: "flex", md: "flex", lg: "none" }}
+                  display={{ base: "flex", md: "flex", sm: "flex", lg: "none" }}
                   onClick={toggleSidebar}
-                ></Button>
+                >
+                  <FaBars />
+                </Button>
 
                 <Button
                   mr="auto"

@@ -106,7 +106,7 @@ export const studentInput = [
   },
   {
     type: "select",
-    id: "StudentJuz",
+    id: "juzName",
     labelText: "الجزء",
     list: QURAN_INDEX.JUZ,
     listItem: "juzName",
@@ -165,5 +165,9 @@ export const StudentCheckBox = [
   {
     title: "الجزء",
     listItem: "juzName",
+  },
+  {
+    title: "الاستاذ",
+    listItem: "teacherName",
   },
 ];

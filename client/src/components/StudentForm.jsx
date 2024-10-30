@@ -25,6 +25,7 @@ const StudentForm = ({
     userName: disable,
     password: disable,
     juzName: disable,
+    teacherName: disable,
   });
 
   return (
@@ -114,7 +115,11 @@ const StudentForm = ({
                     defaultValue={defaultValue}
                     defaultKey={defaultKey}
                     PlacementTop={true}
-                    disable={id === "StudentJuz" ? disableInput : false}
+                    disable={
+                      id === "juzName" || id === "teacherId"
+                        ? disableInput
+                        : false
+                    }
                   />
                 );
               }

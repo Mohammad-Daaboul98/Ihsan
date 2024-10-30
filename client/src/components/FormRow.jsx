@@ -26,6 +26,7 @@ function FormRow({
 }) {
   const [show, setShow] = useState(false);
   const [password, setPassword] = useState("");
+  
 
   let randomPassword = generator.generate({
     length: 8,
@@ -53,7 +54,7 @@ function FormRow({
             type={show ? "text" : "password"}
             name={name}
             placeholder={labelText}
-            defaultValue={password}
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
             size="lg"
             pl="6rem"

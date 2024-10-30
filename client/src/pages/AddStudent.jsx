@@ -2,12 +2,12 @@ import { redirect, useActionData } from "react-router-dom";
 import { StudentForm } from "../components";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
-import { createOrUpdateExcelFile } from "../utils/excelUtils";
 import { useQuery } from "@tanstack/react-query";
+import { handleFormSubmit } from "../utils/excelDBHandler";
 
 const getTeachersQuery = () => {
   return {
-    queryKey: ["get-teachers"],
+    queryKey: ["teachers"],
     queryFn: async () => {
       const { data } = await customFetch.get("/teacher");
       return data;
@@ -38,6 +38,7 @@ export const action =
       const student = await customFetch.post("student", { ...data, role });
       const studentData = student?.data?.user;
       queryClient.invalidateQueries(["students&Teachers"]);
+      queryClient.invalidateQueries(["teachers"]);
       toast.success("تم انشاء طالب جديد", { theme: "colored" });
       const newStudentData = [
         {
@@ -47,17 +48,9 @@ export const action =
           "اسم الأب او الأم": data.parentName,
           "عمل الأب او الأم": data.parentWork,
           "رقم هاتف الأب أو الأم": data.parentPhone,
-          "المستوى العلمي": data.StudentStudy,
-          "عمر الطالب": data.age,
-          "اسم الاستاذ": data.teacherId,
-          الجزء: data.StudentJuz,
-          // "نقاط الطالب": data.studentPoint,
-          // "السورة":data.surahs,
-          // "الصفحة":data.pages,
-          // "تقيم التسميع":data.rate,
         },
       ];
-      await createOrUpdateExcelFile("ملف حسابات الطالب", newStudentData);
+      await handleFormSubmit(newStudentData, 'students')
       return redirect("../students");
     } catch (error) {
       console.error("Error:", error);

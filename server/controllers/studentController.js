@@ -4,8 +4,8 @@ import { StatusCodes } from "http-status-codes";
 
 export const getCurrentStudent = async (req, res) => {
   const id = req.user._id;
-  
-  const student =await Student.findById(id);
+
+  const student = await Student.findById(id);
   console.log(student);
   res.status(StatusCodes.OK).json({ student });
 };
@@ -50,8 +50,6 @@ export const createStudentProfile = async (req, res) => {
 
 export const updateMultipleStudentsAttendance = async (req, res) => {
   const { date, attendance } = req.body;
-  console.log(date);
-  console.log(attendance);
 
   try {
     await Promise.all(
@@ -80,8 +78,9 @@ export const updateMultipleStudentsAttendance = async (req, res) => {
 
 export const updateStudentProfile = async (req, res) => {
   const { id } = req.params;
-  
-  const { updatedUser, updatedProfileData } = req.updatedUserInfo || {};
+
+  const { updatedUser, updatedProfileData, oldUserName } =
+    req.updatedUserInfo || {};
   let updatedStudent;
 
   if (updatedProfileData) {
@@ -94,9 +93,12 @@ export const updateStudentProfile = async (req, res) => {
     new: true,
   });
 
+  console.log(updatedUser);
+
   res.status(StatusCodes.OK).json({
     msg: "تم تعديل حساب الطالب",
     updatedUser,
+    oldUserName,
     studentProfile,
   });
 };

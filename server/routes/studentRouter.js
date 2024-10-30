@@ -25,16 +25,16 @@ const router = Router();
 
 router
   .route("/")
-  .get(authorizePermissions("Admin", "teacher"), getAllStudents)
+  .get(authorizePermissions("admin", "teacher"), getAllStudents)
   .post(
-    authorizePermissions("Admin"),
+    authorizePermissions("admin"),
     validateUserInput,
     validateStudentProfileInput,
     createUser,
     createStudentProfile
   )
   .patch(
-    authorizePermissions("Admin", "teacher"),
+    authorizePermissions("admin", "teacher"),
     updateMultipleStudentsAttendance
   );
 
@@ -44,7 +44,7 @@ router
   .route("/:id")
   .get(validateIdParam, getStudent)
   .patch(
-    authorizePermissions("Admin", "teacher"),
+    authorizePermissions("admin", "teacher"),
     // validateUserInput,
     // validateStudentProfileInput,
     validateIdParam,
@@ -52,7 +52,7 @@ router
     updateStudentProfile
   )
   .delete(
-    authorizePermissions("Admin"),
+    authorizePermissions("admin"),
     validateIdParam,
     deleteUser,
     deleteStudentProfile
@@ -61,7 +61,7 @@ router
 router
   .route("/student-rate/:id")
   .patch(
-    authorizePermissions("Admin", "teacher"),
+    authorizePermissions("admin", "teacher"),
     validateStudentRateInput,
     validateIdParam,
     updateStudentProfile

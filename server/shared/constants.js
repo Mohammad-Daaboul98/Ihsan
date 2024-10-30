@@ -2,19 +2,15 @@
 export const USER_TYPE = {
   TEACHER: "teacher",
   STUDENT: "student",
+  admin: "admin",
 };
 
-export const STUDENT_RATE = ["ممتاز", "جيد", "وسط", "سيء","لايوجد"];
+export const STUDENT_RATE = ["ممتاز", "جيد", "وسط", "سيء", "لايوجد"];
 
 export const STUDENT_ATTENDANCE = ["موجود", "غائب"];
 
 export const QURAN_INDEX = {
   JUZ: [
-    {
-      id: "لايوجد",
-      juzName: "لايوجد",
-      surahs: [{ id: "لايوجد", surahName: "لايوجد", pages: [0] }],
-    },
     {
       id: "الجزء الأول",
       juzName: "الجزء الأول",

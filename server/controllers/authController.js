@@ -1,27 +1,20 @@
-import Admin from "../models/AdminModel.js";
 import User from "../models/UserModel.js";
 import { StatusCodes } from "http-status-codes";
 import { comparePassword, hashPassword } from "../utils/passwordUtils.js";
 import { UnauthenticatedError } from "../errors/customErrors.js";
 import { createJWT } from "../utils/tokenUtils.js";
 
-export const registerAdmin = async (req, res) => {
+export const registeradmin = async (req, res) => {
   const hashedPassword = await hashPassword(req.body.password);
   req.body.password = hashedPassword;
-
-  await Admin.create(req.body);
-  res.status(StatusCodes.CREATED).json({ msg: "Admin created" });
+  await User.create(req.body);
+  res.status(StatusCodes.CREATED).json({ msg: "admin created" });
 };
 
 export const login = async (req, res) => {
   const { userName, password } = req.body;
 
-  const [adminUser, normalUser] = await Promise.all([
-    Admin.findOne({ userName }),
-    User.findOne({ userName }),
-  ]);
-
-  const user = adminUser || normalUser;
+  const user = await User.findOne({ userName });
 
   const isValidUser = user && (await comparePassword(password, user.password));
   if (!isValidUser)
@@ -35,9 +28,7 @@ export const login = async (req, res) => {
     expires: new Date(Date.now() + oneDay),
     secure: process.env.NODE_ENV === "production",
   });
-  res
-    .status(StatusCodes.OK)
-    .json({ msg: "تم تسجيل الدخول", role: user.role, id: user._id });
+  res.status(StatusCodes.OK).json({ msg: "تم تسجيل الدخول" });
 };
 
 export const logout = (req, res) => {

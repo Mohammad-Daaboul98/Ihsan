@@ -17,7 +17,27 @@ export const getAllTeachers = async (req, res) => {
     ];
   }
 
-  const teachers = await Teacher.find(queryObject);
+  const teachers = await Teacher.aggregate([
+    {
+      $lookup: {
+        from: "students",  // Name of the student collection
+        localField: "_id",
+        foreignField: "teacherId",
+        as: "students",
+      },
+    },
+    {
+      $addFields: {
+        studentCount: { $size: "$students" },
+      },
+    },
+    {
+      $project: {
+        students: 0,  // Exclude the full students array if you don't need it
+      },
+    },
+  ]);
+  
 
   const teacher = teachers.filter(
     (teacher) => teacher._id.toString() !== "669a98d474ed7a09fdd6fe04"

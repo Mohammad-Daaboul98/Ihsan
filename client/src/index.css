@@ -1,9 +1,7 @@
 :root {
     --hover-color: #e0e0e1;
 }
-/* body{
-    overflow: hidden !important;
-} */
+
 [data-theme="dark"] {
     --hover-color: #1A202C;
 }
@@ -11,7 +9,9 @@
 .active {
     background-color: var(--hover-color) !important;
 }
-
+.form-select {
+    width: 100%;
+}
 
 
 input[type="date"]::-webkit-calendar-picker-indicator {

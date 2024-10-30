@@ -1,11 +1,11 @@
 import { Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-import links from "../utils/links";
+import Links from "../utils/Links";
 import { NavLink } from "react-router-dom";
 import useRootStyles from "../theme/useRootStyles";
 import DownloadButton from "./DownloadButton";
 import { LiaFileDownloadSolid } from "react-icons/lia";
 
-function NavLinks({setToggled}) {
+function NavLinks({ setToggled }) {
   const menuTheme = {
     menuDarkBg: "#4A5568",
     menuHoverDarkBg: "#1A202C !important",
@@ -16,7 +16,7 @@ function NavLinks({setToggled}) {
 
   return (
     <Menu>
-      {links.map((link) => {
+      {Links.map((link) => {
         const { text, submenu, icon } = link;
         return (
           <SubMenu key={text} label={text} icon={icon} rootStyles={rootStyle}>
@@ -42,10 +42,10 @@ function NavLinks({setToggled}) {
         rootStyles={rootStyle}
       >
         <MenuItem rootStyles={menuRootStyle}>
-          <DownloadButton filename="ملف حسابات الأساتذه" />
+          <DownloadButton filename="ملف حسابات الأساتذه" exclName="teachers" />
         </MenuItem>
         <MenuItem rootStyles={menuRootStyle}>
-          <DownloadButton filename="ملف حسابات الطلاب" />
+          <DownloadButton filename="ملف حسابات الطلاب" exclName="students" />
         </MenuItem>
       </SubMenu>
     </Menu>

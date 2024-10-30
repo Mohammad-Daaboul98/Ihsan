@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, logout, registerAdmin } from "../controllers/authController.js";
+import { login, logout, registeradmin } from "../controllers/authController.js";
 import { validateLoginInput } from "../middleware/validationMiddleware.js";
 
 import rateLimiter from "express-rate-limit";
@@ -16,6 +16,6 @@ router.post("/login", apiLimiter, validateLoginInput, login);
 router.get("/logout", logout);
 
 //one time use
-router.post("/registerAdmin", registerAdmin);
+router.post("/registeradmin", registeradmin);
 
 export default router;

@@ -1,10 +1,9 @@
 import { redirect, useActionData, useLoaderData } from "react-router-dom";
 import { TeacherFrom } from "../components";
-
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
-import { createOrUpdateExcelFile } from "../utils/excelUtils";
 import { useQuery } from "@tanstack/react-query";
+import { patchData } from "../utils/excelDBHandler";
 
 const singleTeacherQuery = (id) => {
   return {
@@ -40,13 +39,14 @@ export const action =
         ...data,
         role,
       });
-      const teacherData = teacher?.data?.user;
       queryClient.invalidateQueries(["teachers"]);
       toast.success("تم تعديل معلومات الاستاذ", { theme: "colored" });
-      const newTeacherData = [
+
+      const teacherData = teacher?.data?.updatedUser;
+      const oldUserName = student?.data?.oldUserName;
+
+      const updateTeacherData = [
         {
-          "اسم المستخدم": teacherData?.userName,
-          "كلمة السر": data.password,
           "اسم الاستاذ": data.teacherName,
           "عمل الاستاذ": data.teacherWork,
           "المستوى العلمي": data.teacherStudy,
@@ -54,7 +54,15 @@ export const action =
           "رقم الهاتق": data.teacherPhone,
         },
       ];
-      await createOrUpdateExcelFile("ملف حسابات الاساتذه", newTeacherData);
+
+      data.password
+        ? (updateStudentData[0]["كلمة السر"] = data.password)
+        : null;
+      data.userName
+        ? (updateStudentData[0]["اسم المستخدم"] = teacherData?.userName)
+        : null;
+
+      await patchData(updateTeacherData, "teachers", oldUserName);
 
       return redirect("../teachers");
     } catch (error) {
@@ -70,7 +78,6 @@ const EditTeacher = () => {
   const {
     data: { teacher },
   } = useQuery(singleTeacherQuery(id));
-
 
   const errorMessage = date?.response?.data?.msg;
   return (

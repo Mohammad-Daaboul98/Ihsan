@@ -1,5 +1,3 @@
-// import { studentInputRate } from '../utils/formFields';
-
 import { useState } from "react";
 import { Form, redirect, useActionData, useLoaderData } from "react-router-dom";
 import { FormRow, FormRowSelect } from "../components";
@@ -10,7 +8,6 @@ import { toast } from "react-toastify";
 import { findOrCreateJuz, findOrUpdateSurah } from "../utils/juzHelpers";
 import { useQuery } from "@tanstack/react-query";
 import { QURAN_INDEX } from "../../../server/shared/constants";
-
 
 const singleStudentQuery = (id) => {
   return {
@@ -43,7 +40,8 @@ export const action =
 
     const pageStatus = [
       {
-        pageNumber: data.pages,
+        pageFrom: data.pagesFrom,
+        pageTo: data.pagesTo,
         rate: data.rate,
         date: data.date,
       },
@@ -83,18 +81,25 @@ const AddStudentRate = () => {
 
   const [surahPages, setSurahPages] = useState([]);
   const [juzSurah, setJuzSurah] = useState([]);
+  const [selectedSurah, setSelectedSurah] = useState(null); // Add state for selected Surah
+  const [selectedPages, setSelectedPages] = useState([]); // Add state for selected Pages
 
   const errorMessage = date?.response?.data?.msg;
 
-  // Handle selection change for surahName
+  // Handle selection change for Surah
   const handleSurahChange = (selectedSurah) => {
     const surah = juzSurah.find((surah) => surah.id === selectedSurah);
+    setSelectedSurah(selectedSurah);
     setSurahPages(surah ? surah.pages : []);
+    setSelectedPages([]); // Reset only Pages when Surah changes
   };
 
+  // Handle selection change for Juz
   const handleJuzChange = (selectedJuz) => {
     const juz = QURAN_INDEX.JUZ.find((juz) => juz.juzName === selectedJuz);
     setJuzSurah(juz ? juz.surahs : []);
+    setSelectedSurah(null); // Reset Surah when Juz changes
+    setSelectedPages([]); // Reset Pages when Juz changes
   };
 
   return (
@@ -109,7 +114,7 @@ const AddStudentRate = () => {
       borderRadius="md"
     >
       <Heading mb={"50px"} textAlign="center">
-        اضافة تقيم التسميع
+        تقيم التسميع
       </Heading>
 
       {errorMessage ? (
@@ -149,7 +154,7 @@ const AddStudentRate = () => {
                     }))}
                     listItem={listItem}
                     onChange={handleSurahChange}
-                    initialDefaultValue={defaultValue}
+                    value={selectedSurah}
                   />
                 );
               } else if (listItem === "pages") {
@@ -163,6 +168,9 @@ const AddStudentRate = () => {
                     listItem={listItem}
                     initialDefaultValue={defaultValue}
                     isMulti={true}
+                    isRange={true}
+                    onChange={setSelectedPages}
+                    value={selectedPages}
                   />
                 );
               } else {
@@ -176,7 +184,9 @@ const AddStudentRate = () => {
                     listItem={listItem}
                     initialDefaultValue={defaultValue}
                     onChange={listItem === "juzName" ? handleJuzChange : null}
-                    isMulti={listItem === "juzName" ? true : false}
+                    isMulti={listItem === "juzName"}
+                    value={selectedSurah}
+                    restSelect={true}
                   />
                 );
               }
