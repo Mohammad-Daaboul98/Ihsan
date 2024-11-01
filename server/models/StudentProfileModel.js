@@ -10,7 +10,7 @@ const StudentProfileSchema = new mongoose.Schema({
   studentName: String,
   parentName: String,
   parentWork: String,
-  parentPhone: Number,
+  parentPhone: String,
   StudentStudy: String,
   age: Number,
   studentPoint: Number,

@@ -1,16 +1,33 @@
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useLoaderData } from "react-router-dom";
-import { ModalComponent, QRCodePDFGenerator, SearchComponent, TableComponent } from "../components";
+import {
+  ModalComponent,
+  QRCodeComponent,
+  SearchComponent,
+  TableComponent,
+} from "../components";
 import customFetch from "../utils/customFetch";
-import { BiShow } from "react-icons/bi";
 import { IoAddCircleSharp } from "react-icons/io5";
+import {
+  BiLogoTelegram,
+  BiLogoWhatsapp,
+  BiMessageSquareDetail,
+  BiShareAlt,
+  BiShow,
+} from "react-icons/bi";
 import {
   Button,
   IconButton,
-  ModalOverlay,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   useDisclosure,
+  ModalOverlay,
+  Tooltip,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import QRCode from "qrcode";
 import dayjs from "dayjs";
 import "dayjs/locale/ar";
 dayjs.locale("ar");
@@ -20,7 +37,9 @@ const allStudentsQuery = (params) => {
   return {
     queryKey: ["students&Teachers", search],
     queryFn: async () => {
-      const data = customFetch.get("/student-with-teacher", { params });
+      const { data } = await customFetch.get("/student-with-teacher", {
+        params,
+      });
       return data;
     },
   };
@@ -45,13 +64,11 @@ export const loader =
 
 const AllStudents = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedAttendance, setSelectedAttendance] = useState([]); // State for storing selected student's attendance
-
+  const [selectedAttendance, setSelectedAttendance] = useState([]);
   const { searchValue } = useLoaderData();
 
-  const { data: { students = [] } = {} } = useQuery(
-    allStudentsQuery(searchValue)
-  ).data;
+  const { data, isLoading, error } = useQuery(allStudentsQuery(searchValue));
+  const students = data?.students || [];
 
   const Overlay = () => (
     <ModalOverlay
@@ -67,11 +84,9 @@ const AllStudents = () => {
       accessorKey: "teacherId",
       cell: ({ getValue }) => {
         const teacherId = getValue();
-        const teacherName = teacherId.teacherName;
-        return teacherName;
+        return teacherId?.teacherName || "N/A";
       },
     },
-
     { id: "parentName", header: "ولي الأمر", accessorKey: "parentName" },
     { id: "parentWork", header: "عمل ولي الأمر", accessorKey: "parentWork" },
     {
@@ -85,7 +100,21 @@ const AllStudents = () => {
       accessorKey: "StudentStudy",
     },
     { id: "age", header: "عمر الطالب", accessorKey: "age", isNumeric: true },
-
+    {
+      header: "باركود",
+      accessorKey: "qrCode",
+      cell: ({ row }) => {
+        const student = row.original;
+        return (
+          <QRCodeComponent
+            list={student}
+            id="_id"
+            numberPhone="parentPhone"
+            name="studentName"
+          />
+        );
+      },
+    },
     {
       header: "التقييم",
       accessorKey: "View&Add",
@@ -124,7 +153,7 @@ const AllStudents = () => {
       accessorKey: "juzName",
       cell: ({ getValue }) => {
         const juzName = getValue();
-        return juzName ? juzName : "-";
+        return juzName || "-";
       },
     },
     {
@@ -132,8 +161,7 @@ const AllStudents = () => {
       accessorKey: "surahName",
       cell: ({ getValue }) => {
         const surahName = getValue();
-
-        return surahName ? surahName : "-";
+        return surahName || "-";
       },
     },
     {
@@ -141,19 +169,14 @@ const AllStudents = () => {
       cell: ({ row }) => {
         const pageFrom = row.original.page.pageFrom;
         const pageTo = row.original.page.pageTo;
-        return pageFrom && pageTo
-          ? `${pageFrom} - ${pageTo}`
-          : pageFrom
-          ? pageFrom
-          : "-";
+        return pageFrom && pageTo ? `${pageFrom} - ${pageTo}` : pageFrom || "-";
       },
     },
-
     {
       header: "التقيم",
       cell: ({ row }) => {
         const rate = row.original.page.rate;
-        return rate ? rate : "-";
+        return rate || "-";
       },
     },
   ];
@@ -174,13 +197,15 @@ const AllStudents = () => {
 
   const flattenedData = flattenData(selectedAttendance);
 
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error loading students data.</p>;
+
   return (
     <>
       <SearchComponent
         searchValue={searchValue}
         labelText="بحث عن طريق اسم الطالب او العمر"
       />
-      <QRCodePDFGenerator list={students} id="_id" name="studentName" />
       <TableComponent
         title="معلومات الطالب"
         columns={columns}
@@ -203,7 +228,7 @@ const AllStudents = () => {
           />
         }
       />
-    </> 
+    </>
   );
 };
 

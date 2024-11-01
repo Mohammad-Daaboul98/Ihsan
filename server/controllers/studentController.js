@@ -41,6 +41,7 @@ export const getStudent = async (req, res) => {
 
 export const createStudentProfile = async (req, res) => {
   const { user, profileData } = req.userInfo;
+  profileData.parentPhone = `+963${profileData.parentPhone}`;
   const studentProfile = await Student.create({
     _id: user._id,
     ...profileData,
@@ -88,6 +89,8 @@ export const updateStudentProfile = async (req, res) => {
   } else {
     updatedStudent = req.body;
   }
+
+  updatedStudent.parentPhone = `+963${updatedStudent.parentPhone}`;
 
   const studentProfile = await Student.findByIdAndUpdate(id, updatedStudent, {
     new: true,
