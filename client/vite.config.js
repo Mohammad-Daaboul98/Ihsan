@@ -21,6 +21,12 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
+    cors: {
+      origin: true, // Allow all origins
+      methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
+      allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+      credentials: true, // Allow credentials
+    },
     // https: {
     //   key: fs.readFileSync('certs/key.pem'),
     //   cert: fs.readFileSync('certs/cert.pem'),
