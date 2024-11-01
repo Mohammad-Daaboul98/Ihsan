@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { PageSchema } from "./PageSchema.js";
+import { PageSchema } from "../subSchema/PageSchema.js";
 
 export const SurahSchema = new mongoose.Schema(
   {

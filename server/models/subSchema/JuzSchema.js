@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { SurahSchema } from "./SurahSchema.js";
+import { SurahSchema } from "../subSchema/SurahSchema.js";
 
 export const JuzSchema = new mongoose.Schema(
   {
