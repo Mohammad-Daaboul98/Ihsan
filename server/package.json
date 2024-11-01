@@ -2,10 +2,10 @@
   "name": "ihsan",
   "version": "1.0.0",
   "description": "",
-  "main": "server/index.js",
+  "main": "server",
   "type": "module",
   "scripts": {
-    "start": "node server/index.js",
+    "start": "node server",
     "server": "nodemon server",
     "client": "cd ../client && npm run dev",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
