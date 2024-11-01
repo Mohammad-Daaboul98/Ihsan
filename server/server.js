@@ -1,6 +1,7 @@
 import "express-async-errors";
 import * as dotenv from "dotenv";
 dotenv.config();
+import cors from 'cors';
 import express from "express";
 const app = express();
 import morgan from "morgan";
@@ -43,6 +44,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
 app.use(express.static(path.resolve(__dirname, "../client/dist")));
 app.use(cookieParser());
 app.use(express.json());
