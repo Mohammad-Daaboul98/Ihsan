@@ -43,7 +43,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
 app.use(express.static(path.resolve(__dirname, "../client/dist")));
 app.use(cookieParser());
 app.use(express.json());
