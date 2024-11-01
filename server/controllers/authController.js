@@ -4,7 +4,7 @@ import { comparePassword, hashPassword } from "../utils/passwordUtils.js";
 import { UnauthenticatedError } from "../errors/customErrors.js";
 import { createJWT } from "../utils/tokenUtils.js";
 
-export const registeradmin = async (req, res) => {
+export const registerAdmin = async (req, res) => {
   const hashedPassword = await hashPassword(req.body.password);
   req.body.password = hashedPassword;
   await User.create(req.body);
@@ -23,10 +23,10 @@ export const login = async (req, res) => {
   const token = createJWT({ _id: user._id, role: user.role });
 
   const oneDay = 1000 * 60 * 60 * 24;
-  res.cookie("token", token, {
+  res.cookie("vercel-feature-flags", token, {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
-    secure: process.env.NODE_ENV === "production",
+    secure: true
   });
   res.status(StatusCodes.OK).json({ msg: "تم تسجيل الدخول" });
 };
