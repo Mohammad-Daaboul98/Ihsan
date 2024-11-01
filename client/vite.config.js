@@ -6,17 +6,17 @@ import react from "@vitejs/plugin-react";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  server: {
-    proxy: {
-      "/api": {
-        target: "https://ihsan-p245.onrender.com/api",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
-      },
-    },
-    // https: {
-    //   key: fs.readFileSync('certs/key.pem'),
-    //   cert: fs.readFileSync('certs/cert.pem'),
-    // },
-  },
+  // server: {
+  //   proxy: {
+  //     "/api": {
+  //       target: "http://localhost:5100/api",
+  //       changeOrigin: true,
+  //       rewrite: (path) => path.replace(/^\/api/, ""),
+  //     },
+  //   },
+  //   // https: {
+  //   //   key: fs.readFileSync('certs/key.pem'),
+  //   //   cert: fs.readFileSync('certs/cert.pem'),
+  //   // },
+  // },
 });
