@@ -56,9 +56,9 @@ app.use(
   studentTeacherRouter
 );
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.resolve(__dirname, "../client/dist", "index.html"));
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../client/dist", "index.html"));
+});
 
 //Not Found Middleware
 app.use("*", (req, res) => {
