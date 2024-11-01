@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { AttendanceSchema } from "./subSchema/AttendanceSchema.js";
-import { JuzSchema } from "./subSchema/JuzSchema.js";
+import { AttendanceSchema } from "./AttendanceSchema.js";
+import { JuzSchema } from "./JuzSchema.js";
 
 const StudentProfileSchema = new mongoose.Schema({
   teacherId: {

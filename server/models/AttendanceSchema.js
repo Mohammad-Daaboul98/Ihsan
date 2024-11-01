@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { STUDENT_ATTENDANCE } from "../../shared/constants.js";
+import { STUDENT_ATTENDANCE } from "../shared/constants.js";
 
 export const AttendanceSchema = new mongoose.Schema(
   {

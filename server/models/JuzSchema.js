@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
-// import { SurahSchema } from "../subSchema/SurahSchema.js";
+import { SurahSchema } from "./SurahSchema.js";
 
 export const JuzSchema = new mongoose.Schema(
   {
     juzName: {
       type: String,
     },
-    // surahs: [SurahSchema],
+    surahs: [SurahSchema],
   },
   { _id: false }
 );
