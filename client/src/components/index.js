@@ -17,3 +17,4 @@ export { default as CardComponents } from "./CardComponents";
 export { default as AccordionComponents } from "./AccordionComponents";
 export { default as JuzForm } from "./JuzFrom";
 export { default as QRCodeComponent } from "./QRCodeComponent";
+export { default as Links } from "./Links";
