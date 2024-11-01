@@ -5,10 +5,11 @@
   "main": "server/index.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
+    "start": "node server/index.js",
     "server": "nodemon server",
     "client": "cd ../client && npm run dev",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "build": "cd ../client && npm install && npm run build"
   },
   "keywords": [],
   "author": "Mohammad Daaboul",
