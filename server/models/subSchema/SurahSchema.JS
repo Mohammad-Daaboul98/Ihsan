@@ -1,12 +1,12 @@
-import mongoose from "mongoose";
-import { PageSchema } from "../subSchema/PageSchema.js";
+// import mongoose from "mongoose";
+// import { PageSchema } from "../subSchema/PageSchema.js";
 
-export const SurahSchema = new mongoose.Schema(
-  {
-    surahName: {
-      type: String,
-    },
-    pages: [PageSchema],
-  },
-  { _id: false }
-);
+// export const SurahSchema = new mongoose.Schema(
+//   {
+//     surahName: {
+//       type: String,
+//     },
+//     pages: [PageSchema],
+//   },
+//   { _id: false }
+// );
