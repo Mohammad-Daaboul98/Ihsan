@@ -20,6 +20,7 @@
     "bcryptjs": "^2.4.3",
     "concurrently": "^8.0.1",
     "cookie-parser": "^1.0.0",
+    "cors": "^2.8.5",
     "datauri": "^4.1.0",
     "dayjs": "^1.11.9",
     "dotenv": "^16.0.3",
