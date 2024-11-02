@@ -8,7 +8,7 @@ const RadioCard = (props) => {
 
   return (
     <Box as="label">
-      <Input />
+      <Input {...input} position='relative !important' />
       <Box
         {...checkbox}
         cursor="pointer"
