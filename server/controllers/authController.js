@@ -23,10 +23,11 @@ export const login = async (req, res) => {
   const token = createJWT({ _id: user._id, role: user.role });
 
   const oneDay = 1000 * 60 * 60 * 24;
-  res.cookie("vercel-feature-flags", token, {
+  res.cookie("token", token, {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
-    secure: true
+    sameSite: "none",
+    secure: process.env.NODE_ENV === "production",
   });
   res.status(StatusCodes.OK).json({ msg: "تم تسجيل الدخول" });
 };
