@@ -43,7 +43,7 @@ if (process.env.NODE_ENV === "development") {
 //   credentials: true, // Allow cookies to be sent with requests
 // };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 app.use(express.static(path.resolve(__dirname, "../client/dist")));
 app.use(cookieParser());
