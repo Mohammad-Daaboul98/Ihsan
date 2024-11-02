@@ -15,7 +15,7 @@ import { BeatLoader } from "react-spinners";
 const allStudentsQuery = (params) => {
   const { search } = params;
   return {
-    queryKey: ["students&Teachers", search],
+    queryKey: ["students", search],
     queryFn: async () => {
       const data = customFetch.get("/student-with-teacher", { params });
       return data;

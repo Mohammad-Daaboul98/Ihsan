@@ -12,7 +12,7 @@ import { IoLogOutOutline } from "react-icons/io5";
 const Navbar = ({
   sidebarProps: { toggled, collapsed, setToggled, logoutUser },
 }) => {
-  const bg = useColorModeValue("gray.100", "#2D3748");
+  const bg = useColorModeValue("#EDF2F7", "#2D3748");
   const color = useColorModeValue("black", "#e0e0e1");
 
   return (
