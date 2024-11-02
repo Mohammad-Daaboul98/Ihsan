@@ -1,8 +1,10 @@
 import { Form, redirect, useNavigation } from "react-router-dom";
 import { FormRow, Header } from "../components";
-import { Box, Button, Container, Spinner } from "@chakra-ui/react";
+import { Box, Button, Container } from "@chakra-ui/react";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
+import { BeatLoader } from 'react-spinners';
+
 
 export const action =
   (queryClient) =>
