@@ -5,7 +5,7 @@ import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/",
+  base: "./",
   plugins: [react()],
   define: {
     "process.env": {},
@@ -21,12 +21,12 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
-    cors: {
-      origin: true, // Allow all origins
-      methods: ['GET', 'POST', 'PATCH', 'DELETE'], // Allowed methods
-      allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
-      credentials: true, // Allow credentials
-    },
+    // cors: {
+    //   origin: true, // Allow all origins
+    //   methods: ['GET', 'POST', 'PATCH', 'DELETE'], // Allowed methods
+    //   allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+    //   credentials: true, // Allow credentials
+    // },
     // https: {
     //   key: fs.readFileSync('certs/key.pem'),
     //   cert: fs.readFileSync('certs/cert.pem'),
