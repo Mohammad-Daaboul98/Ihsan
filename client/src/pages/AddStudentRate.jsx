@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, redirect, useActionData, useLoaderData } from "react-router-dom";
+import { Form, redirect, useActionData, useLoaderData, useNavigation } from "react-router-dom";
 import { FormRow, FormRowSelect } from "../components";
 import { studentInputRate } from "../utils/formFields";
 import { Box, Button, Heading, SimpleGrid, Text } from "@chakra-ui/react";
@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { findOrCreateJuz, findOrUpdateSurah } from "../utils/juzHelpers";
 import { useQuery } from "@tanstack/react-query";
 import { QURAN_INDEX } from "../../../server/shared/constants";
+import { BeatLoader } from "react-spinners";
 
 const singleStudentQuery = (id) => {
   return {
@@ -78,6 +79,8 @@ const AddStudentRate = () => {
     data: { student },
   } = useQuery(singleStudentQuery(id));
   const juzName = student.StudentJuz;
+  const navigation = useNavigation();
+  const isLoading = navigation.state === "submitting";
 
   const [surahPages, setSurahPages] = useState([]);
   const [juzSurah, setJuzSurah] = useState([]);
@@ -101,8 +104,6 @@ const AddStudentRate = () => {
     setSelectedSurah(null); // Reset Surah when Juz changes
     setSelectedPages([]); // Reset Pages when Juz changes
   };
-
-  
 
   return (
     <Box
@@ -201,6 +202,8 @@ const AddStudentRate = () => {
           colorScheme="teal"
           size="lg"
           width="full"
+          isLoading={isLoading}
+          spinner={<BeatLoader size={8} color="white" />}
         >
           انشاء
         </Button>

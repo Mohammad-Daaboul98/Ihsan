@@ -3,8 +3,15 @@ import React from "react";
 import { Form } from "react-router-dom";
 import FormRow from "./FormRow";
 import { teacherInput } from "../utils/formFields";
+import { BeatLoader } from "react-spinners";
 
-const TeacherFrom = ({ title, btnTitle, errorMessage, defaultValue }) => {
+const TeacherFrom = ({
+  title,
+  btnTitle,
+  errorMessage,
+  defaultValue,
+  isLoading,
+}) => {
   return (
     <Box
       padding={{
@@ -52,6 +59,8 @@ const TeacherFrom = ({ title, btnTitle, errorMessage, defaultValue }) => {
           colorScheme="teal"
           size="lg"
           width="full"
+          isLoading={isLoading}
+          spinner={<BeatLoader size={8} color="white" />}
         >
           {btnTitle}
         </Button>

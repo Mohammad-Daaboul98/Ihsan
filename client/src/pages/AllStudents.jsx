@@ -88,8 +88,13 @@ const AllStudents = () => {
     { id: "parentWork", header: "عمل ولي الأمر", accessorKey: "parentWork" },
     {
       id: "parentPhone",
-      header: "هاتف ولي الأمر",
+      header: "ولي الأمر",
       accessorKey: "parentPhone",
+      Cell: ({ cell }) => (
+        <div style={{ direction: "ltr"}}>
+          {cell.getValue()}
+        </div>
+      )
     },
     {
       id: "StudentStudy",
