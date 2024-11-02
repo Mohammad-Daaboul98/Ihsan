@@ -9,8 +9,7 @@
     "server": "nodemon server",
     "client": "cd ../client && npm run dev",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "build": "cd ../client && npm install && npm run build",
-    "postinstall": "cd ../client && npm install && npm run build"
+    "build": "cd ../client && npm install && npm run build"
   },
   "keywords": [],
   "author": "Mohammad Daaboul",
