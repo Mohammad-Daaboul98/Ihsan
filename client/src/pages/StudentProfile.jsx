@@ -39,7 +39,6 @@ const StudentProfile = () => {
     data: { student },
   } = useQuery(singleStudentQuery);
   const { studentAttendance, StudentJuz } = student;
-  console.log(StudentJuz);
 
   // Attendance count logic
   const statusMap = {

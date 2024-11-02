@@ -6,13 +6,14 @@ import {
   Box,
   useColorModeValue,
   Heading,
+  Spinner,
 } from "@chakra-ui/react";
 import { FaBars } from "react-icons/fa";
 import {
-  Navigate,
   Outlet,
   redirect,
   useNavigate,
+  useNavigation,
   useOutletContext,
 } from "react-router-dom";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
@@ -37,8 +38,10 @@ export const loader = (queryClient) => async () => {
 };
 
 function DashboardLayout({ queryClient }) {
-  const { user } = useQuery(userQuery).data;
+  const { data: user } = useQuery(userQuery);
   const navigate = useNavigate();
+  const navigation = useNavigation();
+  const isLoading = navigation.state === "loading";
 
   const {
     pageMode: { colorMode, toggleColorMode },
@@ -163,7 +166,19 @@ function DashboardLayout({ queryClient }) {
             </Button>
           </Flex>
         </Box>
-        <Outlet context={{ user }} />
+        {isLoading ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+            height="100%"
+          >
+            <Spinner size="xl" />
+          </Box>
+        ) : (
+          <Outlet context={{ user }} />
+        )}
       </Flex>
     </Flex>
   );

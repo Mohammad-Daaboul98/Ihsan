@@ -102,6 +102,8 @@ const AddStudentRate = () => {
     setSelectedPages([]); // Reset Pages when Juz changes
   };
 
+  
+
   return (
     <Box
       padding={{

@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useLoaderData } from "react-router-dom";
+import {
+  Link,
+  useLoaderData,
+  useNavigate,
+  useNavigation,
+} from "react-router-dom";
 import {
   ModalComponent,
   QRCodeComponent,
@@ -9,25 +14,15 @@ import {
 } from "../components";
 import customFetch from "../utils/customFetch";
 import { IoAddCircleSharp } from "react-icons/io5";
-import {
-  BiLogoTelegram,
-  BiLogoWhatsapp,
-  BiMessageSquareDetail,
-  BiShareAlt,
-  BiShow,
-} from "react-icons/bi";
+import { BiShow } from "react-icons/bi";
 import {
   Button,
   IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   useDisclosure,
   ModalOverlay,
-  Tooltip,
+  Spinner,
+  Box,
 } from "@chakra-ui/react";
-import QRCode from "qrcode";
 import dayjs from "dayjs";
 import "dayjs/locale/ar";
 dayjs.locale("ar");
@@ -67,8 +62,10 @@ const AllStudents = () => {
   const [selectedAttendance, setSelectedAttendance] = useState([]);
   const { searchValue } = useLoaderData();
 
-  const { data, isLoading, error } = useQuery(allStudentsQuery(searchValue));
+  const { data } = useQuery(allStudentsQuery(searchValue));
+  const navigation = useNavigation();
   const students = data?.students || [];
+  const isLoading = navigation.state === "loading";
 
   const Overlay = () => (
     <ModalOverlay
@@ -196,9 +193,12 @@ const AllStudents = () => {
   };
 
   const flattenedData = flattenData(selectedAttendance);
-
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error loading students data.</p>;
+  if (isLoading)
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <Spinner size="6xl" />
+      </Box>
+    );
 
   return (
     <>
@@ -206,28 +206,36 @@ const AllStudents = () => {
         searchValue={searchValue}
         labelText="بحث عن طريق اسم الطالب او العمر"
       />
-      <TableComponent
-        title="معلومات الطالب"
-        columns={columns}
-        data={students}
-        editAndDelete={true}
-        editPage="edit-student"
-        deletePage="delete-student"
-      />
-      <ModalComponent
-        isOpen={isOpen}
-        onClose={onClose}
-        overlay={<Overlay />}
-        components={
+      {isLoading ? (
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Spinner size="6xl" />
+        </Box>
+      ) : (
+        <>
           <TableComponent
-            title="معلومات حضور الطالب"
-            columns={modalColumns}
-            data={flattenedData}
-            editAndDelete={false}
-            width="6xl"
+            title="معلومات الطالب"
+            columns={columns}
+            data={students}
+            editAndDelete={true}
+            editPage="edit-student"
+            deletePage="delete-student"
           />
-        }
-      />
+          <ModalComponent
+            isOpen={isOpen}
+            onClose={onClose}
+            overlay={<Overlay />}
+            components={
+              <TableComponent
+                title="معلومات حضور الطالب"
+                columns={modalColumns}
+                data={flattenedData}
+                editAndDelete={false}
+                width="6xl"
+              />
+            }
+          />
+        </>
+      )}
     </>
   );
 };

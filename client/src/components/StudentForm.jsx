@@ -53,7 +53,7 @@ const StudentForm = ({
 
       <Form method="post">
         {checkBox ? (
-          <Box display="flex" gap="20px" m="30px 0">
+          <Box display="flex" flexWrap='wrap' gap="20px" m="30px 0">
             {StudentCheckBox.map(({ title, listItem }, index) => (
               <Checkbox
                 key={index}

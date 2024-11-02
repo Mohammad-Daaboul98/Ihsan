@@ -31,8 +31,8 @@ export const action =
   async ({ request }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
-    data.StudentJuz = [{ juzName: data.StudentJuz }];
-
+    
+    data.StudentJuz = [{ juzName: data.juzName }];
     const role = "student";
     try {
       const student = await customFetch.post("student", { ...data, role });
