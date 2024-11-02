@@ -56,7 +56,7 @@ const Login = () => {
             <Button
               type="submit"
               w="100%"
-              isLoading
+              isLoading={isLoading}
               spinner={<BeatLoader size={8} color="white" />}
             >
               تسجيل الدخول
