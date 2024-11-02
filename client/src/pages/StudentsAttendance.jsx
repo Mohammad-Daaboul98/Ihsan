@@ -141,12 +141,14 @@ const StudentsAttendance = () => {
         const attendance = studentsAttendance[studentId] || "موجد";
 
         return (
-          <RadioGroup
-            studentsAttendance={(value) =>
-              handleAttendanceChange(studentId, value)
-            }
-            currentAttendance={attendance} // Pass current state as value
-          />
+          <Box>
+            <RadioGroup
+              studentsAttendance={(value) =>
+                handleAttendanceChange(studentId, value)
+              }
+              currentAttendance={attendance}
+            />
+          </Box>
         );
       },
     },
@@ -162,7 +164,7 @@ const StudentsAttendance = () => {
         mx={"auto"}
         mt={4}
         mb="5px"
-        width={{ base: "90%", md: "80%", lg: "xl", xl: "2xl", "2xl": "78%" }}
+        width={{ base: "90%", md: "80%", lg: "xl", xl: "2xl" }}
       >
         <Form method="post">
           {Object.entries(studentsAttendance).map(([studentId, attendance]) => (

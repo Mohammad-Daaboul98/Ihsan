@@ -7,8 +7,8 @@ const RadioCard = (props) => {
   const checkbox = getRadioProps();
 
   return (
-    <Box as="label" display="inline-block" mx="10px">
-      <Input {...input} />
+    <Box as="label">
+      <Input />
       <Box
         {...checkbox}
         cursor="pointer"
