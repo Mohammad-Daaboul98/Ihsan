@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, redirect, useActionData, useLoaderData, useNavigation } from "react-router-dom";
+import { Form, redirect, useActionData, useLoaderData } from "react-router-dom";
 import { FormRow, FormRowSelect } from "../components";
 import { studentInputRate } from "../utils/formFields";
 import { Box, Button, Heading, SimpleGrid, Text } from "@chakra-ui/react";
@@ -84,8 +84,6 @@ const AddStudentRate = () => {
     data: { student },
   } = useQuery(singleStudentQuery(id));
   const juzName = student.StudentJuz;
-  const navigation = useNavigation();
-  const isLoading = navigation.state === "submitting";
 
   const [surahPages, setSurahPages] = useState([]);
   const [juzSurah, setJuzSurah] = useState([]);
