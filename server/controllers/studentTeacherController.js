@@ -1,4 +1,4 @@
-import Students from "../models/StudentProfileModel.js"; // Student model
+import Students from "../models/StudentProfile.js"; // Student model
 import { StatusCodes } from "http-status-codes";
 
 export const getAllStudentsWithTeachers = async (req, res) => {

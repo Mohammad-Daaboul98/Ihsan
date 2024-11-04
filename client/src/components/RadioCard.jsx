@@ -14,7 +14,7 @@ const RadioCard = (props) => {
         cursor="pointer"
         borderWidth="1px"
         borderRadius="md"
-        boxShadow="md"
+        boxShadow="md"  
         _checked={{
           bg: props.children === "غائب" ? "red.600" : "teal.600",
           color: "white",

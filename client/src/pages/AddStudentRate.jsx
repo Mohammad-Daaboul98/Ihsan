@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, redirect, useActionData, useLoaderData } from "react-router-dom";
+import { Form, redirect, useActionData, useLoaderData, useNavigation } from "react-router-dom";
 import { FormRow, FormRowSelect } from "../components";
 import { studentInputRate } from "../utils/formFields";
 import { Box, Button, Heading, SimpleGrid, Text } from "@chakra-ui/react";
@@ -63,6 +63,12 @@ export const action =
       });
       queryClient.invalidateQueries(["students&Teachers"]);
       toast.success("تم حفظ التقيم", { theme: "colored" });
+      whatsAppMessage(
+        data?.parentPhone,
+        MessageInfo?.qrCode,
+        MessageInfo?.userName,
+        data?.password
+      );
       return redirect("../students");
     } catch (error) {
       console.error("Error:", error);
@@ -78,11 +84,13 @@ const AddStudentRate = () => {
     data: { student },
   } = useQuery(singleStudentQuery(id));
   const juzName = student.StudentJuz;
+  const navigation = useNavigation();
+  const isLoading = navigation.state === "submitting";
 
   const [surahPages, setSurahPages] = useState([]);
   const [juzSurah, setJuzSurah] = useState([]);
-  const [selectedSurah, setSelectedSurah] = useState(null); // Add state for selected Surah
-  const [selectedPages, setSelectedPages] = useState([]); // Add state for selected Pages
+  const [selectedSurah, setSelectedSurah] = useState();
+  const [selectedPages, setSelectedPages] = useState([]);
 
   const errorMessage = date?.response?.data?.msg;
 
@@ -97,6 +105,8 @@ const AddStudentRate = () => {
   // Handle selection change for Juz
   const handleJuzChange = (selectedJuz) => {
     const juz = QURAN_INDEX.JUZ.find((juz) => juz.juzName === selectedJuz);
+    console.log(selectedJuz);
+
     setJuzSurah(juz ? juz.surahs : []);
     setSelectedSurah(null); // Reset Surah when Juz changes
     setSelectedPages([]); // Reset Pages when Juz changes

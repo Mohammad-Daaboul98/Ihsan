@@ -11,8 +11,8 @@ import {
   USER_TYPE,
 } from "../shared/constants.js";
 import { arabicNameRegex } from "../utils/nameRegex.js";
-import User from "../models/UserModel.js";
-import Student from "../models/StudentProfileModel.js";
+import User from "../models/User.js";
+import Student from "../models/StudentProfile.js";
 
 const withValidationErrors = (validationValue) => {
   return [

@@ -1,12 +1,11 @@
-// import mongoose from "mongoose";
-import Student from "../models/StudentProfileModel.js";
+import Student from "../models/StudentProfile.js";
 import { StatusCodes } from "http-status-codes";
+import qrCodeGenerator from "../utils/qrCodeGenerator.js";
 
 export const getCurrentStudent = async (req, res) => {
   const id = req.user._id;
 
   const student = await Student.findById(id);
-  console.log(student);
   res.status(StatusCodes.OK).json({ student });
 };
 
@@ -35,17 +34,26 @@ export const getAllStudents = async (req, res) => {
 };
 export const getStudent = async (req, res) => {
   const { id } = req.currentUserId || req.params;
-  const student = await Student.findById(id);
+  const student = await Student.findById(id).populate("studentJuz", "juzName");
   res.status(StatusCodes.OK).json({ student });
 };
 
 export const createStudentProfile = async (req, res) => {
   const { user, profileData } = req.userInfo;
+
+  const { juzId } = req.juzInfo;
+  profileData.studentJuz = juzId;
+
+  await qrCodeGenerator(user._id, profileData);
   const studentProfile = await Student.create({
     _id: user._id,
     ...profileData,
   });
-  res.status(StatusCodes.CREATED).json({ user, studentProfile });
+  const MessageInfo = {
+    userName: user.userName,
+    qrUrl: profileData.qrCode,
+  };
+  res.status(StatusCodes.CREATED).json({ user, MessageInfo, studentProfile });
 };
 
 export const updateMultipleStudentsAttendance = async (req, res) => {
@@ -89,11 +97,11 @@ export const updateStudentProfile = async (req, res) => {
     updatedStudent = req.body;
   }
 
+
+
   const studentProfile = await Student.findByIdAndUpdate(id, updatedStudent, {
     new: true,
   });
-
-  console.log(updatedUser);
 
   res.status(StatusCodes.OK).json({
     msg: "تم تعديل حساب الطالب",

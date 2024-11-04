@@ -26,7 +26,7 @@ const FormRowSelect = ({
 
   useEffect(() => {
     const formattedOptions = list.map((item) => ({
-      value: item._id || item.id || item[listItem] || item,
+      value: item[listItem] || item._id || item.id || item,
       label: listItem ? item[listItem] : item,
     }));
     setOptions(formattedOptions);
@@ -39,9 +39,6 @@ const FormRowSelect = ({
     setSelectedValue(e);
     onChange && onChange(selected ? selected : null);
   };
-  
-
-  
 
   return (
     <FormControl>

@@ -1,6 +1,7 @@
-import Teacher from "../models/TeacherProfileModel.js";
-import Student from "../models/StudentProfileModel.js";
+import Teacher from "../models/TeacherProfile.js";
+import Student from "../models/StudentProfile.js";
 import { StatusCodes } from "http-status-codes";
+import qrCodeGenerator from "../utils/qrCodeGenerator.js";
 
 export const getAllTeachers = async (req, res) => {
   const { search } = req.query;
@@ -20,7 +21,7 @@ export const getAllTeachers = async (req, res) => {
   const teachers = await Teacher.aggregate([
     {
       $lookup: {
-        from: "students",  // Name of the student collection
+        from: "students", // Name of the student collection
         localField: "_id",
         foreignField: "teacherId",
         as: "students",
@@ -33,11 +34,10 @@ export const getAllTeachers = async (req, res) => {
     },
     {
       $project: {
-        students: 0,  // Exclude the full students array if you don't need it
+        students: 0, // Exclude the full students array if you don't need it
       },
     },
   ]);
-  
 
   const teacher = teachers.filter(
     (teacher) => teacher._id.toString() !== "669a98d474ed7a09fdd6fe04"
@@ -54,11 +54,19 @@ export const getTeacher = async (req, res) => {
 
 export const createTeacherProfile = async (req, res) => {
   const { user, profileData } = req.userInfo;
+
+  profileData.teacherPhone = `+963${profileData.teacherPhone}`;
+
+  await qrCodeGenerator(user._id, profileData);
   const teacherProfile = await Teacher.create({
     _id: user._id,
     ...profileData,
   });
-  res.status(StatusCodes.CREATED).json({ user, teacherProfile });
+  const MessageInfo = {
+    userName: user.userName,
+    qrUrl: profileData.qrCode,
+  };
+  res.status(StatusCodes.CREATED).json({ user, MessageInfo, teacherProfile });
 };
 export const updateTeacherProfile = async (req, res) => {
   const { updatedUser, updatedProfileData } = req.updatedUserInfo;

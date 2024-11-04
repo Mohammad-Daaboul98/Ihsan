@@ -78,6 +78,11 @@ const AllStudents = () => {
       id: "parentPhone",
       header: "هاتف ولي الأمر",
       accessorKey: "parentPhone",
+      Cell: ({ cell }) => (
+        <div style={{ direction: "ltr"}}>
+          {cell.getValue()}
+        </div>
+      )
     },
     {
       id: "StudentStudy",
@@ -85,7 +90,21 @@ const AllStudents = () => {
       accessorKey: "StudentStudy",
     },
     { id: "age", header: "عمر الطالب", accessorKey: "age", isNumeric: true },
-
+    {
+      header: "باركود",
+      accessorKey: "qrCode",
+      cell: ({ row }) => {
+        const student = row.original;
+        return (
+          <QRCodeComponent
+            list={student}
+            id="_id"
+            numberPhone="parentPhone"
+            name="studentName"
+          />
+        );
+      },
+    },
     {
       header: "التقييم",
       accessorKey: "View&Add",

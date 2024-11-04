@@ -1,9 +1,11 @@
 import { redirect, useActionData } from "react-router-dom";
+
 import { TeacherFrom } from "../components";
 
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 import { handleFormSubmit } from "../utils/excelDBHandler";
+import whatsAppMessage from "../utils/whatsAppMessage";
 
 export const action =
   (queryClient) =>
@@ -14,8 +16,16 @@ export const action =
     try {
       const teacher = await customFetch.post("teacher", { ...data, role });
       const teacherData = teacher?.data?.user;
+      const MessageInfo = teacher?.data?.MessageInfo;
+
       queryClient.invalidateQueries(["teachers"]);
       toast.success("تم انشاء استاذ جديد", { theme: "colored" });
+      whatsAppMessage(
+        data?.teacherPhone,
+        "",
+        MessageInfo?.userName,
+        data?.password
+      );
       const newTeacherData = [
         {
           "اسم المستخدم": teacherData?.userName,

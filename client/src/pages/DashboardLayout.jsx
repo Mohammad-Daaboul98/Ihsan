@@ -101,7 +101,7 @@ function DashboardLayout({ queryClient }) {
           <Navbar sidebarProps={sidebarProps} />
         )}
       </Box>
-      <Flex w="100%" flexDirection="column">
+      <Flex w="100%" flexDirection="column" overflow='hidden'>
         <Box
           position="sticky"
           top="0"

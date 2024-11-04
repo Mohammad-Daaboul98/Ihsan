@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import User from "../models/UserModel.js";
+import User from "../models/User.js";
 import { hashPassword } from "../utils/passwordUtils.js";
 
 export const getCurrentUser = async (req, res) => {

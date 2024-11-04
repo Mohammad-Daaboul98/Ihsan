@@ -20,6 +20,7 @@ import {
   updateUser,
 } from "../controllers/userController.js";
 import { authorizePermissions } from "../middleware/authMiddleware.js";
+import { createJuz } from "../controllers/juzController.js";
 
 const router = Router();
 
@@ -31,6 +32,7 @@ router
     validateUserInput,
     validateStudentProfileInput,
     createUser,
+    createJuz,
     createStudentProfile
   )
   .patch(
