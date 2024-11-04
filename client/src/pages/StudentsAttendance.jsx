@@ -5,16 +5,17 @@ import {
   SearchComponent,
   TableComponent,
 } from "../components";
-import { Form, redirect, useLoaderData } from "react-router-dom";
+import { Form, redirect, useLoaderData, useNavigation } from "react-router-dom";
 import customFetch from "../utils/customFetch";
 import { useState } from "react";
 import { Box, Button, Input } from "@chakra-ui/react";
 import { toast } from "react-toastify";
+import { BeatLoader } from "react-spinners";
 
 const allStudentsQuery = (params) => {
   const { search } = params;
   return {
-    queryKey: ["students&Teachers", search],
+    queryKey: ["students", search],
     queryFn: async () => {
       const data = customFetch.get("/student-with-teacher", { params });
       return data;
@@ -43,7 +44,7 @@ export const action =
 
     try {
       await customFetch.patch("student", studentAttendance);
-      queryClient.invalidateQueries(["students&Teachers"]);
+      queryClient.invalidateQueries(["students"]);
       toast.success("تم تعديل حالة حضور الطالاب", { theme: "colored" });
       return redirect("../students");
     } catch (error) {
@@ -76,6 +77,8 @@ const StudentsAttendance = () => {
   const { data: { students = [] } = {} } = useQuery(
     allStudentsQuery(searchValue)
   ).data;
+  const navigation = useNavigation();
+  const isLoading = navigation.state === "submitting";
 
   // Handle attendance state change for each student
   const handleAttendanceChange = (studentId, attendance) => {
@@ -138,12 +141,14 @@ const StudentsAttendance = () => {
         const attendance = studentsAttendance[studentId] || "موجد";
 
         return (
-          <RadioGroup
-            studentsAttendance={(value) =>
-              handleAttendanceChange(studentId, value)
-            }
-            currentAttendance={attendance} // Pass current state as value
-          />
+          <Box>
+            <RadioGroup
+              studentsAttendance={(value) =>
+                handleAttendanceChange(studentId, value)
+              }
+              currentAttendance={attendance}
+            />
+          </Box>
         );
       },
     },
@@ -159,7 +164,7 @@ const StudentsAttendance = () => {
         mx={"auto"}
         mt={4}
         mb="5px"
-        width={{ base: "90%", md: "80%", lg: "xl", xl: "2xl", "2xl": "78%" }}
+        width={{ base: "90%", md: "80%", lg: "xl", xl: "2xl" }}
       >
         <Form method="post">
           {Object.entries(studentsAttendance).map(([studentId, attendance]) => (
@@ -197,6 +202,8 @@ const StudentsAttendance = () => {
               colorScheme="teal"
               size="lg"
               w={{ base: "48%", lg: "auto", md: "auto", sm: "48%" }}
+              isLoading={isLoading}
+              spinner={<BeatLoader size={8} color="white" />}
             >
               حفظ الحضور
             </Button>

@@ -16,7 +16,7 @@ const RadioGroup = ({ studentsAttendance, currentAttendance }) => {
   const group = getRootProps();
   
   return (
-    <Box {...group}>
+    <Box display='flex' gap='0 10px' {...group}>
       {options.map((value) => {
         const radio = getRadioProps({ value });
         return (

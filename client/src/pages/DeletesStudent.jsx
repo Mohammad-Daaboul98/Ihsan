@@ -9,6 +9,7 @@ export const action =
       await customFetch.delete(`/student/${params.id}`);
       queryClient.invalidateQueries(["students&Teachers"]);
       queryClient.invalidateQueries(["teachers"]);
+      queryClient.invalidateQueries(["students"]);
 
       toast.success(
         "تم حذف الطالب"

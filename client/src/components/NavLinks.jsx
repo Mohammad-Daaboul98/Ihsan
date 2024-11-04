@@ -1,9 +1,9 @@
 import { Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-import Links from "../utils/Links";
 import { NavLink } from "react-router-dom";
 import useRootStyles from "../theme/useRootStyles";
 import DownloadButton from "./DownloadButton";
 import { LiaFileDownloadSolid } from "react-icons/lia";
+import Links from "./Links";
 
 function NavLinks({ setToggled }) {
   const menuTheme = {

@@ -1,4 +1,4 @@
-import { redirect, useActionData, useLoaderData } from "react-router-dom";
+import { redirect, useActionData, useLoaderData, useNavigation } from "react-router-dom";
 import { AccordionComponents, JuzForm, StudentForm } from "../components";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
@@ -87,6 +87,7 @@ export const action =
       }
       queryClient.invalidateQueries(["students&Teachers"]);
       queryClient.invalidateQueries(["teachers"]);
+      queryClient.invalidateQueries(["students"]);
 
       toast.success(toastMsg, { theme: "colored" });
       return juzName ? null : redirect("../students");
@@ -103,6 +104,8 @@ const EditStudent = () => {
   const { data: { students, teachers } = {} } = useQuery(
     studentsTeachersQuery(id)
   );
+  const navigation = useNavigation();
+  const isLoading = navigation.state === "submitting";
 
   const { StudentJuz } = students;
   const quranJuzName = QURAN_INDEX.JUZ.map((i) => {
@@ -129,6 +132,7 @@ const EditStudent = () => {
           defaultValue={students}
           disable={true}
           checkBox={true}
+          isLoading={isLoading}
         />
       ),
     },

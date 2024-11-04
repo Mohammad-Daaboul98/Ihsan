@@ -1,8 +1,10 @@
-import { Form, redirect } from "react-router-dom";
+import { Form, redirect, useNavigation } from "react-router-dom";
 import { FormRow, Header } from "../components";
 import { Box, Button, Container } from "@chakra-ui/react";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
+import { BeatLoader } from 'react-spinners';
+
 
 export const action =
   (queryClient) =>
@@ -24,6 +26,9 @@ export const action =
   };
 
 const Login = () => {
+  const navigation = useNavigation();
+  const isLoading = navigation.state === "submitting";
+
   return (
     <Box h="100vh" display="flex" flexDirection="column" alignItems="center">
       <Header />
@@ -48,7 +53,12 @@ const Login = () => {
               labelText="كلمة السر"
               btnPassword={false}
             />
-            <Button type="submit" w="100%">
+            <Button
+              type="submit"
+              w="100%"
+              isLoading={isLoading}
+              spinner={<BeatLoader size={8} color="white" />}
+            >
               تسجيل الدخول
             </Button>
           </Form>

@@ -11,6 +11,7 @@ import { StudentCheckBox, studentInput } from "../utils/formFields";
 import FormRow from "./FormRow";
 import FormRowSelect from "./FormRowSelect";
 import { useState } from "react";
+import { BeatLoader } from "react-spinners";
 
 const StudentForm = ({
   title,
@@ -20,6 +21,7 @@ const StudentForm = ({
   teachers,
   disable = false,
   checkBox,
+  isLoading,
 }) => {
   const [disableInput, setDisableInput] = useState({
     userName: disable,
@@ -53,7 +55,7 @@ const StudentForm = ({
 
       <Form method="post">
         {checkBox ? (
-          <Box display="flex" gap="20px" m="30px 0">
+          <Box display="flex" flexWrap="wrap" gap="20px" m="30px 0">
             {StudentCheckBox.map(({ title, listItem }, index) => (
               <Checkbox
                 key={index}
@@ -132,6 +134,8 @@ const StudentForm = ({
           colorScheme="teal"
           size="lg"
           width="full"
+          isLoading={isLoading}
+          spinner={<BeatLoader size={8} color="white" />}
         >
           {btnTitle}
         </Button>

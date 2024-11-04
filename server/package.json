@@ -2,13 +2,14 @@
   "name": "ihsan",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
+    "start": "node server",
     "server": "nodemon server",
     "client": "cd ../client && npm run dev",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "build": "cd ../client && npm install && npm run build"
   },
   "keywords": [],
   "author": "Mohammad Daaboul",
@@ -20,6 +21,7 @@
     "cloudinary": "^2.5.1",
     "concurrently": "^8.0.1",
     "cookie-parser": "^1.0.0",
+    "cors": "^2.8.5",
     "datauri": "^4.1.0",
     "dayjs": "^1.11.9",
     "dotenv": "^16.0.3",

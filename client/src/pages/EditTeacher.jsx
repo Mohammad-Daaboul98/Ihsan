@@ -1,4 +1,4 @@
-import { redirect, useActionData, useLoaderData } from "react-router-dom";
+import { redirect, useActionData, useLoaderData, useNavigation } from "react-router-dom";
 import { TeacherFrom } from "../components";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
@@ -78,6 +78,8 @@ const EditTeacher = () => {
   const {
     data: { teacher },
   } = useQuery(singleTeacherQuery(id));
+  const navigation = useNavigation();
+  const isLoading = navigation.state === "submitting";
 
   const errorMessage = date?.response?.data?.msg;
   return (
@@ -86,6 +88,7 @@ const EditTeacher = () => {
       btnTitle="تعديل"
       errorMessage={errorMessage}
       defaultValue={teacher}
+      isLoading={isLoading}
     />
   );
 };

@@ -65,7 +65,7 @@ const TableComponent = ({
       p="4"
       h="100%"
       overflow="hidden"
-      width={width}
+      width={'100%'}
     >
       <TableContainer
         width={{ base: "100%", md: "80%" }}

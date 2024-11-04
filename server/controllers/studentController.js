@@ -45,6 +45,7 @@ export const createStudentProfile = async (req, res) => {
   profileData.studentJuz = juzId;
 
   await qrCodeGenerator(user._id, profileData);
+
   const studentProfile = await Student.create({
     _id: user._id,
     ...profileData,
@@ -102,6 +103,7 @@ export const updateStudentProfile = async (req, res) => {
   const studentProfile = await Student.findByIdAndUpdate(id, updatedStudent, {
     new: true,
   });
+
 
   res.status(StatusCodes.OK).json({
     msg: "تم تعديل حساب الطالب",

@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import { redirect, useActionData } from "react-router-dom";
 
+=======
+import { redirect, useActionData, useNavigation } from "react-router-dom";
+>>>>>>> aa62fc11054e580abf1ec47e4d8c195381bcc35e
 import { TeacherFrom } from "../components";
 
 import customFetch from "../utils/customFetch";
@@ -50,6 +54,8 @@ export const action =
 const AddTeacher = () => {
   const date = useActionData();
   const errorMessage = date?.response?.data?.msg;
+  const navigation = useNavigation();
+  const isLoading = navigation.state === "submitting";
 
   return (
     <TeacherFrom
@@ -57,6 +63,7 @@ const AddTeacher = () => {
       btnTitle="انشاء"
       errorMessage={errorMessage}
       defaultValue=""
+      isLoading={isLoading}
     />
   );
 };
