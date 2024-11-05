@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Form, redirect, useActionData, useLoaderData, useNavigation } from "react-router-dom";
+import {
+  Form,
+  redirect,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "react-router-dom";
 import { FormRow, FormRowSelect } from "../components";
 import { studentInputRate } from "../utils/formFields";
 import { Box, Button, Heading, SimpleGrid, Text } from "@chakra-ui/react";
@@ -35,41 +41,31 @@ export const loader =
 
 export const action =
   (queryClient) =>
-  async ({ request, params }) => {
+  async ({ request }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
+    const juzId = data?.juzName;
 
-    const pageStatus = [
-      {
-        pageFrom: data.pagesFrom,
-        pageTo: data.pagesTo,
-        rate: data.rate,
-        date: data.date,
-      },
-    ];
+    const pageStatus = {
+      pageFrom: data.pagesFrom,
+      pageTo: data.pagesTo,
+      rate: data.rate,
+      date: data.date,
+    };
 
     const newSurah = {
       surahName: data.surahName,
-      pages: pageStatus,
+      ...pageStatus,
     };
 
     try {
-      const { student } = queryClient.getQueryData(["students", params.id]);
-
-      const juz = findOrCreateJuz(student?.StudentJuz, data.juzName);
-      findOrUpdateSurah(juz, newSurah);
-
-      await customFetch.patch(`student/student-rate/${params.id}`, {
-        ...student,
+      await customFetch.post(`rating`, {
+        juzId,
+        ...newSurah,
       });
       queryClient.invalidateQueries(["students&Teachers"]);
       toast.success("تم حفظ التقيم", { theme: "colored" });
-      whatsAppMessage(
-        data?.parentPhone,
-        MessageInfo?.qrCode,
-        MessageInfo?.userName,
-        data?.password
-      );
+
       return redirect("../students");
     } catch (error) {
       console.error("Error:", error);
@@ -84,7 +80,7 @@ const AddStudentRate = () => {
   const {
     data: { student },
   } = useQuery(singleStudentQuery(id));
-  const juzName = student.StudentJuz;
+  const juzName = student.studentJuz;
   const navigation = useNavigation();
   const isLoading = navigation.state === "submitting";
 

@@ -4,6 +4,7 @@ import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import { handleFormSubmit } from "../utils/excelDBHandler";
+import whatsAppMessage from "../utils/whatsAppMessage";
 
 const getTeachersQuery = () => {
   return {
@@ -41,6 +42,14 @@ export const action =
       queryClient.invalidateQueries(["teachers"]);
       queryClient.invalidateQueries(["students"]);
       toast.success("تم انشاء طالب جديد", { theme: "colored" });
+
+      // whatsAppMessage(
+      //   data?.parentPhone,
+      //   MessageInfo?.qrCode,
+      //   MessageInfo?.userName,
+      //   data?.password
+      // );
+
       const newStudentData = [
         {
           "اسم المستخدم": studentData?.userName,

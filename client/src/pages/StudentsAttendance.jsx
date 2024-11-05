@@ -1,10 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  QrReader,
-  RadioGroup,
-  SearchComponent,
-  TableComponent,
-} from "../components";
+import { RadioGroup, SearchComponent, TableComponent } from "../components";
 import { Form, redirect, useLoaderData, useNavigation } from "react-router-dom";
 import customFetch from "../utils/customFetch";
 import { useState } from "react";
@@ -95,7 +90,9 @@ const StudentsAttendance = () => {
       accessorKey: "teacherId",
       cell: ({ getValue }) => {
         const teacherId = getValue();
-        const teacherName = teacherId.teacherName;
+        console.log(teacherId);
+
+        const teacherName = teacherId?.teacherName ? teacherId.teacherName : "بدون استاذ";
         return teacherName;
       },
     },

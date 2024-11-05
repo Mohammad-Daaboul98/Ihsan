@@ -1,9 +1,7 @@
-<<<<<<< HEAD
-import { redirect, useActionData } from "react-router-dom";
 
-=======
+
 import { redirect, useActionData, useNavigation } from "react-router-dom";
->>>>>>> aa62fc11054e580abf1ec47e4d8c195381bcc35e
+
 import { TeacherFrom } from "../components";
 
 import customFetch from "../utils/customFetch";

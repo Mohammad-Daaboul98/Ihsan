@@ -136,6 +136,7 @@ const StudentForm = ({
           width="full"
           isLoading={isLoading}
           spinner={<BeatLoader size={8} color="white" />}
+          onClick={(e) => e.preventDefault}
         >
           {btnTitle}
         </Button>

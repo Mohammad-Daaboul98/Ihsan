@@ -26,14 +26,15 @@ const FormRowSelect = ({
 
   useEffect(() => {
     const formattedOptions = list.map((item) => ({
-      value: item[listItem] || item._id || item.id || item,
+      value: item._id || item.id || item[listItem] || item,
       label: listItem ? item[listItem] : item,
     }));
     setOptions(formattedOptions);
   }, [list, listItem]);
 
   const handleChange = (e, name) => {
-    const selected = e.value;
+    const selected = e.label;
+
     name === "juzName" && setRest(true);
 
     setSelectedValue(e);
