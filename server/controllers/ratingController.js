@@ -53,7 +53,7 @@ export const addOrUpdateRating = async (req, res) => {
     });
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      msg: "Error in adding or updating rating",
+      msg: "حدث خطاء عند اضافة تقيم حاول مره اخرى",
       error,
     });
   }
