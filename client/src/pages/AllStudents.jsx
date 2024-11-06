@@ -1,11 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Link,
-  useLoaderData,
-  useNavigate,
-  useNavigation,
-} from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import {
   ModalComponent,
   QRCodeComponent,
@@ -20,8 +15,6 @@ import {
   IconButton,
   useDisclosure,
   ModalOverlay,
-  Spinner,
-  Box,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import "dayjs/locale/ar";
@@ -63,9 +56,7 @@ const AllStudents = () => {
   const { searchValue } = useLoaderData();
 
   const { data } = useQuery(allStudentsQuery(searchValue));
-  const navigation = useNavigation();
   const students = data?.students || [];
-  const isLoading = navigation.state === "loading";
 
   const Overlay = () => (
     <ModalOverlay
@@ -88,13 +79,11 @@ const AllStudents = () => {
     { id: "parentWork", header: "عمل ولي الأمر", accessorKey: "parentWork" },
     {
       id: "parentPhone",
-      header: "ولي الأمر",
+      header: "هاتف ولي الأمر",
       accessorKey: "parentPhone",
       Cell: ({ cell }) => (
-        <div style={{ direction: "ltr"}}>
-          {cell.getValue()}
-        </div>
-      )
+        <div style={{ direction: "ltr" }}>{cell.getValue()}</div>
+      ),
     },
     {
       id: "StudentStudy",
@@ -127,7 +116,7 @@ const AllStudents = () => {
             <Button
               ml="10px"
               onClick={() => {
-                setSelectedAttendance(row.original.StudentJuz);
+                setSelectedAttendance(row.original.studentJuz);
                 onOpen();
               }}
             >
@@ -190,20 +179,14 @@ const AllStudents = () => {
           juzName: item.juzName,
           surahName: surah.surahName,
           page: page,
-          rate: surah.rate,
-          studentAttendance: surah.studentAttendance,
         }))
       )
     );
   };
 
   const flattenedData = flattenData(selectedAttendance);
-  if (isLoading)
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center">
-        <Spinner size="6xl" />
-      </Box>
-    );
+  // console.log(flattenedData);
+  // console.log(selectedAttendance);
 
   return (
     <>
@@ -211,36 +194,31 @@ const AllStudents = () => {
         searchValue={searchValue}
         labelText="بحث عن طريق اسم الطالب او العمر"
       />
-      {isLoading ? (
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <Spinner size="6xl" />
-        </Box>
-      ) : (
-        <>
-          <TableComponent
-            title="معلومات الطالب"
-            columns={columns}
-            data={students}
-            editAndDelete={true}
-            editPage="edit-student"
-            deletePage="delete-student"
-          />
-          <ModalComponent
-            isOpen={isOpen}
-            onClose={onClose}
-            overlay={<Overlay />}
-            components={
-              <TableComponent
-                title="معلومات حضور الطالب"
-                columns={modalColumns}
-                data={flattenedData}
-                editAndDelete={false}
-                width="6xl"
-              />
-            }
-          />
-        </>
-      )}
+
+      <>
+        <TableComponent
+          title="معلومات الطالب"
+          columns={columns}
+          data={students}
+          editAndDelete={true}
+          editPage="edit-student"
+          deletePage="delete-student"
+        />
+        <ModalComponent
+          isOpen={isOpen}
+          onClose={onClose}
+          overlay={<Overlay />}
+          components={
+            <TableComponent
+              title="معلومات حضور الطالب"
+              columns={modalColumns}
+              data={flattenedData}
+              editAndDelete={false}
+              width="6xl"
+            />
+          }
+        />
+      </>
     </>
   );
 };

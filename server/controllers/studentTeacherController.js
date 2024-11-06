@@ -18,10 +18,24 @@ export const getAllStudentsWithTeachers = async (req, res) => {
     ];
   }
 
-  const studentsWithTeachers = await Students.find(queryObject).populate(
-    "teacherId",
-    "teacherName"
-  );
+  const studentsWithTeachers = await Students.find(queryObject)
+    .populate({
+      path: "teacherId",
+      select: "teacherName",
+    })
+    .populate({
+      path: "studentJuz",
+      populate: [
+        {
+          path: "surahs",
+          select: "surahName",
+          populate: {
+            path: "pages",
+            select: "pageFrom pageTo rate date", 
+          },
+        },
+      ],
+    });
 
   res.status(StatusCodes.OK).json({ students: studentsWithTeachers });
 };
