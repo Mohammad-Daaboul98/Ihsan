@@ -24,6 +24,7 @@ import studentRouter from "./routes/studentRouter.js";
 import teacherRouter from "./routes/teacherRouter.js";
 import studentTeacherRouter from "./routes/studentTeacherRouter.js";
 import ratingRouter from "./routes/ratingsRouter.js";
+import juzRouter from "./routes/juzRouter.js";
 
 //Middleware
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
@@ -79,6 +80,12 @@ app.use(
   authenticateUser,
   authorizePermissions("admin", "teacher"),
   ratingRouter
+);
+app.use(
+  "/api/v1/juz",
+  authenticateUser,
+  authorizePermissions("admin", "teacher"),
+  juzRouter
 );
 
 app.get("*", (req, res) => {

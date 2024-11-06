@@ -2,7 +2,7 @@ import { position, useColorModeValue } from "@chakra-ui/react";
 
 export const useSelectStyles = () => {
   const bg = useColorModeValue("white", "#1A202C");
-  const dropdownBg = useColorModeValue("white", "#1A202C");  
+  const dropdownBg = useColorModeValue("white", "#2d3748");
   const color = useColorModeValue("black", "white");
   const borderColor = useColorModeValue("#CBD5E0", "#4A5568");
   const placeholderColor = useColorModeValue("#718096", "#A0AEC0");
@@ -15,7 +15,7 @@ export const useSelectStyles = () => {
       borderColor: borderColor,
       color: color,
       fontSize: "16px",
-      minHeight: inputHeight,  
+      minHeight: inputHeight,
       height: inputHeight,
       padding: "0 8px",
       boxShadow: "none",
@@ -29,15 +29,14 @@ export const useSelectStyles = () => {
     }),
     menu: (provided) => ({
       ...provided,
-      backgroundColor: dropdownBg,  // Ensure solid background in dark mode
+      backgroundColor: dropdownBg, 
       zIndex: 9999,
-      borderRadius: "6px",  // Smooth border for dropdown
-      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",  // Subtle shadow for dropdown
-      
+      borderRadius: "6px",
+      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
     }),
     option: (provided, state) => ({
       ...provided,
-      backgroundColor: state.isSelected ? borderColor : dropdownBg,  // Solid bg for options
+      backgroundColor: state.isSelected ? borderColor : dropdownBg, // Solid bg for options
       color: state.isSelected ? color : provided.color,
       "&:hover": {
         backgroundColor: borderColor,
@@ -60,7 +59,7 @@ export const useSelectStyles = () => {
     multiValueRemove: (provided) => ({
       ...provided,
       color: color,
-      ':hover': {
+      ":hover": {
         backgroundColor: borderColor,
         color: color,
       },

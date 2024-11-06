@@ -7,16 +7,13 @@ export const createJuz = async (req, res, next) => {
   next();
 };
 
-// export const updateJuz = async (req, res) => {
-//   const { id } = req.params;
-//   const { surahId } = req.JuzInfo;
+export const updateJuz = async (req, res) => {
+  const { id } = req.params;
+  
+  await Juz.findByIdAndUpdate(
+    id,
+    // {juzName:}
 
-//   await Juz.findByIdAndUpdate(
-//     id,
-//     { $push: { surahs: surahId } },
-//     {
-//       new: true,
-//     }
-//   );
-//   res.status(StatusCodes.OK).json({ msg: "تم اضافة تقيم" });
-// };
+  );
+  res.status(StatusCodes.OK).json({ msg: "تم اضافة تقيم" });
+};

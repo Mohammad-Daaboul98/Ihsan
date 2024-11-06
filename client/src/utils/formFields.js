@@ -163,10 +163,6 @@ export const StudentCheckBox = [
     listItem: "password",
   },
   {
-    title: "الجزء",
-    listItem: "juzName",
-  },
-  {
     title: "الاستاذ",
     listItem: "teacherName",
   },
