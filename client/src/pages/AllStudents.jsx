@@ -75,21 +75,15 @@ const AllStudents = () => {
         return teacherId?.teacherName || "N/A";
       },
     },
-    { id: "parentName", header: "ولي الأمر", accessorKey: "parentName" },
-    { id: "parentWork", header: "عمل ولي الأمر", accessorKey: "parentWork" },
     {
       id: "parentPhone",
       header: "هاتف ولي الأمر",
       accessorKey: "parentPhone",
-      Cell: ({ cell }) => (
+      cell: ({ cell }) => (
         <div style={{ direction: "ltr" }}>{cell.getValue()}</div>
       ),
     },
-    {
-      id: "StudentStudy",
-      header: "المستوى العلمي",
-      accessorKey: "StudentStudy",
-    },
+
     { id: "age", header: "عمر الطالب", accessorKey: "age", isNumeric: true },
     {
       header: "باركود",
@@ -100,8 +94,9 @@ const AllStudents = () => {
           <QRCodeComponent
             list={student}
             id="_id"
-            numberPhone="parentPhone"
+            phoneNumber="parentPhone"
             name="studentName"
+            qrCode="qrCode"
           />
         );
       },

@@ -70,20 +70,21 @@ export const studentInput = [
   {
     type: "text",
     id: "parentName",
-    labelText: "اسم الأب او الأم",
+    labelText: "اسم ولي الأمر",
     defaultKey: "parentName",
   },
   {
     type: "text",
     id: "parentWork",
-    labelText: "عمل الأب او الأم",
+    labelText: "عمل ولي الأمر",
     defaultKey: "parentWork",
   },
   {
     type: "tel",
     id: "parentPhone",
-    labelText: "رقم هاتف الأب أو الأم",
+    labelText: "رقم ولي الأمر",
     defaultKey: "parentPhone",
+    phone: true,
   },
   {
     type: "text",

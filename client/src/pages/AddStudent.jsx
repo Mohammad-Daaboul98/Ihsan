@@ -38,17 +38,19 @@ export const action =
     try {
       const student = await customFetch.post("student", { ...data, role });
       const studentData = student?.data?.user;
+      const MessageInfo = student?.data?.MessageInfo;
+
       queryClient.invalidateQueries(["students&Teachers"]);
       queryClient.invalidateQueries(["teachers"]);
       queryClient.invalidateQueries(["students"]);
       toast.success("تم انشاء طالب جديد", { theme: "colored" });
 
-      // whatsAppMessage(
-      //   data?.parentPhone,
-      //   MessageInfo?.qrCode,
-      //   MessageInfo?.userName,
-      //   data?.password
-      // );
+      whatsAppMessage(
+        data?.parentPhone,
+        MessageInfo?.qrUrl,
+        MessageInfo?.userName,
+        data?.password
+      );
 
       const newStudentData = [
         {

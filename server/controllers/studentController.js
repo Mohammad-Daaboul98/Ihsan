@@ -1,6 +1,7 @@
 import Student from "../models/StudentProfile.js";
 import { StatusCodes } from "http-status-codes";
 import qrCodeGenerator from "../utils/qrCodeGenerator.js";
+import cloudinary from "cloudinary";
 
 export const getCurrentStudent = async (req, res) => {
   const id = req.user._id;
@@ -98,12 +99,9 @@ export const updateStudentProfile = async (req, res) => {
     updatedStudent = req.body;
   }
 
-
-
   const studentProfile = await Student.findByIdAndUpdate(id, updatedStudent, {
     new: true,
   });
-
 
   res.status(StatusCodes.OK).json({
     msg: "تم تعديل حساب الطالب",
@@ -117,6 +115,9 @@ export const deleteStudentProfile = async (req, res) => {
   const { deletedUser } = req.deletedUserInfo;
 
   const deletedStudent = await Student.findByIdAndDelete(deletedUser._id);
+  if (deletedStudent.qrCodePublicId) {
+    await cloudinary.v2.uploader.destroy(deletedStudent.qrCodePublicId);
+  }
 
   res.status(StatusCodes.OK).json({
     msg: "تم حذف الطالب",

@@ -1,5 +1,6 @@
 const whatsAppMessage = (phoneNumber, imageUrl, userName, password) => {
   let messageContent = "";
+  phoneNumber = phoneNumber?.replace(/\s/g, "");
 
   if (userName) {
     messageContent += `اسم المستخدم: ${userName}\n`;

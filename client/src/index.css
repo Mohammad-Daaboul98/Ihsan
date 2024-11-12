@@ -5,11 +5,17 @@
 
 [data-theme="dark"] {
     --hover-color: #1A202C;
+    --list-color: #4A5568
+}
+
+[data-theme="light"] {
+    --list-color: #eee
 }
 
 .active {
     background-color: var(--hover-color) !important;
 }
+
 .form-select {
     width: 100%;
 }
@@ -20,11 +26,27 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     left: 10px;
 }
 
-.rest-link{
-    background-color:teal;
+.rest-link {
+    background-color: teal;
     /* color: #000; */
     font-weight: bold;
     padding: 10px 15px;
     border-radius: 10px;
 }
 
+.custom-phone-input .country-list .country:hover {
+    background-color: var(--list-color);
+}
+
+.custom-phone-input .country-list .highlight {
+    background-color: var(--list-color) !important;
+}
+
+.react-tel-input .flag-dropdown.open .selected-flag {
+    background-color: var(--list-color);
+
+}
+
+.selected-flag:hover {
+    background-color: var(--list-color) !important;
+}

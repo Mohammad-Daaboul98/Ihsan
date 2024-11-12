@@ -45,14 +45,6 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-// const corsOptions = {
-//   origin: 'https://ihsan-sigma.vercel.app', // Allow this origin to access your server
-//   methods: ['GET', 'POST', 'PATCH', 'DELETE'], // Allowed methods
-//   allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
-//   credentials: true, // Allow cookies to be sent with requests
-// };
-
-// app.use(cors(corsOptions));
 
 app.use(express.static(path.resolve(__dirname, "../client/dist")));
 app.use(cookieParser());
