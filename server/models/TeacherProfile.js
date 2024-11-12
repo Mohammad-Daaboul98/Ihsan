@@ -6,8 +6,6 @@ const TeacherProfile = new mongoose.Schema({
   teacherStudy: String,
   age: Number,
   teacherPhone: String,
-  qrCode: String,
-  qrCodePublicId: String,
 });
 
 export default mongoose.model("teachers", TeacherProfile);

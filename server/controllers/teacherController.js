@@ -55,7 +55,6 @@ export const getTeacher = async (req, res) => {
 export const createTeacherProfile = async (req, res) => {
   const { user, profileData } = req.userInfo;
 
-  await qrCodeGenerator(user._id, profileData);
   const teacherProfile = await Teacher.create({
     _id: user._id,
     ...profileData,
