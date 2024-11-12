@@ -39,7 +39,7 @@ const TeacherFrom = ({
           spacing={{ md: "10px 20px", base: "10px" }}
         >
           {teacherInput.map(
-            ({ type, id, labelText, defaultKey, btnPassword }) => (
+            ({ type, id, labelText, defaultKey, btnPassword, phone }) => (
               <FormRow
                 key={id}
                 type={type}
@@ -49,6 +49,7 @@ const TeacherFrom = ({
                 defaultValue={defaultValue}
                 defaultKey={defaultKey}
                 btnPassword={btnPassword}
+                phone={phone}
               />
             )
           )}
