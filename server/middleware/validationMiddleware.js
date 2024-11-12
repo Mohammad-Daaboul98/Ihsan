@@ -125,11 +125,7 @@ export const validateTeacherProfileInput = withValidationErrors([
       }
       return true;
     }),
-  body("teacherPhone")
-    .notEmpty()
-    .withMessage("يجب ادخال رقم هاتف الاستاذ")
-    .isNumeric()
-    .withMessage("يحب انا يحتوي رقم الهاتف على أرقام فقط"),
+  body("teacherPhone").notEmpty().withMessage("يجب ادخال رقم هاتف الاستاذ"),
   body("teacherWork")
     .notEmpty()
     .withMessage("يجب إدخال عمل الأستاذ")
