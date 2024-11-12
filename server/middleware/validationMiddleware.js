@@ -76,12 +76,7 @@ export const validateStudentProfileInput = withValidationErrors([
     .withMessage("يجب اختيار تاريخ الولادة")
     .isNumeric()
     .withMessage("عمر الطالب يجب ان يكون رقم"),
-  body("parentPhone")
-    .notEmpty()
-    .withMessage("يجب ادخال رقم هاتف الأب او الأم")
-    .isNumeric()
-    .withMessage("يحب انا يحتوي رقم الهاتف على أرقام فقط"),
-
+  body("parentPhone").notEmpty().withMessage("يجب ادخال رقم هاتف الأب او الأم"),
   // body("StudentJuz.*.juzName")
   //   .notEmpty()
   //   .withMessage("يجب اختيار الجزء")
@@ -104,7 +99,6 @@ export const validateStudentRateInput = withValidationErrors([
   // body("StudentJuz.*.surahs.*.pages.*.pageFrom")
   //   .notEmpty()
   //   .withMessage("يجب اختيار الصفحة"),
-
 
   // body("StudentJuz.*.surahs.*.pages.*.rate")
   //   .notEmpty()

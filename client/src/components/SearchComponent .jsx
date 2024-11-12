@@ -1,9 +1,10 @@
 import FormRow from "./FormRow";
-import { Form, useSubmit } from "react-router-dom";
+import { Form, Link, useSubmit } from "react-router-dom";
 import useDebounce from "../hooks/useDebounce"; // Adjust the import path as needed
 import { Box } from "@chakra-ui/react";
 
-const SearchComponent = ({ labelText }) => {
+const SearchComponent = ({ labelText, searchValue }) => {
+  const { search } = searchValue;
   const submit = useSubmit();
 
   const debouncedSubmit = useDebounce((form) => submit(form), 1000);
@@ -25,12 +26,13 @@ const SearchComponent = ({ labelText }) => {
     >
       <Form>
         <FormRow
-          type="text"
+          type="search"
           id="search"
           name="search"
           onChange={handleSearch}
           labelText={labelText}
           isRequired="no"
+          defaultValue={search}
         />
       </Form>
     </Box>

@@ -24,6 +24,7 @@ import studentRouter from "./routes/studentRouter.js";
 import teacherRouter from "./routes/teacherRouter.js";
 import studentTeacherRouter from "./routes/studentTeacherRouter.js";
 import ratingRouter from "./routes/ratingsRouter.js";
+import juzRouter from "./routes/juzRouter.js";
 
 //Middleware
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
@@ -44,14 +45,6 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-// const corsOptions = {
-//   origin: 'https://ihsan-sigma.vercel.app', // Allow this origin to access your server
-//   methods: ['GET', 'POST', 'PATCH', 'DELETE'], // Allowed methods
-//   allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
-//   credentials: true, // Allow cookies to be sent with requests
-// };
-
-// app.use(cors(corsOptions));
 
 app.use(express.static(path.resolve(__dirname, "../client/dist")));
 app.use(cookieParser());
@@ -79,6 +72,12 @@ app.use(
   authenticateUser,
   authorizePermissions("admin", "teacher"),
   ratingRouter
+);
+app.use(
+  "/api/v1/juz",
+  authenticateUser,
+  authorizePermissions("admin", "teacher"),
+  juzRouter
 );
 
 app.get("*", (req, res) => {

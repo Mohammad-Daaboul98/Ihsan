@@ -22,11 +22,11 @@ const StudentForm = ({
   disable = false,
   checkBox,
   isLoading,
+  removeJuz = false,
 }) => {
   const [disableInput, setDisableInput] = useState({
     userName: disable,
     password: disable,
-    juzName: disable,
     teacherName: disable,
   });
 
@@ -85,6 +85,7 @@ const StudentForm = ({
               listItem,
               defaultKey,
               btnPassword,
+              phone,
             }) => {
               if (type !== "select") {
                 return (
@@ -98,6 +99,7 @@ const StudentForm = ({
                     defaultKey={defaultKey}
                     btnPassword={btnPassword}
                     isRequired={true}
+                    phone={phone}
                     disable={
                       id === "userName" || id === "password"
                         ? disableInput
@@ -105,7 +107,7 @@ const StudentForm = ({
                     }
                   />
                 );
-              } else {
+              } else if (id === "teacherId" || !removeJuz) {
                 return (
                   <FormRowSelect
                     key={id}
@@ -117,11 +119,7 @@ const StudentForm = ({
                     defaultValue={defaultValue}
                     defaultKey={defaultKey}
                     PlacementTop={true}
-                    disable={
-                      id === "juzName" || id === "teacherId"
-                        ? disableInput
-                        : false
-                    }
+                    disable={disableInput}
                   />
                 );
               }

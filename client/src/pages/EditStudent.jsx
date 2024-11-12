@@ -1,4 +1,9 @@
-import { redirect, useActionData, useLoaderData, useNavigation } from "react-router-dom";
+import {
+  redirect,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "react-router-dom";
 import { AccordionComponents, JuzForm, StudentForm } from "../components";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
@@ -52,13 +57,13 @@ export const action =
     let toastMsg;
     try {
       if (juzName) {
-        findOrCreateJuz(students?.StudentJuz, data.juzName);
-        await customFetch.patch(`student/${params.id}`, {
-          ...students,
-        });
+        console.log(juzName);
+        
+        // await customFetch.patch(`rating/${params.id}`, {
+        //   ...students,
+        // });
         toastMsg = "تم اضافة جزء جديد للطالب";
       } else {
-        data.StudentJuz = [{ juzName: data.StudentJuz }];
         const student = await customFetch.patch(`student/${params.id}`, {
           ...data,
         });
@@ -107,20 +112,43 @@ const EditStudent = () => {
   const navigation = useNavigation();
   const isLoading = navigation.state === "submitting";
 
-  const { StudentJuz } = students;
+  const { studentJuz } = students;
   const quranJuzName = QURAN_INDEX.JUZ.map((i) => {
     return i.juzName;
   });
-  const currentJuz = StudentJuz.map((i) => {
+  const currentJuz = studentJuz.map((i) => {
     return i?.juzName;
   });
+
 
   const juzName = quranJuzName?.filter((juz) => !currentJuz.includes(juz));
 
   const accordionItems = [
     {
       title: "اضافة جزء",
-      component: <JuzForm juzName={juzName} />,
+      component: (
+        <JuzForm
+          juzList={juzName}
+          juzTitle="juzName"
+          juzLabel="الجزء"
+          btnTitle="اضافة جزء"
+        />
+      ),
+    },
+    {
+      title: "تعديل جزء",
+      component: (
+        <JuzForm
+          juzList={studentJuz}
+          label
+          newJuzList={juzName}
+          juzTitle="oldJuz"
+          juzLabel="الجزء القديم"
+          btnTitle="تعديل جزء"
+          listItem="juzName"
+          EditJuz={true}
+        />
+      ),
     },
     {
       title: "تعديل معلومات الطالب",
@@ -133,6 +161,7 @@ const EditStudent = () => {
           disable={true}
           checkBox={true}
           isLoading={isLoading}
+          removeJuz={true}
         />
       ),
     },
@@ -145,7 +174,7 @@ const EditStudent = () => {
         base: "20px 10px",
       }}
     >
-      <AccordionComponents items={accordionItems} defaultIndex={1} />
+      <AccordionComponents items={accordionItems} defaultIndex={2} />
     </Box>
   );
 };
