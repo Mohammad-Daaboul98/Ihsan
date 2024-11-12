@@ -22,7 +22,6 @@ export const teacherInput = [
     id: "age",
     labelText: "عمر الاستاذ",
     defaultKey: "age",
-    phone: true,
   },
   {
     type: "text",
@@ -47,6 +46,7 @@ export const teacherInput = [
     id: "teacherPhone",
     labelText: "رقم الهاتق",
     defaultKey: "teacherPhone",
+    phone: true,
   },
 ];
 export const studentInput = [
