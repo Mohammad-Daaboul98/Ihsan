@@ -19,7 +19,6 @@ const allTeachersQuery = (params) => {
 export const loader =
   (queryClient) =>
   async ({ request }) => {
-    
     const params = Object.fromEntries([
       ...new URL(request.url).searchParams.entries(),
     ]);
@@ -42,14 +41,20 @@ const AllTeachers = () => {
   );
 
   console.log(teachers);
-  
 
   const columns = [
     { id: "name", header: "اسم الاستاذ", accessorKey: "teacherName" },
     { id: "work", header: "عمل الاستاذ", accessorKey: "teacherWork" },
     { id: "study", header: "المستوى العلمي", accessorKey: "teacherStudy" },
     { id: "age", header: "عمر الاستاذ", accessorKey: "age", isNumeric: true },
-    { id: "phone", header: "رقم الهاتف", accessorKey: "teacherPhone" },
+    {
+      id: "phone",
+      header: "رقم الهاتف",
+      accessorKey: "teacherPhone",
+      cell: ({ cell }) => (
+        <div style={{ direction: "ltr" }}>{cell.getValue()}</div>
+      ),
+    },
     { id: "studentCount", header: "عدد الطلاب", accessorKey: "studentCount" },
   ];
 
@@ -64,8 +69,8 @@ const AllTeachers = () => {
         columns={columns}
         data={teachers}
         editAndDelete={true}
-        editPage = 'edit-teacher'
-        deletePage = 'delete-teacher'
+        editPage="edit-teacher"
+        deletePage="delete-teacher"
       />
     </>
   );
