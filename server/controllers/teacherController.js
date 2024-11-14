@@ -21,7 +21,7 @@ export const getAllTeachers = async (req, res) => {
   const teachers = await Teacher.aggregate([
     {
       $lookup: {
-        from: "students", // Name of the student collection
+        from: "students",
         localField: "_id",
         foreignField: "teacherId",
         as: "students",
@@ -34,13 +34,13 @@ export const getAllTeachers = async (req, res) => {
     },
     {
       $project: {
-        students: 0, // Exclude the full students array if you don't need it
+        students: 0,
       },
     },
   ]);
 
   const teacher = teachers.filter(
-    (teacher) => teacher._id.toString() !== "669a98d474ed7a09fdd6fe04"
+    (teacher) => teacher._id.toString() !== "6734806168f2be2dd74a2efe"
   );
 
   res.status(StatusCodes.OK).json({ teachers: teacher });
@@ -88,7 +88,7 @@ export const deleteTeacherProfile = async (req, res) => {
 
   const updateStudentTeacher = await Student.updateMany(
     { teacherId: deletedUser._id },
-    { teacherId: "669a98d474ed7a09fdd6fe04" }
+    { teacherId: "6734806168f2be2dd74a2efe" }
   );
 
   res.status(StatusCodes.OK).json({

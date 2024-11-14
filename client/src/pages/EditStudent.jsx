@@ -9,7 +9,6 @@ import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import { Box } from "@chakra-ui/react";
-import { findOrCreateJuz } from "../utils/juzHelpers";
 import { QURAN_INDEX } from "../../../server/shared/constants";
 import { patchData } from "../utils/excelDBHandler";
 
@@ -48,7 +47,9 @@ export const action =
   async ({ request, params }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
+
     const { juzName } = data;
+    const { oldJuz, newJuz } = data;
     const { students } = queryClient.getQueryData([
       "students",
       "teachers",
@@ -58,11 +59,16 @@ export const action =
     try {
       if (juzName) {
         console.log(juzName);
-        
+
         // await customFetch.patch(`rating/${params.id}`, {
         //   ...students,
         // });
         toastMsg = "تم اضافة جزء جديد للطالب";
+      } else if (oldJuz) {
+        const juz = await customFetch.patch(`juz/${oldJuz}`, {
+          newJuz,
+        });
+        toastMsg = juz.data.msg;
       } else {
         const student = await customFetch.patch(`student/${params.id}`, {
           ...data,
@@ -119,7 +125,6 @@ const EditStudent = () => {
   const currentJuz = studentJuz.map((i) => {
     return i?.juzName;
   });
-
 
   const juzName = quranJuzName?.filter((juz) => !currentJuz.includes(juz));
 

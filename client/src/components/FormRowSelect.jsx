@@ -1,8 +1,9 @@
-import { Box, FormControl, FormLabel } from "@chakra-ui/react";
+import { Badge, Box, FormControl, FormLabel, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { useSelectStyles } from "../theme/components/selectStyle";
+import { FaChalkboardTeacher } from "react-icons/fa";
 
 const animatedComponents = makeAnimated();
 
@@ -11,6 +12,7 @@ const FormRowSelect = ({
   labelText,
   list = [],
   listItem,
+  secondaryListItem,
   onChange,
   placeholder = "اختر الخيار",
   PlacementTop,
@@ -24,10 +26,35 @@ const FormRowSelect = ({
   const [rest, setRest] = useState();
   const customStyles = useSelectStyles();
 
+  const CustomOption = ({ label, studentCount }) => (
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      width="100%"
+    >
+      <Text fontWeight="bold" color="white">
+        {label}
+      </Text>
+      <Badge colorScheme={"blue"} borderRadius="full" px="2">
+        {studentCount} طلاب
+      </Badge>
+    </Box>
+  );
+
   useEffect(() => {
     const formattedOptions = list.map((item) => ({
       value: item._id || item.id || item[listItem] || item,
-      label: listItem ? item[listItem] : item,
+      label: secondaryListItem ? (
+        <CustomOption
+          label={item[listItem]}
+          studentCount={item[secondaryListItem]}
+        />
+      ) : listItem ? (
+        item[listItem]
+      ) : (
+        item
+      ),
     }));
     setOptions(formattedOptions);
   }, [list, listItem]);

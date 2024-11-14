@@ -32,15 +32,15 @@ router
     validateUserInput,
     validateStudentProfileInput,
     createUser,
-    createJuz,
-    createStudentProfile
+    createStudentProfile,
+    createJuz
   )
   .patch(
     authorizePermissions("admin", "teacher"),
     updateMultipleStudentsAttendance
   );
 
-  router.get("/current-student", getCurrentStudent);
+router.get("/current-student", getCurrentStudent);
 
 router
   .route("/:id")

@@ -84,6 +84,7 @@ const StudentForm = ({
               list,
               listItem,
               defaultKey,
+              secondaryListItem,
               btnPassword,
               phone,
             }) => {
@@ -118,6 +119,7 @@ const StudentForm = ({
                     listItem={listItem}
                     defaultValue={defaultValue}
                     defaultKey={defaultKey}
+                    secondaryListItem={secondaryListItem}
                     PlacementTop={true}
                     disable={disableInput}
                   />

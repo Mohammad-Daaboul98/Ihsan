@@ -105,6 +105,8 @@ export const studentInput = [
     labelText: "اسم الاستاذ",
     listItem: "teacherName",
     defaultKey: "teacherName",
+    secondaryListItem:'studentCount'
+
   },
   {
     type: "select",

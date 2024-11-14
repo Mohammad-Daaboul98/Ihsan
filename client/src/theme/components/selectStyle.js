@@ -1,8 +1,8 @@
 import { position, useColorModeValue } from "@chakra-ui/react";
 
 export const useSelectStyles = () => {
-  const bg = useColorModeValue("white", "#1A202C");
-  const dropdownBg = useColorModeValue("white", "#2d3748");
+  const bg = useColorModeValue("white", "#2d3748");
+  const dropdownBg = useColorModeValue("white", "#171923");
   const color = useColorModeValue("black", "white");
   const borderColor = useColorModeValue("#CBD5E0", "#4A5568");
   const placeholderColor = useColorModeValue("#718096", "#A0AEC0");
