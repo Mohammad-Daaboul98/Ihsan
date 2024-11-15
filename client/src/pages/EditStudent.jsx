@@ -55,15 +55,14 @@ export const action =
       "teachers",
       params.id,
     ]);
-    let toastMsg;
-    try {
-      if (juzName) {
-        console.log(juzName);
 
-        // await customFetch.patch(`rating/${params.id}`, {
-        //   ...students,
-        // });
-        toastMsg = "تم اضافة جزء جديد للطالب";
+    try {
+      let toastMsg;
+      if (juzName) {
+        const juz = await customFetch.post(`juz/${params.id}`, {
+          ...data,
+        });
+        toastMsg = juz.data.msg;
       } else if (oldJuz) {
         const juz = await customFetch.patch(`juz/${oldJuz}`, {
           newJuz,
@@ -73,8 +72,7 @@ export const action =
         const student = await customFetch.patch(`student/${params.id}`, {
           ...data,
         });
-
-        toastMsg = "تم تعديل معلومات الطالب";
+        toastMsg = student.data.msg;
         const studentData = student?.data?.updatedUser;
         const oldUserName = student?.data?.oldUserName;
 
@@ -99,9 +97,8 @@ export const action =
       queryClient.invalidateQueries(["students&Teachers"]);
       queryClient.invalidateQueries(["teachers"]);
       queryClient.invalidateQueries(["students"]);
-
       toast.success(toastMsg, { theme: "colored" });
-      return juzName ? null : redirect("../students");
+      return redirect("../students");
     } catch (error) {
       console.error("Error:", error);
       return error;

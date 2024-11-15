@@ -64,8 +64,6 @@ function DashboardLayout({ queryClient }) {
   };
 
   const logoutUser = async () => {
-    console.log("hi");
-
     navigate("/");
     await customFetch.get("/auth/logout");
     queryClient.invalidateQueries();
@@ -104,7 +102,7 @@ function DashboardLayout({ queryClient }) {
           <Navbar sidebarProps={sidebarProps} />
         )}
       </Box>
-      <Flex w="100%" flexDirection="column" overflow='hidden'>
+      <Flex w="100%" flexDirection="column" overflow="hidden">
         <Box
           position="sticky"
           top="0"
@@ -152,12 +150,7 @@ function DashboardLayout({ queryClient }) {
             )}
             {/* <Button onClick={() => logoutUser()}>تسجيل الخروج</Button> */}
 
-            <Button
-              variant="mode"
-              padding={0}
-              onClick={toggleColorMode}
-              // mr="auto"
-            >
+            <Button variant="mode" padding={0} onClick={toggleColorMode}>
               {colorMode === "light" ? (
                 <MoonIcon boxSize={{ base: 5, md: 6 }} color="#234e52" />
               ) : (

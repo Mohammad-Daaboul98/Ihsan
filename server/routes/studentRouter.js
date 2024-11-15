@@ -32,8 +32,8 @@ router
     validateUserInput,
     validateStudentProfileInput,
     createUser,
-    createStudentProfile,
-    createJuz
+    createJuz,
+    createStudentProfile
   )
   .patch(
     authorizePermissions("admin", "teacher"),

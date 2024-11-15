@@ -35,7 +35,7 @@ export const addOrUpdateRating = async (req, res) => {
         surah: surah._id,
       });
       await page.save();
-      surah.pages.push(page._id); // Add new page to Surah
+      surah.pages.push(page._id);
       await surah.save();
     }
 
