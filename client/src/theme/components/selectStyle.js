@@ -29,10 +29,14 @@ export const useSelectStyles = () => {
     }),
     menu: (provided) => ({
       ...provided,
-      backgroundColor: dropdownBg, 
+      backgroundColor: dropdownBg,
       zIndex: 9999,
       borderRadius: "6px",
       boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+    }),
+    menuPortal: (provided) => ({
+      ...provided,
+      zIndex: 9999,
     }),
     option: (provided, state) => ({
       ...provided,

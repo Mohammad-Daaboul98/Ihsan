@@ -112,7 +112,6 @@ const StudentForm = ({
                 return (
                   <FormRowSelect
                     key={id}
-                    type={type}
                     name={id}
                     labelText={labelText}
                     list={list ? list : teachers}

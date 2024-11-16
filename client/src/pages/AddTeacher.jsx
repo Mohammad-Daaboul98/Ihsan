@@ -1,5 +1,3 @@
-
-
 import { redirect, useActionData, useNavigation } from "react-router-dom";
 
 import { TeacherFrom } from "../components";
@@ -8,6 +6,7 @@ import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 import { handleFormSubmit } from "../utils/excelDBHandler";
 import whatsAppMessage from "../utils/whatsAppMessage";
+import { useState } from "react";
 
 export const action =
   (queryClient) =>
@@ -45,22 +44,24 @@ export const action =
       return redirect("../teachers");
     } catch (error) {
       console.error("Error:", error);
-      return error;
+      return { error, data };
     }
   };
 
 const AddTeacher = () => {
-  const date = useActionData();
-  const errorMessage = date?.response?.data?.msg;
+  const data = useActionData();
+
+  const errorMessage = data?.error?.response?.data?.msg;
   const navigation = useNavigation();
   const isLoading = navigation.state === "submitting";
+  const defaultValue = { ...data?.data };
 
   return (
     <TeacherFrom
       title="انشاء استاذ"
       btnTitle="انشاء"
       errorMessage={errorMessage}
-      defaultValue=""
+      defaultValue={defaultValue}
       isLoading={isLoading}
     />
   );

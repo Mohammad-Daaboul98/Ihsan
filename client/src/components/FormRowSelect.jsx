@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { useSelectStyles } from "../theme/components/selectStyle";
-import { FaChalkboardTeacher } from "react-icons/fa";
 
 const animatedComponents = makeAnimated();
 
@@ -18,12 +17,10 @@ const FormRowSelect = ({
   PlacementTop,
   disable,
   isRange = false,
-  value, // Add value prop for controlled selection
-  restSelect,
+  value,
 }) => {
   const [options, setOptions] = useState([]);
   const [selectedValue, setSelectedValue] = useState(value || null);
-  const [rest, setRest] = useState();
   const customStyles = useSelectStyles();
 
   const CustomOption = ({ label, studentCount }) => (
@@ -57,16 +54,15 @@ const FormRowSelect = ({
       ),
     }));
     setOptions(formattedOptions);
-  }, [list, listItem]);
+  }, [list, listItem,secondaryListItem]);
 
-  const handleChange = (e, name) => {
+  const handleChange = (e) => {
     const selected = e.label;
-
-    name === "juzName" && setRest(true);
 
     setSelectedValue(e);
     onChange && onChange(selected ? selected : null);
   };
+
 
   return (
     <FormControl>
@@ -85,11 +81,10 @@ const FormRowSelect = ({
           isMulti={false}
           name={isRange ? `${name}From` : name}
           id={isRange ? `${name}From` : name}
-          className="form-select"
           onChange={(e) => handleChange(e, name)}
           placeholder={isRange ? "من" : placeholder}
           options={options}
-          value={selectedValue} // Use selectedValue state
+          value={selectedValue}
           menuPortalTarget={document.body}
           isDisabled={disable ? disable[listItem] : false}
         />
@@ -101,8 +96,7 @@ const FormRowSelect = ({
             isMulti={false}
             name={isRange ? `${name}To` : name}
             id={isRange ? `${name}To` : name}
-            className="form-select"
-            placeholder={"إلى"}
+              placeholder={"إلى"}
             options={options}
             menuPortalTarget={document.body}
             isDisabled={disable ? disable[name] : false}

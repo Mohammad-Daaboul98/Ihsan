@@ -5,7 +5,7 @@ export const USER_TYPE = {
   admin: "admin",
 };
 
-export const STUDENT_RATE = ["ممتاز", "جيد", "وسط", "سيء", "لايوجد"];
+export const STUDENT_RATE = ["ممتاز", "جيد", "وسط", "سيء"];
 
 export const STUDENT_ATTENDANCE = ["موجود", "غائب"];
 

@@ -26,11 +26,12 @@ function FormRow({
   isRequired,
   btnPassword,
   disable,
-  phone, // New prop to enable phone input
+  phone,
 }) {
   const [show, setShow] = useState(false);
   const [password, setPassword] = useState("");
-  const [phoneValue, setPhoneValue] = useState("");
+  const [phoneValue, setPhoneValue] = useState(phone? defaultValue[defaultKey]:'');
+  
 
   const inputBg = useColorModeValue("#fff", "#2D3748");
   const borderColor = useColorModeValue("#cbd5e0", "#4A5568");

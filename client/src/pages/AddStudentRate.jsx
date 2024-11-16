@@ -193,7 +193,6 @@ const AddStudentRate = () => {
                     onChange={listItem === "juzName" ? handleJuzChange : null}
                     isMulti={listItem === "juzName"}
                     value={selectedSurah}
-                    restSelect={true}
                   />
                 );
               }

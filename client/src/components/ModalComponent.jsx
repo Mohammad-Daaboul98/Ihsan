@@ -17,9 +17,10 @@ const ModalComponent = ({ isOpen, onClose, title, overlay, components }) => {
         {title ? <ModalHeader>{title}</ModalHeader> : null}
         <ModalCloseButton />
         <ModalBody
-        display='flex'
-        justifyContent='center'
-        alignItems='center'
+        mt='40px'
+        // display='flex'
+        // justifyContent='center'
+        // alignItems='center'
         >
           {components}
         </ModalBody>

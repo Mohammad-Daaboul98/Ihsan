@@ -5,6 +5,7 @@ import {
   ModalComponent,
   QRCodeComponent,
   SearchComponent,
+  StudentInfo,
   TableComponent,
 } from "../components";
 import customFetch from "../utils/customFetch";
@@ -52,7 +53,7 @@ export const loader =
 
 const AllStudents = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedAttendance, setSelectedAttendance] = useState([]);
+  const [selectStudentInfo, setSelectedStudentInfo] = useState([]);
   const { searchValue } = useLoaderData();
 
   const { data } = useQuery(allStudentsQuery(searchValue));
@@ -106,12 +107,13 @@ const AllStudents = () => {
       accessorKey: "View&Add",
       cell: ({ row }) => {
         const studentId = row.original._id;
+        
         return (
           <>
             <Button
               ml="10px"
               onClick={() => {
-                setSelectedAttendance(row.original.studentJuz);
+                setSelectedStudentInfo(row.original);
                 onOpen();
               }}
             >
@@ -126,63 +128,70 @@ const AllStudents = () => {
     },
   ];
 
-  const modalColumns = [
-    {
-      header: "التاريخ",
-      cell: ({ row }) => {
-        const date = row.original.page.date;
-        return date ? dayjs(date).format("D MMMM YYYY") : "-";
-      },
-    },
-    {
-      header: "الجزء",
-      accessorKey: "juzName",
-      cell: ({ getValue }) => {
-        const juzName = getValue();
-        return juzName || "-";
-      },
-    },
-    {
-      header: "السورة",
-      accessorKey: "surahName",
-      cell: ({ getValue }) => {
-        const surahName = getValue();
-        return surahName || "-";
-      },
-    },
-    {
-      header: "الصفحة",
-      cell: ({ row }) => {
-        const pageFrom = row.original.page.pageFrom;
-        const pageTo = row.original.page.pageTo;
-        return pageFrom && pageTo ? `${pageFrom} - ${pageTo}` : pageFrom || "-";
-      },
-    },
-    {
-      header: "التقيم",
-      cell: ({ row }) => {
-        const rate = row.original.page.rate;
-        return rate || "-";
-      },
-    },
-  ];
+  // const modalColumns = [
+  //   {
+  //     header: "التاريخ",
+  //     cell: ({ row }) => {
+  //       const date = row.original.page.date;
+  //       return date ? dayjs(date).format("D MMMM YYYY") : "-";
+  //     },
+  //   },
+  //   {
+  //     header: "الجزء",
+  //     accessorKey: "juzName",
+  //     cell: ({ getValue }) => {
+  //       const juzName = getValue();
+  //       return juzName || "-";
+  //     },
+  //   },
+  //   {
+  //     header: "السورة",
+  //     accessorKey: "surahName",
+  //     cell: ({ getValue }) => {
+  //       const surahName = getValue();
+  //       return surahName || "-";
+  //     },
+  //   },
+  //   {
+  //     header: "الصفحة",
+  //     cell: ({ row }) => {
+  //       const pageFrom = row.original.page.pageFrom;
+  //       const pageTo = row.original.page.pageTo;
+  //       return pageFrom && pageTo ? `${pageFrom} - ${pageTo}` : pageFrom || "-";
+  //     },
+  //   },
+  //   {
+  //     header: "التقيم",
+  //     cell: ({ row }) => {
+  //       const rate = row.original.page.rate;
+  //       return rate || "-";
+  //     },
+  //   },
+  // ];
 
-  const flattenData = (data) => {
-    return data.flatMap((item) =>
-      item.surahs.flatMap((surah) =>
-        surah.pages.map((page) => ({
-          juzName: item.juzName,
-          surahName: surah.surahName,
-          page: page,
-        }))
-      )
-    );
-  };
+  // const flattenData = (data) => {
+  //   return data.flatMap((item) =>
+  //     item.surahs.flatMap((surah) =>
+  //       surah.pages.map((page) => ({
+  //         juzName: item.juzName,
+  //         surahName: surah.surahName,
+  //         page: page,
+  //       }))
+  //     )
+  //   );
+  // };
 
-  const flattenedData = flattenData(selectedAttendance);
-  // console.log(flattenedData);
-  // console.log(selectedAttendance);
+  // const flattenedData =  flattenData(selectedAttendance);
+  
 
+  {/* <TableComponent
+    title="معلومات حضور الطالب"
+    columns={modalColumns}
+    data={flattenedData}
+    editAndDelete={false}
+    width="6xl"
+  /> */}
+  
   return (
     <>
       <SearchComponent
@@ -204,13 +213,7 @@ const AllStudents = () => {
           onClose={onClose}
           overlay={<Overlay />}
           components={
-            <TableComponent
-              title="معلومات حضور الطالب"
-              columns={modalColumns}
-              data={flattenedData}
-              editAndDelete={false}
-              width="6xl"
-            />
+           <StudentInfo student={selectStudentInfo} />
           }
         />
       </>
