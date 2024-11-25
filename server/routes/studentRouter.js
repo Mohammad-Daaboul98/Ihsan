@@ -3,7 +3,7 @@ import {
   createStudentProfile,
   deleteStudentProfile,
   getAllStudents,
-  getCurrentStudent,
+  // getCurrentStudent,
   getStudent,
   updateMultipleStudentsAttendance,
   updateStudentProfile,
@@ -40,7 +40,7 @@ router
     updateMultipleStudentsAttendance
   );
 
-router.get("/current-student", getCurrentStudent);
+// router.get("/current-student", getCurrentStudent);
 
 router
   .route("/:id")

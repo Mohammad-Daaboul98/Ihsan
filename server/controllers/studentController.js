@@ -2,13 +2,14 @@ import Student from "../models/StudentProfile.js";
 import { StatusCodes } from "http-status-codes";
 import qrCodeGenerator from "../utils/qrCodeGenerator.js";
 import cloudinary from "cloudinary";
+import mongoose from "mongoose";
 
-export const getCurrentStudent = async (req, res) => {
-  const id = req.user._id;
+// export const getCurrentStudent = async (req, res) => {
+//   const id = req.user._id;
 
-  const student = await Student.findById(id);
-  res.status(StatusCodes.OK).json({ student });
-};
+//   const student = await Student.findById(id);
+//   res.status(StatusCodes.OK).json({ student });
+// };
 
 export const getAllStudents = async (req, res) => {
   const { search } = req.query;
@@ -33,10 +34,155 @@ export const getAllStudents = async (req, res) => {
   const student = await Student.find(queryObject);
   res.status(StatusCodes.OK).json({ student });
 };
+
 export const getStudent = async (req, res) => {
-  const { id } = req.currentUserId || req.params;
-  const student = await Student.findById(id).populate("studentJuz", "juzName");
-  res.status(StatusCodes.OK).json({ student });
+  try {
+    const { id } = req.currentUserId || req.params;
+    const { rate, surahName, date, juzName } = req.query;
+
+    const student = await Student.aggregate([
+      // Match the student by ID
+      { $match: { _id: new mongoose.Types.ObjectId(id) } },
+
+      // Lookup for teacher data
+      {
+        $lookup: {
+          from: "teachers",
+          localField: "teacherId",
+          foreignField: "_id",
+          as: "teacher",
+        },
+      },
+
+      // Lookup for studentJuz and nested structures
+      {
+        $lookup: {
+          from: "juzs",
+          localField: "studentJuz",
+          foreignField: "_id",
+          as: "studentJuz",
+        },
+      },
+
+      // Filter studentJuz based on juzName
+      {
+        $addFields: {
+          studentJuz: {
+            $filter: {
+              input: "$studentJuz",
+              as: "juz",
+              cond: juzName ? { $eq: ["$$juz.juzName", juzName] } : true,
+            },
+          },
+        },
+      },
+
+      // Unwind studentJuz to process nested surahs
+      { $unwind: { path: "$studentJuz", preserveNullAndEmptyArrays: true } },
+
+      // Lookup surahs within studentJuz
+      {
+        $lookup: {
+          from: "surahs",
+          localField: "studentJuz.surahs",
+          foreignField: "_id",
+          as: "studentJuz.surahs",
+        },
+      },
+
+      // Filter surahs based on surahName
+      {
+        $addFields: {
+          "studentJuz.surahs": {
+            $filter: {
+              input: "$studentJuz.surahs",
+              as: "surah",
+              cond: surahName ? { $eq: ["$$surah.surahName", surahName] } : true,
+            },
+          },
+        },
+      },
+
+      // Unwind surahs to process nested pages
+      { $unwind: { path: "$studentJuz.surahs", preserveNullAndEmptyArrays: true } },
+
+      // Lookup pages within surahs
+      {
+        $lookup: {
+          from: "pages",
+          localField: "studentJuz.surahs.pages",
+          foreignField: "_id",
+          as: "studentJuz.surahs.pages",
+        },
+      },
+
+      // Filter pages based on rate and date
+      {
+        $addFields: {
+          "studentJuz.surahs.pages": {
+            $filter: {
+              input: "$studentJuz.surahs.pages",
+              as: "page",
+              cond: {
+                $and: [
+                  rate ? { $eq: ["$$page.rate", parseInt(rate)] } : true,
+                  date ? { $eq: ["$$page.date", new Date(date).toISOString()] } : true,
+                ],
+              },
+            },
+          },
+        },
+      },
+
+      // Remove Surahs with no matching pages
+      {
+        $group: {
+          _id: "$_id",
+          student: { $first: "$$ROOT" }, // Keep the entire student document
+          studentJuz: {
+            $push: {
+              $cond: [
+                { $gt: [{ $size: "$studentJuz.surahs.pages" }, 0] },
+                "$studentJuz",
+                null,
+              ],
+            },
+          },
+        },
+      },
+
+      // Clean up nulls and flatten the result
+      {
+        $addFields: {
+          "student.studentJuz": {
+            $filter: {
+              input: "$studentJuz",
+              as: "juz",
+              cond: { $ne: ["$$juz", null] },
+            },
+          },
+        },
+      },
+      {
+        $replaceRoot: {
+          newRoot: "$student",
+        },
+      },
+    ]);
+
+    if (!student.length) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "No matching student data found." });
+    }
+
+    res.status(StatusCodes.OK).json({ student: student[0] });
+  } catch (error) {
+    console.error("Error in getFilteredStudent (aggregation):", error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "An error occurred while retrieving the student data.",
+    });
+  }
 };
 
 export const createStudentProfile = async (req, res) => {

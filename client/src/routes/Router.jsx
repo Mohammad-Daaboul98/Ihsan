@@ -117,7 +117,7 @@ export const Router = [
             loader: studentRateLoader(queryClient),
           },
           {
-            path: "student-profile",
+            path: "student/:id",
             element: <StudentProfile />,
             // action: addStudentRateAction(queryClient),
             loader: studentProfileLoader(queryClient),

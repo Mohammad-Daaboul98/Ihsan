@@ -18,6 +18,7 @@ const FormRowSelect = ({
   disable,
   isRange = false,
   value,
+  selectParams,
 }) => {
   const [options, setOptions] = useState([]);
   const [selectedValue, setSelectedValue] = useState(value || null);
@@ -41,7 +42,9 @@ const FormRowSelect = ({
 
   useEffect(() => {
     const formattedOptions = list.map((item) => ({
-      value: item._id || item.id || item[listItem] || item,
+      value: selectParams
+        ? item[listItem]
+        : item._id || item.id || item[listItem] || item,
       label: secondaryListItem ? (
         <CustomOption
           label={item[listItem]}
@@ -54,7 +57,7 @@ const FormRowSelect = ({
       ),
     }));
     setOptions(formattedOptions);
-  }, [list, listItem,secondaryListItem]);
+  }, [list, listItem, secondaryListItem]);
 
   const handleChange = (e) => {
     const selected = e.label;
@@ -62,7 +65,6 @@ const FormRowSelect = ({
     setSelectedValue(e);
     onChange && onChange(selected ? selected : null);
   };
-
 
   return (
     <FormControl>
@@ -81,12 +83,13 @@ const FormRowSelect = ({
           isMulti={false}
           name={isRange ? `${name}From` : name}
           id={isRange ? `${name}From` : name}
-          onChange={(e) => handleChange(e, name)}
+          onChange={(e) => handleChange(e)}
           placeholder={isRange ? "من" : placeholder}
           options={options}
           value={selectedValue}
           menuPortalTarget={document.body}
           isDisabled={disable ? disable[listItem] : false}
+          isClearable
         />
         {isRange && (
           <Select
@@ -96,7 +99,7 @@ const FormRowSelect = ({
             isMulti={false}
             name={isRange ? `${name}To` : name}
             id={isRange ? `${name}To` : name}
-              placeholder={"إلى"}
+            placeholder={"إلى"}
             options={options}
             menuPortalTarget={document.body}
             isDisabled={disable ? disable[name] : false}

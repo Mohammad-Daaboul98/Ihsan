@@ -107,18 +107,12 @@ const AllStudents = () => {
       accessorKey: "View&Add",
       cell: ({ row }) => {
         const studentId = row.original._id;
-        
+
         return (
           <>
-            <Button
-              ml="10px"
-              onClick={() => {
-                setSelectedStudentInfo(row.original);
-                onOpen();
-              }}
-            >
-              <BiShow />
-            </Button>
+            <Link to={`../student/${studentId}`}>
+              <IconButton ml="10px" icon={<BiShow />} />
+            </Link>
             <Link to={`../add-student-rate/${studentId}`}>
               <IconButton icon={<IoAddCircleSharp />} />
             </Link>
@@ -182,16 +176,17 @@ const AllStudents = () => {
   // };
 
   // const flattenedData =  flattenData(selectedAttendance);
-  
 
-  {/* <TableComponent
+  {
+    /* <TableComponent
     title="معلومات حضور الطالب"
     columns={modalColumns}
     data={flattenedData}
     editAndDelete={false}
     width="6xl"
-  /> */}
-  
+  /> */
+  }
+
   return (
     <>
       <SearchComponent
@@ -208,14 +203,14 @@ const AllStudents = () => {
           editPage="edit-student"
           deletePage="delete-student"
         />
-        <ModalComponent
+        {/* <ModalComponent
           isOpen={isOpen}
           onClose={onClose}
           overlay={<Overlay />}
           components={
            <StudentInfo student={selectStudentInfo} />
           }
-        />
+        /> */}
       </>
     </>
   );
