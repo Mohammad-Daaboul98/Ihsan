@@ -162,14 +162,14 @@ const StudentInfo = ({ student, searchValue, originalStudentState }) => {
             <Button colorScheme="teal" type="submit" w={"50%"}>
               اضافة
             </Button>
-            <Button colorScheme="red" variant="outline" w={"50%"}>
-              <Link
-                to={`/dashboard/student/${student._id}`}
-                style={{ width: "100%" }}
-              >
+            <Link
+              to={`/dashboard/student/${student._id}`}
+              style={{ width: "50%" }}
+            >
+              <Button colorScheme="red" variant="outline" w={'100%'}>
                 مسح الفلاتر
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </HStack>
         </SimpleGrid>
 
@@ -222,7 +222,9 @@ const StudentInfo = ({ student, searchValue, originalStudentState }) => {
             ))}
           </Accordion>
         ) : (
-          <Heading as="h6" size={'md'} textAlign={'center'}>لايوجد بيانات لعرضها</Heading>
+          <Heading as="h6" size={"md"} textAlign={"center"}>
+            لايوجد بيانات لعرضها
+          </Heading>
         )}
       </Box>
     </Form>
