@@ -18,11 +18,14 @@ const FormRowSelect = ({
   disable,
   isRange = false,
   value,
+  defaultValue,
   selectParams,
 }) => {
   const [options, setOptions] = useState([]);
   const [selectedValue, setSelectedValue] = useState(value || null);
   const customStyles = useSelectStyles();
+
+  
 
   const CustomOption = ({ label, studentCount }) => (
     <Box
@@ -86,10 +89,9 @@ const FormRowSelect = ({
           onChange={(e) => handleChange(e)}
           placeholder={isRange ? "من" : placeholder}
           options={options}
-          value={selectedValue}
+          value={defaultValue?{label:defaultValue}:selectedValue}
           menuPortalTarget={document.body}
           isDisabled={disable ? disable[listItem] : false}
-          isClearable
         />
         {isRange && (
           <Select

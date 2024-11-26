@@ -43,7 +43,7 @@ export const getStudent = async (req, res) => {
     const student = await Student.aggregate([
       // Match the student by ID
       { $match: { _id: new mongoose.Types.ObjectId(id) } },
-
+    
       // Lookup for teacher data
       {
         $lookup: {
@@ -53,8 +53,12 @@ export const getStudent = async (req, res) => {
           as: "teacher",
         },
       },
-
-      // Lookup for studentJuz and nested structures
+    
+      // Unwind the teacher array to make it a single object
+      { $unwind: { path: "$teacher", preserveNullAndEmptyArrays: true } },
+    
+    
+      // Lookup for studentJuz
       {
         $lookup: {
           from: "juzs",
@@ -63,23 +67,29 @@ export const getStudent = async (req, res) => {
           as: "studentJuz",
         },
       },
-
+    
       // Filter studentJuz based on juzName
       {
         $addFields: {
           studentJuz: {
-            $filter: {
-              input: "$studentJuz",
-              as: "juz",
-              cond: juzName ? { $eq: ["$$juz.juzName", juzName] } : true,
-            },
+            $cond: [
+              { $ifNull: [juzName, false] }, // If juzName is provided
+              {
+                $filter: {
+                  input: "$studentJuz",
+                  as: "juz",
+                  cond: { $eq: ["$$juz.juzName", juzName] },
+                },
+              },
+              "$studentJuz", // Otherwise, keep all
+            ],
           },
         },
       },
-
+    
       // Unwind studentJuz to process nested surahs
       { $unwind: { path: "$studentJuz", preserveNullAndEmptyArrays: true } },
-
+    
       // Lookup surahs within studentJuz
       {
         $lookup: {
@@ -89,23 +99,29 @@ export const getStudent = async (req, res) => {
           as: "studentJuz.surahs",
         },
       },
-
+    
       // Filter surahs based on surahName
       {
         $addFields: {
           "studentJuz.surahs": {
-            $filter: {
-              input: "$studentJuz.surahs",
-              as: "surah",
-              cond: surahName ? { $eq: ["$$surah.surahName", surahName] } : true,
-            },
+            $cond: [
+              { $ifNull: [surahName, false] }, // If surahName is provided
+              {
+                $filter: {
+                  input: "$studentJuz.surahs",
+                  as: "surah",
+                  cond: { $eq: ["$$surah.surahName", surahName] },
+                },
+              },
+              "$studentJuz.surahs", // Otherwise, keep all
+            ],
           },
         },
       },
-
+    
       // Unwind surahs to process nested pages
       { $unwind: { path: "$studentJuz.surahs", preserveNullAndEmptyArrays: true } },
-
+    
       // Lookup pages within surahs
       {
         $lookup: {
@@ -115,7 +131,7 @@ export const getStudent = async (req, res) => {
           as: "studentJuz.surahs.pages",
         },
       },
-
+    
       // Filter pages based on rate and date
       {
         $addFields: {
@@ -125,15 +141,15 @@ export const getStudent = async (req, res) => {
               as: "page",
               cond: {
                 $and: [
-                  rate ? { $eq: ["$$page.rate", parseInt(rate)] } : true,
-                  date ? { $eq: ["$$page.date", new Date(date).toISOString()] } : true,
+                  rate ? { $eq: ["$$page.rate", rate] } : true,
+                  date ? { $eq: ["$$page.date", date] } : true,
                 ],
               },
             },
           },
         },
       },
-
+    
       // Remove Surahs with no matching pages
       {
         $group: {
@@ -150,7 +166,7 @@ export const getStudent = async (req, res) => {
           },
         },
       },
-
+    
       // Clean up nulls and flatten the result
       {
         $addFields: {
@@ -163,12 +179,15 @@ export const getStudent = async (req, res) => {
           },
         },
       },
+    
+      // Replace root with the cleaned-up student document
       {
         $replaceRoot: {
           newRoot: "$student",
         },
       },
     ]);
+    
 
     if (!student.length) {
       return res

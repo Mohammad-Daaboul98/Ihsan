@@ -2,6 +2,16 @@ import { StudentInfo } from "../components";
 import { useQuery } from "@tanstack/react-query";
 import customFetch from "../utils/customFetch";
 import { useLoaderData } from "react-router-dom";
+import { queryClient } from "../utils/queryClient";
+import { useEffect } from "react";
+
+const originalStudentQuery = (id) => ({
+  queryKey: ["student", id],
+  queryFn: async () => {
+    const { data } = await customFetch.get(`/student/${id}`);
+    return data;
+  },
+});
 
 const singleStudentQuery = (params, id) => {
   const { rate, surahName, date, juzName } = params;
@@ -29,6 +39,7 @@ export const loader =
       ...new URL(request.url).searchParams.entries(),
     ]);
     try {
+      await queryClient.ensureQueryData(originalStudentQuery(id));
       await queryClient.ensureQueryData(singleStudentQuery(param, id));
       return { searchValue: { ...param }, id };
     } catch (error) {
@@ -39,13 +50,20 @@ export const loader =
 const StudentProfile = () => {
   const { searchValue, id } = useLoaderData();
 
-  const {
-    data: { student },
-  } = useQuery(singleStudentQuery(searchValue, id));
+  const { data: filteredData } = useQuery(singleStudentQuery(searchValue, id));
+  const { data: originalData } = useQuery(originalStudentQuery(id));
 
-  console.log(student);
+  // Use original and filtered data as needed
+  const { student: originalStudent } = originalData;
+  const { student: filteredStudent } = filteredData;
 
-  return <StudentInfo student={student} searchValue={searchValue} />;
+  return (
+    <StudentInfo
+      student={filteredStudent}
+      originalStudentState={originalStudent}
+      searchValue={searchValue}
+    />
+  );
 };
 
 export default StudentProfile;

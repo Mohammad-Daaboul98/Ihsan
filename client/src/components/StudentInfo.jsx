@@ -13,25 +13,27 @@ import {
   Divider,
   Image,
   SimpleGrid,
-  Link,
   Flex,
   Button,
 } from "@chakra-ui/react";
 import FormRowSelect from "./FormRowSelect";
 import { STUDENT_RATE } from "../../../server/shared/constants";
-import { Form, useSubmit, useSearchParams } from "react-router-dom";
+import { Form, useSubmit, Link, useSearchParams } from "react-router-dom";
 
-const StudentInfo = ({ student, searchValue }) => {
+const StudentInfo = ({ student, searchValue, originalStudentState }) => {
   const submit = useSubmit();
 
-  const [filters, setFilters] = useState({
-    juzName: searchValue.juzName || "",
-    surahName: searchValue.surahName || "",
-    rate: searchValue.rate || "",
-    date: searchValue.date || "",
-  });
+  const [searchParams] = useSearchParams(); // Extracting query parameters
 
-  const groupedJuzData = Object.values(
+  // Retrieve query parameters
+  const rate = searchParams.get("rate");
+  const surahName = searchParams.get("surahName");
+  const date = searchParams.get("date");
+  const juzName = searchParams.get("juzName");
+
+  const [filters, setFilters] = useState({});
+
+  const groupedJuzData =(student) => Object.values(
     (student.studentJuz ?? []).reduce((acc, juz) => {
       if (!acc[juz.juzName]) {
         acc[juz.juzName] = { ...juz, surahs: [] };
@@ -43,44 +45,45 @@ const StudentInfo = ({ student, searchValue }) => {
     }, {})
   );
 
+  const originalData = groupedJuzData(originalStudentState)
+  const filteredData = groupedJuzData(student)
+
   const filtersConfig = [
     {
       id: "juzName",
       labelText: "اختر الجزء",
-      list: groupedJuzData,
+      list: originalData,
       listItem: "juzName",
-      value: filters.juzName,
+      defaultValue: juzName,
     },
     {
       id: "surahName",
       labelText: "اختر السورة",
-      list: groupedJuzData.flatMap((juz) => juz.surahs),
+      list: originalData.flatMap((juz) => juz.surahs),
       listItem: "surahName",
-      value: filters.surahName,
+      defaultValue: surahName,
     },
     {
       id: "rate",
       labelText: "اختر التقييم",
       list: STUDENT_RATE,
-      value: filters.rate,
+      defaultValue: rate,
     },
     {
       id: "date",
       labelText: "اختر التاريخ",
       list: Array.from(
         new Set(
-          groupedJuzData.flatMap((juz) =>
+          originalData.flatMap((juz) =>
             juz.surahs.flatMap((surah) =>
               Array.isArray(surah.pages)
-                ? surah.pages.map((page) =>
-                    new Date(page.date).toLocaleDateString("ar")
-                  )
+                ? surah.pages.map((page) => page.date)
                 : []
             )
           )
         )
       ),
-      value: filters.date,
+      defaultValue: date,
     },
   ];
 
@@ -94,15 +97,6 @@ const StudentInfo = ({ student, searchValue }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     submit(filters, { replace: true });
-  };
-
-  const handleClearFilters = () => {
-    setFilters({
-      juzName: "",
-      surahName: "",
-      rate: "",
-      date: "",
-    });
   };
 
   return (
@@ -153,29 +147,25 @@ const StudentInfo = ({ student, searchValue }) => {
           الفلاتر
         </Text>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
-          {filtersConfig.map(({ id, labelText, list, listItem, value,defaultValue }) => (
-            <FormRowSelect
-              key={id}
-              name={id}
-              labelText={labelText}
-              list={list}
-              listItem={listItem}
-              placeholder={`اختر ${labelText}`}
-              value={value}
-              onChange={(newValue) => handleFilterChange(id, newValue)}
-              defaultValue={defaultValue}
-            />
-          ))}
+          {filtersConfig.map(
+            ({ id, labelText, list, listItem, defaultValue }) => (
+              <FormRowSelect
+                key={id}
+                name={id}
+                labelText={labelText}
+                list={list}
+                listItem={listItem}
+                placeholder={`اختر ${labelText}`}
+                onChange={(newValue) => handleFilterChange(id, newValue)}
+                defaultValue={defaultValue}
+              />
+            )
+          )}
         </SimpleGrid>
 
         <HStack justifyContent="start" mt={4}>
-          <Button
-            colorScheme="red"
-            variant="outline"
-            type="submit"
-            onClick={handleClearFilters}
-          >
-            مسح الفلاتر
+          <Button colorScheme="red" variant="outline">
+            <Link to={`/dashboard/student/${student._id}`}>مسح الفلاتر</Link>
           </Button>
           <Button colorScheme="teal" type="submit">
             تقديم
@@ -186,7 +176,7 @@ const StudentInfo = ({ student, searchValue }) => {
 
         {/* Quranic Progress */}
         <Accordion allowToggle>
-          {groupedJuzData.map((juz) => (
+          {filteredData.map((juz) => (
             <AccordionItem key={juz._id}>
               <AccordionButton>
                 <HStack flex="1" justifyContent="space-between">
