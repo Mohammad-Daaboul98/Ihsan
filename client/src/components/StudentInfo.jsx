@@ -13,40 +13,37 @@ import {
   Divider,
   Image,
   SimpleGrid,
-  Flex,
   Button,
+  Link as ChakraLink,
+  Heading,
+  textDecoration,
 } from "@chakra-ui/react";
 import FormRowSelect from "./FormRowSelect";
 import { STUDENT_RATE } from "../../../server/shared/constants";
-import { Form, useSubmit, Link, useSearchParams } from "react-router-dom";
+import { Form, useSubmit, Link } from "react-router-dom";
 
 const StudentInfo = ({ student, searchValue, originalStudentState }) => {
   const submit = useSubmit();
 
-  const [searchParams] = useSearchParams(); // Extracting query parameters
-
-  // Retrieve query parameters
-  const rate = searchParams.get("rate");
-  const surahName = searchParams.get("surahName");
-  const date = searchParams.get("date");
-  const juzName = searchParams.get("juzName");
+  const { rate, surahName, juzName } = searchValue;
 
   const [filters, setFilters] = useState({});
 
-  const groupedJuzData =(student) => Object.values(
-    (student.studentJuz ?? []).reduce((acc, juz) => {
-      if (!acc[juz.juzName]) {
-        acc[juz.juzName] = { ...juz, surahs: [] };
-      }
-      acc[juz.juzName].surahs = acc[juz.juzName].surahs.concat(
-        Array.isArray(juz.surahs) ? juz.surahs : [juz.surahs]
-      );
-      return acc;
-    }, {})
-  );
+  const groupedJuzData = (student) =>
+    Object.values(
+      (student.studentJuz ?? []).reduce((acc, juz) => {
+        if (!acc[juz.juzName]) {
+          acc[juz.juzName] = { ...juz, surahs: [] };
+        }
+        acc[juz.juzName].surahs = acc[juz.juzName].surahs.concat(
+          Array.isArray(juz.surahs) ? juz.surahs : [juz.surahs]
+        );
+        return acc;
+      }, {})
+    );
 
-  const originalData = groupedJuzData(originalStudentState)
-  const filteredData = groupedJuzData(student)
+  const originalData = groupedJuzData(originalStudentState);
+  const filteredData = groupedJuzData(student);
 
   const filtersConfig = [
     {
@@ -69,22 +66,24 @@ const StudentInfo = ({ student, searchValue, originalStudentState }) => {
       list: STUDENT_RATE,
       defaultValue: rate,
     },
+  ];
+
+  const studentData = [
+    { label: "", value: student.studentName, isBold: true, fontSize: "2xl" },
+    { label: "العمر:", value: student.age },
     {
-      id: "date",
-      labelText: "اختر التاريخ",
-      list: Array.from(
-        new Set(
-          originalData.flatMap((juz) =>
-            juz.surahs.flatMap((surah) =>
-              Array.isArray(surah.pages)
-                ? surah.pages.map((page) => page.date)
-                : []
-            )
-          )
-        )
-      ),
-      defaultValue: date,
+      label: "ولي الأمر:",
+      value: `${student.parentName} (${student.parentWork})`,
     },
+    {
+      label: "رقم الهاتف:",
+      value: (
+        <ChakraLink href={`tel:${student.parentPhone}`} dir="ltr">
+          {student.parentPhone}
+        </ChakraLink>
+      ),
+    },
+    { label: "المعلم:", value: student.teacher?.teacherName },
   ];
 
   const handleFilterChange = (name, value) => {
@@ -98,6 +97,8 @@ const StudentInfo = ({ student, searchValue, originalStudentState }) => {
     e.preventDefault();
     submit(filters, { replace: true });
   };
+
+  console.log(filteredData);
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -123,20 +124,15 @@ const StudentInfo = ({ student, searchValue, originalStudentState }) => {
             mx="auto"
           />
           <VStack align="start" spacing={2}>
-            <Text fontSize="2xl" fontWeight="bold">
-              {student.studentName}
-            </Text>
-            <Text>العمر: {student.age}</Text>
-            <Text>
-              ولي الأمر: {student.parentName} ({student.parentWork})
-            </Text>
-            <Flex alignItems="center" gap="5px">
-              <Text>رقم الهاتف:</Text>
-              <Link href={`tel:${student.parentPhone}`} dir="ltr">
-                {student.parentPhone}
-              </Link>
-            </Flex>
-            <Text>المعلم: {student.teacher?.teacherName}</Text>
+            {studentData.map((item, index) => (
+              <Text
+                key={index}
+                fontSize={item.fontSize || "md"}
+                fontWeight={item.isBold ? "bold" : "normal"}
+              >
+                {item.label} {item.value}
+              </Text>
+            ))}
           </VStack>
         </SimpleGrid>
 
@@ -161,66 +157,73 @@ const StudentInfo = ({ student, searchValue, originalStudentState }) => {
               />
             )
           )}
+
+          <HStack justifyContent="start" mt={8}>
+            <Button colorScheme="teal" type="submit" w={"50%"}>
+              اضافة
+            </Button>
+            <Button colorScheme="red" variant="outline" w={"50%"}>
+              <Link
+                to={`/dashboard/student/${student._id}`}
+                style={{ width: "100%" }}
+              >
+                مسح الفلاتر
+              </Link>
+            </Button>
+          </HStack>
         </SimpleGrid>
 
-        <HStack justifyContent="start" mt={4}>
-          <Button colorScheme="red" variant="outline">
-            <Link to={`/dashboard/student/${student._id}`}>مسح الفلاتر</Link>
-          </Button>
-          <Button colorScheme="teal" type="submit">
-            تقديم
-          </Button>
-        </HStack>
-
         <Divider my={6} />
-
-        {/* Quranic Progress */}
-        <Accordion allowToggle>
-          {filteredData.map((juz) => (
-            <AccordionItem key={juz._id}>
-              <AccordionButton>
-                <HStack flex="1" justifyContent="space-between">
-                  <Text>{juz.juzName}</Text>
-                  <Badge colorScheme="teal">{juz.surahs.length} سور</Badge>
-                </HStack>
-                <AccordionIcon />
-              </AccordionButton>
-              <AccordionPanel>
-                {juz.surahs.map((surah) => (
-                  <Box key={surah._id} mb={3}>
-                    <Text fontWeight="bold">{surah.surahName}</Text>
-                    {(Array.isArray(surah.pages) ? surah.pages : []).map(
-                      (page) => (
-                        <Box
-                          key={page._id}
-                          mt={1}
-                          p={2}
-                          borderWidth="1px"
-                          borderRadius="md"
-                          boxShadow="sm"
-                        >
-                          <HStack justifyContent="space-between">
-                            <Text>
-                              الصفحات: {page.pageFrom} -{" "}
-                              {page.pageTo ?? "النهاية"}
+        {filteredData && filteredData.length ? (
+          <Accordion allowToggle>
+            {filteredData.map((juz) => (
+              <AccordionItem key={juz._id}>
+                <AccordionButton>
+                  <HStack flex="1" justifyContent="space-between">
+                    <Text>{juz.juzName}</Text>
+                    <Badge colorScheme="teal">{juz.surahs.length} سور</Badge>
+                  </HStack>
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel>
+                  {juz.surahs.map((surah) => (
+                    <Box key={surah._id} mb={3}>
+                      <Text fontWeight="bold">{surah.surahName}</Text>
+                      {(Array.isArray(surah.pages) ? surah.pages : []).map(
+                        (page) => (
+                          <Box
+                            key={page._id}
+                            mt={1}
+                            p={2}
+                            borderWidth="1px"
+                            borderRadius="md"
+                            boxShadow="sm"
+                          >
+                            <HStack justifyContent="space-between">
+                              <Text>
+                                الصفحات: {page.pageFrom} -{" "}
+                                {page.pageTo ?? "النهاية"}
+                              </Text>
+                              <Badge colorScheme={getBadgeColor(page.rate)}>
+                                {page.rate}
+                              </Badge>
+                            </HStack>
+                            <Text fontSize="sm">
+                              التاريخ:{" "}
+                              {new Date(page.date).toLocaleDateString("en")}
                             </Text>
-                            <Badge colorScheme={getBadgeColor(page.rate)}>
-                              {page.rate}
-                            </Badge>
-                          </HStack>
-                          <Text fontSize="sm">
-                            التاريخ:{" "}
-                            {new Date(page.date).toLocaleDateString("en")}
-                          </Text>
-                        </Box>
-                      )
-                    )}
-                  </Box>
-                ))}
-              </AccordionPanel>
-            </AccordionItem>
-          ))}
-        </Accordion>
+                          </Box>
+                        )
+                      )}
+                    </Box>
+                  ))}
+                </AccordionPanel>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        ) : (
+          <Heading as="h6" size={'md'} textAlign={'center'}>لايوجد بيانات لعرضها</Heading>
+        )}
       </Box>
     </Form>
   );

@@ -43,7 +43,7 @@ export const getStudent = async (req, res) => {
     const student = await Student.aggregate([
       // Match the student by ID
       { $match: { _id: new mongoose.Types.ObjectId(id) } },
-    
+
       // Lookup for teacher data
       {
         $lookup: {
@@ -53,11 +53,10 @@ export const getStudent = async (req, res) => {
           as: "teacher",
         },
       },
-    
+
       // Unwind the teacher array to make it a single object
       { $unwind: { path: "$teacher", preserveNullAndEmptyArrays: true } },
-    
-    
+
       // Lookup for studentJuz
       {
         $lookup: {
@@ -67,7 +66,7 @@ export const getStudent = async (req, res) => {
           as: "studentJuz",
         },
       },
-    
+
       // Filter studentJuz based on juzName
       {
         $addFields: {
@@ -86,10 +85,10 @@ export const getStudent = async (req, res) => {
           },
         },
       },
-    
+
       // Unwind studentJuz to process nested surahs
       { $unwind: { path: "$studentJuz", preserveNullAndEmptyArrays: true } },
-    
+
       // Lookup surahs within studentJuz
       {
         $lookup: {
@@ -99,7 +98,7 @@ export const getStudent = async (req, res) => {
           as: "studentJuz.surahs",
         },
       },
-    
+
       // Filter surahs based on surahName
       {
         $addFields: {
@@ -118,10 +117,15 @@ export const getStudent = async (req, res) => {
           },
         },
       },
-    
+
       // Unwind surahs to process nested pages
-      { $unwind: { path: "$studentJuz.surahs", preserveNullAndEmptyArrays: true } },
-    
+      {
+        $unwind: {
+          path: "$studentJuz.surahs",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+
       // Lookup pages within surahs
       {
         $lookup: {
@@ -131,7 +135,7 @@ export const getStudent = async (req, res) => {
           as: "studentJuz.surahs.pages",
         },
       },
-    
+
       // Filter pages based on rate and date
       {
         $addFields: {
@@ -139,17 +143,12 @@ export const getStudent = async (req, res) => {
             $filter: {
               input: "$studentJuz.surahs.pages",
               as: "page",
-              cond: {
-                $and: [
-                  rate ? { $eq: ["$$page.rate", rate] } : true,
-                  date ? { $eq: ["$$page.date", date] } : true,
-                ],
-              },
+              cond: rate ? { $eq: ["$$page.rate", rate] } : true,
             },
           },
         },
       },
-    
+
       // Remove Surahs with no matching pages
       {
         $group: {
@@ -166,7 +165,7 @@ export const getStudent = async (req, res) => {
           },
         },
       },
-    
+
       // Clean up nulls and flatten the result
       {
         $addFields: {
@@ -179,7 +178,7 @@ export const getStudent = async (req, res) => {
           },
         },
       },
-    
+
       // Replace root with the cleaned-up student document
       {
         $replaceRoot: {
@@ -187,7 +186,6 @@ export const getStudent = async (req, res) => {
         },
       },
     ]);
-    
 
     if (!student.length) {
       return res

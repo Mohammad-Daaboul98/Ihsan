@@ -14,14 +14,13 @@ const originalStudentQuery = (id) => ({
 });
 
 const singleStudentQuery = (params, id) => {
-  const { rate, surahName, date, juzName } = params;
+  const { rate, surahName, juzName } = params;
   return {
     queryKey: [
       "student",
       id,
       rate ?? "all",
       surahName ?? "all",
-      date ?? "all",
       juzName ?? "all",
     ],
     queryFn: async () => {

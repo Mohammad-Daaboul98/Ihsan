@@ -11,7 +11,6 @@ import { studentInputRate } from "../utils/formFields";
 import { Box, Button, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
-import { findOrCreateJuz, findOrUpdateSurah } from "../utils/juzHelpers";
 import { useQuery } from "@tanstack/react-query";
 import { QURAN_INDEX } from "../../../server/shared/constants";
 import { BeatLoader } from "react-spinners";
