@@ -22,7 +22,7 @@ import FormRowSelect from "./FormRowSelect";
 import { STUDENT_RATE } from "../../../server/shared/constants";
 import { Form, useSubmit, Link } from "react-router-dom";
 
-const StudentInfo = ({ student, searchValue, originalStudentState }) => {
+const StudentInfo = ({ student, searchValue, originalStudentState  }) => {
   const submit = useSubmit();
 
   const { rate, surahName, juzName } = searchValue;
@@ -166,7 +166,7 @@ const StudentInfo = ({ student, searchValue, originalStudentState }) => {
               to={`/dashboard/student/${student._id}`}
               style={{ width: "50%" }}
             >
-              <Button colorScheme="red" variant="outline" w={'100%'}>
+              <Button colorScheme="red" variant="outline" w={"100%"}>
                 مسح الفلاتر
               </Button>
             </Link>

@@ -16,6 +16,12 @@ function NavLinks({ setToggled }) {
 
   return (
     <Menu>
+      {/* <MenuItem 
+        component={<NavLink to={"/stats"} end />}
+        rootStyles={menuRootStyle}
+      >
+        ملعومات الاساتذه والطلاب
+      </MenuItem> */}
       {Links.map((link) => {
         const { text, submenu, icon } = link;
         return (
@@ -36,18 +42,18 @@ function NavLinks({ setToggled }) {
           </SubMenu>
         );
       })}
-      <SubMenu
+      {/* <SubMenu
         label="تنزيل الملفات"
         icon={<LiaFileDownloadSolid />}
         rootStyles={rootStyle}
       >
         <MenuItem rootStyles={menuRootStyle}>
-          <DownloadButton filename="ملف حسابات الأساتذه" exclName="teachers" />
+          <DownloadButton filename="ملف حسابات الأساتذه" exclName="ملف الاساتذه" />
         </MenuItem>
         <MenuItem rootStyles={menuRootStyle}>
-          <DownloadButton filename="ملف حسابات الطلاب" exclName="students" />
+          <DownloadButton filename="ملف حسابات الطلاب" exclName="ملف االطلاب" />
         </MenuItem>
-      </SubMenu>
+      </SubMenu> */}
     </Menu>
   );
 }

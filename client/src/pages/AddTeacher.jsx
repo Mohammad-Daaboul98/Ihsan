@@ -27,19 +27,19 @@ export const action =
         MessageInfo?.userName,
         data?.password
       );
-      const newTeacherData = [
-        {
-          "اسم المستخدم": teacherData?.userName,
-          "كلمة السر": data?.password,
-          "اسم الاستاذ": data?.teacherName,
-          "عمل الاستاذ": data?.teacherWork,
-          "المستوى العلمي": data?.teacherStudy,
-          "عمر الاستاذ": data?.age,
-          "رقم الهاتق": data?.teacherPhone,
-        },
-      ];
+      // const newTeacherData = [
+      //   {
+      //     "اسم المستخدم": teacherData?.userName,
+      //     "كلمة السر": data?.password,
+      //     "اسم الاستاذ": data?.teacherName,
+      //     "عمل الاستاذ": data?.teacherWork,
+      //     "المستوى العلمي": data?.teacherStudy,
+      //     "عمر الاستاذ": data?.age,
+      //     "رقم الهاتق": data?.teacherPhone,
+      //   },
+      // ];
 
-      await handleFormSubmit(newTeacherData, "teachers");
+      // await handleFormSubmit(newTeacherData, "ملف الاساتذه");
 
       return redirect("../teachers");
     } catch (error) {

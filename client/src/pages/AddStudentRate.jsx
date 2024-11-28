@@ -17,7 +17,7 @@ import { BeatLoader } from "react-spinners";
 
 const singleStudentQuery = (id) => {
   return {
-    queryKey: ["students", id],
+    queryKey: ["student", id],
     queryFn: async () => {
       const { data } = await customFetch.get(`/student/${id}`);
       return data;
@@ -76,9 +76,13 @@ const AddStudentRate = () => {
   const date = useActionData();
   const id = useLoaderData();
 
+
   const {
     data: { student },
   } = useQuery(singleStudentQuery(id));
+
+  console.log(student);
+  
   const juzName = student.studentJuz;
   const navigation = useNavigation();
   const isLoading = navigation.state === "submitting";

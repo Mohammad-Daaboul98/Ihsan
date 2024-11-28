@@ -2,8 +2,6 @@ import { StudentInfo } from "../components";
 import { useQuery } from "@tanstack/react-query";
 import customFetch from "../utils/customFetch";
 import { useLoaderData } from "react-router-dom";
-import { queryClient } from "../utils/queryClient";
-import { useEffect } from "react";
 
 const originalStudentQuery = (id) => ({
   queryKey: ["student", id],
@@ -23,6 +21,7 @@ const singleStudentQuery = (params, id) => {
       surahName ?? "all",
       juzName ?? "all",
     ],
+
     queryFn: async () => {
       const { data } = await customFetch.get(`/student/${id}`, { params });
       return data;

@@ -37,7 +37,7 @@ export const action =
     const role = "student";
     try {
       const student = await customFetch.post("student", { ...data, role });
-      const studentData = student?.data?.user;
+      // const studentData = student?.data?.user;
       const MessageInfo = student?.data?.MessageInfo;
 
       queryClient.invalidateQueries(["students&Teachers"]);
@@ -52,17 +52,18 @@ export const action =
         data?.password
       );
 
-      const newStudentData = [
-        {
-          "اسم المستخدم": studentData?.userName,
-          "كلمة السر": data.password,
-          "اسم الطالب": data.studentName,
-          "اسم الأب او الأم": data.parentName,
-          "عمل الأب او الأم": data.parentWork,
-          "رقم هاتف الأب أو الأم": data.parentPhone,
-        },
-      ];
-      await handleFormSubmit(newStudentData, "students");
+      // const newStudentData = [
+      //   {
+      //     "اسم المستخدم": studentData?.userName,
+      //     "كلمة السر": data.password,
+      //     "اسم الطالب": data.studentName,
+      //     "اسم الأب او الأم": data.parentName,
+      //     "عمل الأب او الأم": data.parentWork,
+      //     "رقم هاتف الأب أو الأم": data.parentPhone,
+      //   },
+      // ];
+      // await handleFormSubmit(newStudentData, "ملف االطلاب");
+
       return redirect("../students");
     } catch (error) {
       console.error("Error:", error);

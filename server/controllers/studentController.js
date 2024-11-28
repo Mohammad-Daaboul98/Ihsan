@@ -36,10 +36,26 @@ export const getAllStudents = async (req, res) => {
 };
 
 export const getStudent = async (req, res) => {
-  try {
-    const { id } = req.currentUserId || req.params;
-    const { rate, surahName, date, juzName } = req.query;
+  const { id } = req.currentUserId || req.params;
+  const { rate, surahName, juzName } = req.query;
+  console.log(Object.keys(req.query).length);
 
+  if (!Object.keys(req.query).length) {
+    const student = await Student.findById(id).populate({
+      path: "studentJuz",
+      populate: [
+        {
+          path: "surahs",
+          select: "surahName",
+          populate: {
+            path: "pages",
+            select: "pageFrom pageTo rate date",
+          },
+        },
+      ],
+    });
+    res.status(StatusCodes.OK).json({ student });
+  } else {
     const student = await Student.aggregate([
       // Match the student by ID
       { $match: { _id: new mongoose.Types.ObjectId(id) } },
@@ -186,24 +202,12 @@ export const getStudent = async (req, res) => {
         },
       },
     ]);
-
-    if (!student.length) {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .json({ message: "No matching student data found." });
-    }
-
     res.status(StatusCodes.OK).json({ student: student[0] });
-  } catch (error) {
-    console.error("Error in getFilteredStudent (aggregation):", error);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: "An error occurred while retrieving the student data.",
-    });
   }
 };
 
 export const createStudentProfile = async (req, res) => {
-  const { user, profileData } = req.userInfo;
+  const { user, originalPassword: password, profileData } = req.userInfo;
 
   const { juzId } = req.juzInfo;
   profileData.studentJuz = juzId;
@@ -214,6 +218,8 @@ export const createStudentProfile = async (req, res) => {
     _id: user._id,
     ...profileData,
   });
+
+  
   const MessageInfo = {
     userName: user.userName,
     qrUrl: profileData.qrCode,

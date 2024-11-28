@@ -2,20 +2,17 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useLoaderData } from "react-router-dom";
 import {
-  ModalComponent,
   QRCodeComponent,
   SearchComponent,
-  StudentInfo,
   TableComponent,
 } from "../components";
 import customFetch from "../utils/customFetch";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { BiShow } from "react-icons/bi";
 import {
-  Button,
   IconButton,
-  useDisclosure,
-  ModalOverlay,
+  // useDisclosure,
+  // ModalOverlay,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import "dayjs/locale/ar";
@@ -52,19 +49,17 @@ export const loader =
   };
 
 const AllStudents = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectStudentInfo, setSelectedStudentInfo] = useState([]);
   const { searchValue } = useLoaderData();
 
   const { data } = useQuery(allStudentsQuery(searchValue));
   const students = data?.students || [];
 
-  const Overlay = () => (
-    <ModalOverlay
-      bg="blackAlpha.100"
-      backdropFilter="blur(10px) hue-rotate(90deg)"
-    />
-  );
+  // const Overlay = () => (
+  //   <ModalOverlay
+  //     bg="blackAlpha.100"
+  //     backdropFilter="blur(10px) hue-rotate(90deg)"
+  //   />
+  // );
 
   const columns = [
     { id: "studentName", header: "الطالب", accessorKey: "studentName" },
@@ -122,71 +117,6 @@ const AllStudents = () => {
     },
   ];
 
-  // const modalColumns = [
-  //   {
-  //     header: "التاريخ",
-  //     cell: ({ row }) => {
-  //       const date = row.original.page.date;
-  //       return date ? dayjs(date).format("D MMMM YYYY") : "-";
-  //     },
-  //   },
-  //   {
-  //     header: "الجزء",
-  //     accessorKey: "juzName",
-  //     cell: ({ getValue }) => {
-  //       const juzName = getValue();
-  //       return juzName || "-";
-  //     },
-  //   },
-  //   {
-  //     header: "السورة",
-  //     accessorKey: "surahName",
-  //     cell: ({ getValue }) => {
-  //       const surahName = getValue();
-  //       return surahName || "-";
-  //     },
-  //   },
-  //   {
-  //     header: "الصفحة",
-  //     cell: ({ row }) => {
-  //       const pageFrom = row.original.page.pageFrom;
-  //       const pageTo = row.original.page.pageTo;
-  //       return pageFrom && pageTo ? `${pageFrom} - ${pageTo}` : pageFrom || "-";
-  //     },
-  //   },
-  //   {
-  //     header: "التقيم",
-  //     cell: ({ row }) => {
-  //       const rate = row.original.page.rate;
-  //       return rate || "-";
-  //     },
-  //   },
-  // ];
-
-  // const flattenData = (data) => {
-  //   return data.flatMap((item) =>
-  //     item.surahs.flatMap((surah) =>
-  //       surah.pages.map((page) => ({
-  //         juzName: item.juzName,
-  //         surahName: surah.surahName,
-  //         page: page,
-  //       }))
-  //     )
-  //   );
-  // };
-
-  // const flattenedData =  flattenData(selectedAttendance);
-
-  {
-    /* <TableComponent
-    title="معلومات حضور الطالب"
-    columns={modalColumns}
-    data={flattenedData}
-    editAndDelete={false}
-    width="6xl"
-  /> */
-  }
-
   return (
     <>
       <SearchComponent
@@ -203,14 +133,6 @@ const AllStudents = () => {
           editPage="edit-student"
           deletePage="delete-student"
         />
-        {/* <ModalComponent
-          isOpen={isOpen}
-          onClose={onClose}
-          overlay={<Overlay />}
-          components={
-           <StudentInfo student={selectStudentInfo} />
-          }
-        /> */}
       </>
     </>
   );

@@ -73,26 +73,26 @@ export const action =
           ...data,
         });
         toastMsg = student.data.msg;
-        const studentData = student?.data?.updatedUser;
-        const oldUserName = student?.data?.oldUserName;
+        // const studentData = student?.data?.updatedUser;
+        // const oldUserName = student?.data?.oldUserName;
 
-        const updateStudentData = [
-          {
-            "اسم الطالب": data.studentName,
-            "اسم الأب او الأم": data.parentName,
-            "عمل الأب او الأم": data.parentWork,
-            "رقم هاتف الأب أو الأم": data.parentPhone,
-          },
-        ];
+        // const updateStudentData = [
+        //   {
+        //     "اسم الطالب": data.studentName,
+        //     "اسم الأب او الأم": data.parentName,
+        //     "عمل الأب او الأم": data.parentWork,
+        //     "رقم هاتف الأب أو الأم": data.parentPhone,
+        //   },
+        // ];
 
-        data.password
-          ? (updateStudentData[0]["كلمة السر"] = data.password)
-          : null;
-        data.userName
-          ? (updateStudentData[0]["اسم المستخدم"] = studentData?.userName)
-          : null;
+        // data.password
+        //   ? (updateStudentData[0]["كلمة السر"] = data.password)
+        //   : null;
+        // data.userName
+        //   ? (updateStudentData[0]["اسم المستخدم"] = studentData?.userName)
+        //   : null;
 
-        await patchData(updateStudentData, "students", oldUserName);
+        // await patchData(updateStudentData, "ملف االطلاب", oldUserName);
       }
       queryClient.invalidateQueries(["students&Teachers"]);
       queryClient.invalidateQueries(["teachers"]);

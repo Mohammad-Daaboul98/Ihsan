@@ -42,27 +42,27 @@ export const action =
       queryClient.invalidateQueries(["teachers"]);
       toast.success("تم تعديل معلومات الاستاذ", { theme: "colored" });
 
-      const teacherData = teacher?.data?.updatedUser;
-      const oldUserName = student?.data?.oldUserName;
+      // const teacherData = teacher?.data?.updatedUser;
+      // const oldUserName = student?.data?.oldUserName;
 
-      const updateTeacherData = [
-        {
-          "اسم الاستاذ": data.teacherName,
-          "عمل الاستاذ": data.teacherWork,
-          "المستوى العلمي": data.teacherStudy,
-          "عمر الاستاذ": data.age,
-          "رقم الهاتق": data.teacherPhone,
-        },
-      ];
+      // const updateTeacherData = [
+      //   {
+      //     "اسم الاستاذ": data.teacherName,
+      //     "عمل الاستاذ": data.teacherWork,
+      //     "المستوى العلمي": data.teacherStudy,
+      //     "عمر الاستاذ": data.age,
+      //     "رقم الهاتق": data.teacherPhone,
+      //   },
+      // ];
 
-      data.password
-        ? (updateStudentData[0]["كلمة السر"] = data.password)
-        : null;
-      data.userName
-        ? (updateStudentData[0]["اسم المستخدم"] = teacherData?.userName)
-        : null;
+      // data.password
+      //   ? (updateStudentData[0]["كلمة السر"] = data.password)
+      //   : null;
+      // data.userName
+      //   ? (updateStudentData[0]["اسم المستخدم"] = teacherData?.userName)
+      //   : null;
 
-      await patchData(updateTeacherData, "teachers", oldUserName);
+      // await patchData(updateTeacherData, "ملف الاساتذه", oldUserName);
 
       return redirect("../teachers");
     } catch (error) {

@@ -19,5 +19,4 @@ User.methods.toJSON = function () {
   return obj;
 };
 
-
 export default mongoose.model("Users", User);

@@ -15,7 +15,6 @@ export const createUser = async (req, res, next) => {
 
   const roleAcronym = role === "teacher" ? "م" : "ط";
   userName = `${roleAcronym}/${userName.trim()}/${numOfUser + 1}`;
-
   const hashedPassword = await hashPassword(password);
   password = hashedPassword;
 

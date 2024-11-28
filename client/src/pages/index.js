@@ -11,3 +11,4 @@ export { default as AddStudentRate } from "./AddStudentRate";
 export { default as EditTeacher } from "./EditTeacher";
 export { default as EditStudent } from "./EditStudent";
 export { default as StudentProfile } from "./StudentProfile";
+export { default as StatsPage } from "./StatsPage";
