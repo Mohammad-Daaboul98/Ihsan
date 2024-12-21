@@ -11,6 +11,7 @@ import { IoLogOutOutline } from "react-icons/io5";
 
 const Navbar = ({
   sidebarProps: { toggled, collapsed, setToggled, logoutUser },
+  role,
 }) => {
   const bg = useColorModeValue("#EDF2F7", "#2D3748");
   const color = useColorModeValue("black", "#e0e0e1");
@@ -57,7 +58,7 @@ const Navbar = ({
             اِحسان
           </Heading>
         </Flex>
-        <NavLinks setToggled={setToggled} />
+        <NavLinks setToggled={setToggled} role={role} />
         <Box marginTop="auto" p="20px 10px">
           <Button onClick={() => logoutUser()}>
             {collapsed ? <IoLogOutOutline /> : "تسجيل الخروج"}

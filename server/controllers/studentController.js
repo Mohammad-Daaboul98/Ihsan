@@ -4,13 +4,6 @@ import qrCodeGenerator from "../utils/qrCodeGenerator.js";
 import cloudinary from "cloudinary";
 import mongoose from "mongoose";
 
-// export const getCurrentStudent = async (req, res) => {
-//   const id = req.user._id;
-
-//   const student = await Student.findById(id);
-//   res.status(StatusCodes.OK).json({ student });
-// };
-
 export const getAllStudents = async (req, res) => {
   const { search } = req.query;
 
@@ -36,29 +29,35 @@ export const getAllStudents = async (req, res) => {
 };
 
 export const getStudent = async (req, res) => {
-  const { id } = req.currentUserId || req.params;
+  const { id } = req.params;
+
   const { rate, surahName, juzName } = req.query;
   console.log(Object.keys(req.query).length);
 
   if (!Object.keys(req.query).length) {
-    const student = await Student.findById(id).populate({
-      path: "studentJuz",
-      populate: [
-        {
-          path: "surahs",
-          select: "surahName",
-          populate: {
-            path: "pages",
-            select: "pageFrom pageTo rate date",
+    const student = await Student.findById(id ? id : req.user._id)
+      .populate({
+        path: "teacherId",
+        select: "teacherName",
+      })
+      .populate({
+        path: "studentJuz",
+        populate: [
+          {
+            path: "surahs",
+            select: "surahName",
+            populate: {
+              path: "pages",
+              select: "pageFrom pageTo rate date",
+            },
           },
-        },
-      ],
-    });
+        ],
+      });
     res.status(StatusCodes.OK).json({ student });
   } else {
     const student = await Student.aggregate([
       // Match the student by ID
-      { $match: { _id: new mongoose.Types.ObjectId(id) } },
+      { $match: { _id: new mongoose.Types.ObjectId(id ? id : req.user._id) } },
 
       // Lookup for teacher data
       {
@@ -66,12 +65,12 @@ export const getStudent = async (req, res) => {
           from: "teachers",
           localField: "teacherId",
           foreignField: "_id",
-          as: "teacher",
+          as: "teacherId",
         },
       },
 
       // Unwind the teacher array to make it a single object
-      { $unwind: { path: "$teacher", preserveNullAndEmptyArrays: true } },
+      { $unwind: { path: "$teacherId", preserveNullAndEmptyArrays: true } },
 
       // Lookup for studentJuz
       {
@@ -219,7 +218,6 @@ export const createStudentProfile = async (req, res) => {
     ...profileData,
   });
 
-  
   const MessageInfo = {
     userName: user.userName,
     qrUrl: profileData.qrCode,
@@ -229,24 +227,34 @@ export const createStudentProfile = async (req, res) => {
 
 export const updateMultipleStudentsAttendance = async (req, res) => {
   const { date, attendance } = req.body;
+  console.log(req.body);
+  
 
   try {
-    await Promise.all(
-      attendance.map(async ({ studentId, status }) => {
-        const student = await Student.findById(studentId);
+    const bulkOperations = attendance.map(({ studentId, status }) => ({
+      updateOne: {
+        filter: {
+          _id: studentId,
+          "studentAttendance.date": new Date(date),
+        },
+        update: {
+          $set: { "studentAttendance.$.status": status },
+        },
+        upsert: false,
+      },
+    }));
 
-        const existingAttendance = student.studentAttendance.find(
-          (attendance) => attendance.date.toISOString().split("T")[0] === date
-        );
+    const bulkNewAttendance = attendance.map(({ studentId, status }) => ({
+      updateOne: {
+        filter: { _id: studentId },
+        update: {
+          $push: { studentAttendance: { date: new Date(date), status } },
+        },
+        upsert: true,
+      },
+    }));
 
-        if (existingAttendance) {
-          existingAttendance.status = status;
-        } else {
-          student.studentAttendance.push({ date, status });
-        }
-        await student.save();
-      })
-    );
+    await Student.bulkWrite([...bulkOperations, ...bulkNewAttendance]);
 
     res.status(StatusCodes.OK).json({ message: "تم تعديل حالة حضور الطالاب" });
   } catch (error) {

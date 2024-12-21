@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import { Box } from "@chakra-ui/react";
 import { QURAN_INDEX } from "../../../server/shared/constants";
-import { patchData } from "../utils/excelDBHandler";
 
 const studentsTeachersQuery = (id) => {
   return {
@@ -73,26 +72,7 @@ export const action =
           ...data,
         });
         toastMsg = student.data.msg;
-        // const studentData = student?.data?.updatedUser;
-        // const oldUserName = student?.data?.oldUserName;
 
-        // const updateStudentData = [
-        //   {
-        //     "اسم الطالب": data.studentName,
-        //     "اسم الأب او الأم": data.parentName,
-        //     "عمل الأب او الأم": data.parentWork,
-        //     "رقم هاتف الأب أو الأم": data.parentPhone,
-        //   },
-        // ];
-
-        // data.password
-        //   ? (updateStudentData[0]["كلمة السر"] = data.password)
-        //   : null;
-        // data.userName
-        //   ? (updateStudentData[0]["اسم المستخدم"] = studentData?.userName)
-        //   : null;
-
-        // await patchData(updateStudentData, "ملف االطلاب", oldUserName);
       }
       queryClient.invalidateQueries(["students&Teachers"]);
       queryClient.invalidateQueries(["teachers"]);

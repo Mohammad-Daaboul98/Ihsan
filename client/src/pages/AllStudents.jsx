@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useOutletContext } from "react-router-dom";
 import {
   QRCodeComponent,
   SearchComponent,
@@ -50,8 +50,12 @@ export const loader =
 
 const AllStudents = () => {
   const { searchValue } = useLoaderData();
-
   const { data } = useQuery(allStudentsQuery(searchValue));
+  const { user } = useOutletContext();
+  console.log(user);
+  
+  const isAdmin = user?.role === "admin" ? true : false;
+
   const students = data?.students || [];
 
   // const Overlay = () => (
@@ -129,7 +133,7 @@ const AllStudents = () => {
           title="معلومات الطالب"
           columns={columns}
           data={students}
-          editAndDelete={true}
+          editAndDelete={isAdmin}
           editPage="edit-student"
           deletePage="delete-student"
         />

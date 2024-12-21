@@ -1,6 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { RadioGroup, SearchComponent, TableComponent } from "../components";
-import { Form, redirect, useLoaderData, useNavigation } from "react-router-dom";
+import {
+  QrReaderComponent,
+  RadioGroup,
+  SearchComponent,
+  TableComponent,
+} from "../components";
+import { Form, useLoaderData, useNavigation } from "react-router-dom";
 import customFetch from "../utils/customFetch";
 import { useState } from "react";
 import { Box, Button, Input } from "@chakra-ui/react";
@@ -23,25 +28,41 @@ export const action =
   async ({ request }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
-    let studentAttendance = Object.entries(data).map(
-      ([studentId, attendance]) => {
-        return {
-          studentId,
-          status: attendance,
-        };
-      }
-    );
-    studentAttendance.pop();
-    studentAttendance = {
-      date: data.date,
-      attendance: studentAttendance,
-    };
+    console.log(data);
+      
+    let studentAttendance;
+
+    if (data.status) {
+      studentAttendance = {
+        date: data.date,
+        attendance: [
+          {
+            studentId: data.studentId,
+            status: data.status,
+          },
+        ],
+      };
+    } else {
+      studentAttendance = Object.entries(data).map(
+        ([studentId, attendance]) => {
+          return {
+            studentId,
+            status: attendance,
+          };
+        }
+      );
+      studentAttendance.pop();
+      studentAttendance = {
+        date: data.date,
+        attendance: studentAttendance,
+      };
+    }
 
     try {
-      await customFetch.patch("student", studentAttendance);
+      await customFetch.patch("/student", studentAttendance);
       queryClient.invalidateQueries(["students"]);
       toast.success("تم تعديل حالة حضور الطالاب", { theme: "colored" });
-      return redirect("../students");
+      return null;
     } catch (error) {
       to("Error:", error);
       return error;
@@ -90,9 +111,10 @@ const StudentsAttendance = () => {
       accessorKey: "teacherId",
       cell: ({ getValue }) => {
         const teacherId = getValue();
-        console.log(teacherId);
 
-        const teacherName = teacherId?.teacherName ? teacherId.teacherName : "بدون استاذ";
+        const teacherName = teacherId?.teacherName
+          ? teacherId.teacherName
+          : "بدون استاذ";
         return teacherName;
       },
     },
@@ -186,14 +208,7 @@ const StudentsAttendance = () => {
               textAlign="right"
               w={{ base: "100%", lg: "auto", md: "auto", sm: "100%" }}
             />
-            <Button
-              colorScheme="green"
-              size="lg"
-              w={{ base: "48%", lg: "auto", md: "auto", sm: "48%" }}
-              // onClick={<QrReader />}
-            >
-              تصوير الباركود
-            </Button>
+            <QrReaderComponent />
             <Button
               type="submit"
               colorScheme="teal"

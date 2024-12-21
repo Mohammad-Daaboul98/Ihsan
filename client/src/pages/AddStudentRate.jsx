@@ -81,7 +81,6 @@ const AddStudentRate = () => {
     data: { student },
   } = useQuery(singleStudentQuery(id));
 
-  console.log(student);
   
   const juzName = student.studentJuz;
   const navigation = useNavigation();
@@ -105,7 +104,6 @@ const AddStudentRate = () => {
   // Handle selection change for Juz
   const handleJuzChange = (selectedJuz) => {
     const juz = QURAN_INDEX.JUZ.find((juz) => juz.juzName === selectedJuz);
-    console.log(selectedJuz);
 
     setJuzSurah(juz ? juz.surahs : []);
     setSelectedSurah(null); // Reset Surah when Juz changes

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navbar } from "../components";
+import { MenuComponent, Navbar } from "../components";
 import {
   Button,
   Flex,
@@ -38,7 +38,9 @@ export const loader = (queryClient) => async () => {
 };
 
 function DashboardLayout({ queryClient }) {
-  const { data: user } = useQuery(userQuery);
+  const {
+    data: { user },
+  } = useQuery(userQuery);
   const navigate = useNavigate();
   const navigation = useNavigation();
   const isLoading = navigation.state === "loading";
@@ -99,7 +101,7 @@ function DashboardLayout({ queryClient }) {
     <Flex>
       <Box minHeight="100vh" w={{ base: "0", md: "0", lg: "auto" }}>
         {user?.role === "student" ? null : (
-          <Navbar sidebarProps={sidebarProps} />
+          <Navbar sidebarProps={sidebarProps} role={user?.role} />
         )}
       </Box>
       <Flex w="100%" flexDirection="column" overflow="hidden">
@@ -150,13 +152,18 @@ function DashboardLayout({ queryClient }) {
             )}
             {/* <Button onClick={() => logoutUser()}>تسجيل الخروج</Button> */}
 
-            <Button variant="mode" padding={0} onClick={toggleColorMode}>
-              {colorMode === "light" ? (
-                <MoonIcon boxSize={{ base: 5, md: 6 }} color="#234e52" />
-              ) : (
-                <SunIcon boxSize={{ base: 5, md: 6 }} color="orange" />
+            <Box mr="auto" display="flex" gap="0 5px">
+              <Button variant="mode" padding={0} onClick={toggleColorMode}>
+                {colorMode === "light" ? (
+                  <MoonIcon boxSize={{ base: 5, md: 6 }} color="#234e52" />
+                ) : (
+                  <SunIcon boxSize={{ base: 5, md: 6 }} color="orange" />
+                )}
+              </Button>
+              {user?.role === "student" && (
+                <MenuComponent name="تسجيل الخروج" action={logoutUser} />
               )}
-            </Button>
+            </Box>
           </Flex>
         </Box>
         {isLoading ? (

@@ -2,7 +2,6 @@ import { PiStudentDuotone } from "react-icons/pi";
 import { GiTeacher } from "react-icons/gi";
 
 const Links = [
-
   {
     text: "الأساتذه",
     icon: <GiTeacher />,
@@ -21,5 +20,15 @@ const Links = [
     ],
   },
 ];
+const TeacherLinks = [
+  {
+    text: "الطلاب",
+    icon: <PiStudentDuotone />,
+    submenu: [
+      { subText: "عرض الطلاب", subPath: "students" },
+      { subText: "جدول الحضور", subPath: "students-attendance" },
+    ],
+  },
+];
 
-export default Links;
+export { Links, TeacherLinks };

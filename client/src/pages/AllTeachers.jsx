@@ -40,7 +40,6 @@ const AllTeachers = () => {
     allTeachersQuery(searchValue)
   );
 
-  console.log(teachers);
 
   const columns = [
     { id: "name", header: "اسم الاستاذ", accessorKey: "teacherName" },

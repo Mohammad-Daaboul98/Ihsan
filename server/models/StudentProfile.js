@@ -13,7 +13,6 @@ const StudentProfile = new mongoose.Schema({
   StudentStudy: String,
   age: Number,
   studentPoint: Number,
-  studentClassTime: String,
   studentJuz: [
     {
       type: mongoose.Types.ObjectId,

@@ -82,7 +82,6 @@ export const updateTeacherProfile = async (req, res) => {
 
 export const deleteTeacherProfile = async (req, res) => {
   const { deletedUser } = req.deletedUserInfo;
-  console.log(req.deletedUserInfo);
 
   const deletedTeacher = await Teacher.findByIdAndDelete(deletedUser._id);
 

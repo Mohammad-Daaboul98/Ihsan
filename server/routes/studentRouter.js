@@ -40,7 +40,7 @@ router
     updateMultipleStudentsAttendance
   );
 
-// router.get("/current-student", getCurrentStudent);
+router.route("/current-student").get(getStudent);
 
 router
   .route("/:id")

@@ -122,6 +122,11 @@ export const Router = [
             // action: addStudentRateAction(queryClient),
             loader: studentProfileLoader(queryClient),
           },
+          {
+            path: "student-profile",
+            element: <StudentProfile />,
+            loader: studentProfileLoader(queryClient, true),
+          },
         ],
       },
     ],

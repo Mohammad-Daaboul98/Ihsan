@@ -4,9 +4,11 @@ import customFetch from "../utils/customFetch";
 import { useLoaderData } from "react-router-dom";
 
 const originalStudentQuery = (id) => ({
-  queryKey: ["student", id],
+  queryKey: ["student", id && id],
   queryFn: async () => {
-    const { data } = await customFetch.get(`/student/${id}`);
+    const { data } = await customFetch.get(
+      id ? `/student/${id}` : "/student/current-student"
+    );
     return data;
   },
 });
@@ -16,14 +18,17 @@ const singleStudentQuery = (params, id) => {
   return {
     queryKey: [
       "student",
-      id,
+      id && id,
       rate ?? "all",
       surahName ?? "all",
       juzName ?? "all",
     ],
 
     queryFn: async () => {
-      const { data } = await customFetch.get(`/student/${id}`, { params });
+      const { data } = await customFetch.get(
+        id ? `/student/${id}` : "/student/current-student",
+        { params }
+      );
       return data;
     },
   };
@@ -32,14 +37,17 @@ const singleStudentQuery = (params, id) => {
 export const loader =
   (queryClient) =>
   async ({ request, params }) => {
-    const { id } = params;
     const param = Object.fromEntries([
       ...new URL(request.url).searchParams.entries(),
     ]);
     try {
-      await queryClient.ensureQueryData(originalStudentQuery(id));
-      await queryClient.ensureQueryData(singleStudentQuery(param, id));
-      return { searchValue: { ...param }, id };
+      const { id } = params;
+      await queryClient.ensureQueryData(originalStudentQuery(id && id));
+      await queryClient.ensureQueryData(singleStudentQuery(param, id && id));
+      const returnValue = id
+        ? { searchValue: { ...param }, id }
+        : { searchValue: { ...param } };
+      return { ...returnValue };
     } catch (error) {
       return redirect("/");
     }
@@ -48,8 +56,11 @@ export const loader =
 const StudentProfile = () => {
   const { searchValue, id } = useLoaderData();
 
-  const { data: filteredData } = useQuery(singleStudentQuery(searchValue, id));
-  const { data: originalData } = useQuery(originalStudentQuery(id));
+  const { data: filteredData } = useQuery(
+    singleStudentQuery(searchValue, id && id)
+  );
+
+  const { data: originalData } = useQuery(originalStudentQuery(id && id));
 
   // Use original and filtered data as needed
   const { student: originalStudent } = originalData;
@@ -57,6 +68,7 @@ const StudentProfile = () => {
 
   return (
     <StudentInfo
+      isStudent={id ? false : true}
       student={filteredStudent}
       originalStudentState={originalStudent}
       searchValue={searchValue}

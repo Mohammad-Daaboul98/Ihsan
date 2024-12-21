@@ -3,7 +3,6 @@ import { StudentForm } from "../components";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
-import { handleFormSubmit } from "../utils/excelDBHandler";
 import whatsAppMessage from "../utils/whatsAppMessage";
 
 const getTeachersQuery = () => {
@@ -51,18 +50,6 @@ export const action =
         MessageInfo?.userName,
         data?.password
       );
-
-      // const newStudentData = [
-      //   {
-      //     "اسم المستخدم": studentData?.userName,
-      //     "كلمة السر": data.password,
-      //     "اسم الطالب": data.studentName,
-      //     "اسم الأب او الأم": data.parentName,
-      //     "عمل الأب او الأم": data.parentWork,
-      //     "رقم هاتف الأب أو الأم": data.parentPhone,
-      //   },
-      // ];
-      // await handleFormSubmit(newStudentData, "ملف االطلاب");
 
       return redirect("../students");
     } catch (error) {

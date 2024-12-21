@@ -49,12 +49,13 @@ export const validateIdParam = withValidationErrors([
     if (!isValidId) throw new BadRequestError("invalid MongoDB id");
 
     const user = await User.findById(id);
+    const student = await Student.findById(id);
     if (!user) throw new NotFoundError(`لا يوجد مستخدم بالمعرف: ${id}`);
 
-    const isadmin = req.user.role === "admin";
-    const isTeacher = req.user._id === Student.teacherId?.toString();
+    const isAdmin = req.user.role === "admin";
+    const isTeacher = req.user._id === student.teacherId?.toString();
 
-    if (!isadmin && !isTeacher)
+    if (!isAdmin && !isTeacher)
       throw new UnauthorizedError("ليس لديك الصلاحية للوصول إلى هذا المسار");
   }),
 ]);

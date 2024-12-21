@@ -3,8 +3,7 @@ import { FormRow, Header } from "../components";
 import { Box, Button, Container } from "@chakra-ui/react";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
-import { BeatLoader } from 'react-spinners';
-
+import { BeatLoader } from "react-spinners";
 
 export const action =
   (queryClient) =>
@@ -14,6 +13,7 @@ export const action =
     try {
       const user = await customFetch.post("/auth/login", data);
       const { role } = user?.data;
+
       queryClient.invalidateQueries();
       toast.success("تم تسجيل الدخول", { theme: "colored" });
       return redirect(

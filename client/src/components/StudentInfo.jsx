@@ -16,14 +16,19 @@ import {
   Button,
   Link as ChakraLink,
   Heading,
-  textDecoration,
 } from "@chakra-ui/react";
 import FormRowSelect from "./FormRowSelect";
 import { STUDENT_RATE } from "../../../server/shared/constants";
 import { Form, useSubmit, Link } from "react-router-dom";
 
-const StudentInfo = ({ student, searchValue, originalStudentState  }) => {
+const StudentInfo = ({
+  student,
+  searchValue,
+  originalStudentState,
+  isStudent,
+}) => {
   const submit = useSubmit();
+  console.log(student);
 
   const { rate, surahName, juzName } = searchValue;
 
@@ -83,7 +88,7 @@ const StudentInfo = ({ student, searchValue, originalStudentState  }) => {
         </ChakraLink>
       ),
     },
-    { label: "المعلم:", value: student.teacher?.teacherName },
+    { label: "المعلم:", value: student.teacherId?.teacherName },
   ];
 
   const handleFilterChange = (name, value) => {
@@ -97,8 +102,6 @@ const StudentInfo = ({ student, searchValue, originalStudentState  }) => {
     e.preventDefault();
     submit(filters, { replace: true });
   };
-
-  console.log(filteredData);
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -163,7 +166,11 @@ const StudentInfo = ({ student, searchValue, originalStudentState  }) => {
               اضافة
             </Button>
             <Link
-              to={`/dashboard/student/${student._id}`}
+              to={
+                isStudent
+                  ? "/dashboard/student-profile"
+                  : `/dashboard/student/${student._id}`
+              }
               style={{ width: "50%" }}
             >
               <Button colorScheme="red" variant="outline" w={"100%"}>

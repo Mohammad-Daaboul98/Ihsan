@@ -1,11 +1,9 @@
 import { Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { NavLink } from "react-router-dom";
 import useRootStyles from "../theme/useRootStyles";
-import DownloadButton from "./DownloadButton";
-import { LiaFileDownloadSolid } from "react-icons/lia";
-import Links from "./Links";
+import { Links, TeacherLinks } from "./Links";
 
-function NavLinks({ setToggled }) {
+function NavLinks({ setToggled, role }) {
   const menuTheme = {
     menuDarkBg: "#4A5568",
     menuHoverDarkBg: "#1A202C !important",
@@ -13,6 +11,7 @@ function NavLinks({ setToggled }) {
 
   const rootStyle = useRootStyles();
   const menuRootStyle = useRootStyles(menuTheme);
+  const links = role === "teacher" ? TeacherLinks : Links;
 
   return (
     <Menu>
@@ -22,7 +21,7 @@ function NavLinks({ setToggled }) {
       >
         ملعومات الاساتذه والطلاب
       </MenuItem> */}
-      {Links.map((link) => {
+      {links.map((link) => {
         const { text, submenu, icon } = link;
         return (
           <SubMenu key={text} label={text} icon={icon} rootStyles={rootStyle}>

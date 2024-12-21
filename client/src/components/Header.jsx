@@ -1,10 +1,4 @@
-import {
-  Button,
-  Container,
-  Flex,
-  Heading,
-  Image,
-} from "@chakra-ui/react";
+import { Button, Container, Flex, Heading, Image } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import ihsanIconDark from "../assets/image/iconDark.svg";
 import ihsanIconLight from "../assets/image/iconLight.svg";
@@ -41,6 +35,7 @@ const Header = () => {
             اِحسان
           </Heading>
         </Flex>
+        
 
         <Button variant="mode" padding={0} onClick={toggleColorMode}>
           {colorMode === "light" ? (
