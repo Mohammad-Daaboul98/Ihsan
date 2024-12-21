@@ -11,6 +11,7 @@ import { useState } from "react";
 import { Box, Button, Input } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import { BeatLoader } from "react-spinners";
+import day from "dayjs";
 
 const allStudentsQuery = (params) => {
   const { search } = params;
@@ -28,13 +29,13 @@ export const action =
   async ({ request }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
-    console.log(data);
-      
+
     let studentAttendance;
+    console.log(day(data.date).format("DD MM YY"));
 
     if (data.status) {
       studentAttendance = {
-        date: data.date,
+        date: day(data.date).format("DD MM YY"),
         attendance: [
           {
             studentId: data.studentId,
@@ -53,7 +54,7 @@ export const action =
       );
       studentAttendance.pop();
       studentAttendance = {
-        date: data.date,
+        date: day(data.date).format("DD MMM YY"),
         attendance: studentAttendance,
       };
     }
@@ -210,6 +211,7 @@ const StudentsAttendance = () => {
             />
             <QrReaderComponent />
             <Button
+              id="checkAttend"
               type="submit"
               colorScheme="teal"
               size="lg"

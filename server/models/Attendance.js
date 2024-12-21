@@ -4,7 +4,7 @@ import { STUDENT_ATTENDANCE } from "../shared/constants.js";
 export const  Attendance = new mongoose.Schema(
   {
     date: {
-      type: Date,
+      type: String,
       required: true,
     },
     status: {

@@ -63,7 +63,6 @@ const QrReaderComponent = () => {
       >
         تصوير الباركود
       </Button>
-      {scanResult && <Button type="submit" display="none" id="checkAttend" />}
 
       {showScanner && selectedDeviceId && (
         <ModalComponent

@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import qrCodeGenerator from "../utils/qrCodeGenerator.js";
 import cloudinary from "cloudinary";
 import mongoose from "mongoose";
+import dayjs from "dayjs";
 
 export const getAllStudents = async (req, res) => {
   const { search } = req.query;
@@ -227,15 +228,17 @@ export const createStudentProfile = async (req, res) => {
 
 export const updateMultipleStudentsAttendance = async (req, res) => {
   const { date, attendance } = req.body;
-  console.log(req.body);
-  
-
   try {
+    const formattedDate = dayjs(date).toString();
+
+  console.log(formattedDate);
+  
     const bulkOperations = attendance.map(({ studentId, status }) => ({
       updateOne: {
         filter: {
           _id: studentId,
-          "studentAttendance.date": new Date(date),
+          "studentAttendance.date": formattedDate
+          ,
         },
         update: {
           $set: { "studentAttendance.$.status": status },
@@ -248,7 +251,7 @@ export const updateMultipleStudentsAttendance = async (req, res) => {
       updateOne: {
         filter: { _id: studentId },
         update: {
-          $push: { studentAttendance: { date: new Date(date), status } },
+          $push: { studentAttendance: { date: formattedDate, status } },
         },
         upsert: true,
       },
