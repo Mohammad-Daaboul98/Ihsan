@@ -28,7 +28,6 @@ const StudentInfo = ({
   isStudent,
 }) => {
   const submit = useSubmit();
-  console.log(student);
 
   const { rate, surahName, juzName } = searchValue;
 
@@ -49,6 +48,17 @@ const StudentInfo = ({
 
   const originalData = groupedJuzData(originalStudentState);
   const filteredData = groupedJuzData(student);
+  let studentAttendPoint;
+  let absentCount = 0;
+  let presentCount = 0;
+
+  student.studentAttendance.map((i) => {
+    if (i.status === "موجود") presentCount++;
+    else if((i.status === "غائب")) absentCount++;
+
+    studentAttendPoint = presentCount * 10 - absentCount * 10;
+  });
+
 
   const filtersConfig = [
     {
@@ -89,6 +99,7 @@ const StudentInfo = ({
       ),
     },
     { label: "المعلم:", value: student.teacherId?.teacherName },
+    { label: "مجموع نقاط الحضور:", value: studentAttendPoint },
   ];
 
   const handleFilterChange = (name, value) => {

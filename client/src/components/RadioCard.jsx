@@ -8,15 +8,20 @@ const RadioCard = (props) => {
 
   return (
     <Box as="label">
-      <Input {...input} position='relative !important' />
+      <Input {...input} position="relative !important" />
       <Box
         {...checkbox}
         cursor="pointer"
         borderWidth="1px"
         borderRadius="md"
-        boxShadow="md"  
+        boxShadow="md"
         _checked={{
-          bg: props.children === "غائب" ? "red.600" : "teal.600",
+          bg:
+            props.children === "غائب"
+              ? "red.600"
+              : props.children === "غياب مبرر"
+              ? "yellow.600"
+              : "teal.600",
           color: "white",
           borderColor: "transparent",
         }}

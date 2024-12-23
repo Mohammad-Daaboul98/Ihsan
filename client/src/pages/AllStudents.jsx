@@ -52,7 +52,6 @@ const AllStudents = () => {
   const { searchValue } = useLoaderData();
   const { data } = useQuery(allStudentsQuery(searchValue));
   const { user } = useOutletContext();
-  console.log(user);
   
   const isAdmin = user?.role === "admin" ? true : false;
 

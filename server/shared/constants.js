@@ -5,9 +5,9 @@ export const USER_TYPE = {
   admin: "admin",
 };
 
-export const STUDENT_RATE = ["ممتاز", "جيد", "وسط", "سيء"];
+export const STUDENT_RATE = {"ممتاز", "جيد جدا","جيد", "وسط", "سيء"};
 
-export const STUDENT_ATTENDANCE = ["موجود", "غائب"];
+export const STUDENT_ATTENDANCE = ["موجود", "غائب",'غياب مبرر'];
 
 export const QURAN_INDEX = {
   JUZ: [

@@ -11,7 +11,6 @@ import { useState } from "react";
 import { Box, Button, Input } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import { BeatLoader } from "react-spinners";
-import day from "dayjs";
 
 const allStudentsQuery = (params) => {
   const { search } = params;
@@ -31,11 +30,9 @@ export const action =
     const data = Object.fromEntries(formData);
 
     let studentAttendance;
-    console.log(day(data.date).format("DD MM YY"));
-
-    if (data.status) {
+    if ((data.status, length > 0)) {
       studentAttendance = {
-        date: day(data.date).format("DD MM YY"),
+        date: data.date,
         attendance: [
           {
             studentId: data.studentId,
@@ -43,9 +40,11 @@ export const action =
           },
         ],
       };
+      queryClient.invalidateQueries(["student", data.studentId]);
     } else {
       studentAttendance = Object.entries(data).map(
         ([studentId, attendance]) => {
+          queryClient.invalidateQueries(["student", studentId]);
           return {
             studentId,
             status: attendance,
@@ -54,7 +53,7 @@ export const action =
       );
       studentAttendance.pop();
       studentAttendance = {
-        date: day(data.date).format("DD MMM YY"),
+        date: data.date,
         attendance: studentAttendance,
       };
     }
@@ -62,6 +61,7 @@ export const action =
     try {
       await customFetch.patch("/student", studentAttendance);
       queryClient.invalidateQueries(["students"]);
+
       toast.success("تم تعديل حالة حضور الطالاب", { theme: "colored" });
       return null;
     } catch (error) {
@@ -149,6 +149,23 @@ const StudentsAttendance = () => {
 
         attendanceArr.map((i) => {
           if (i === "غائب") return absentCount++;
+        });
+        return absentCount;
+      },
+    },
+    {
+      header: " عدد ايام الغياب المبرر",
+      accessorKey: "absent",
+      isNumeric: true,
+      cell: ({ row }) => {
+        let absentCount = 0;
+        const attendance = row.original.studentAttendance;
+        const attendanceArr = attendance.map((attend) => {
+          return attend.status;
+        });
+
+        attendanceArr.map((i) => {
+          if (i === "غياب مبرر") return absentCount++;
         });
         return absentCount;
       },

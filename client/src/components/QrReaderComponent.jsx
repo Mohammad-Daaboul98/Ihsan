@@ -84,8 +84,12 @@ const QrReaderComponent = () => {
           }
         />
       )}
-      <Input type="hidden" name="status" value="موجود" />
-      <Input type="hidden" name="studentId" value={scanResult} />
+      {scanResult && (
+        <>
+          <Input type="hidden" name="status" value="موجود" />
+          <Input type="hidden" name="studentId" value={scanResult} />
+        </>
+      )}
     </>
   );
 };

@@ -29,9 +29,9 @@ export default defineConfig({
     //   allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
     //   credentials: true, // Allow credentials
     // },
-    https: {
-      key: fs.readFileSync('certs/key.pem'),
-      cert: fs.readFileSync('certs/cert.pem'),
-    },
+    // https: {
+    //   key: fs.readFileSync('certs/key.pem'),
+    //   cert: fs.readFileSync('certs/cert.pem'),
+    // },
   },
 });
