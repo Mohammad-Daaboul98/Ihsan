@@ -105,8 +105,7 @@ export const studentInput = [
     labelText: "اسم الاستاذ",
     listItem: "teacherName",
     defaultKey: "teacherName",
-    secondaryListItem:'studentCount'
-
+    secondaryListItem: "studentCount",
   },
   {
     type: "select",
@@ -151,9 +150,9 @@ export const studentInputRate = [
     type: "select",
     id: "rate",
     labelText: "التقيم",
-    list: STUDENT_RATE,
+    list: STUDENT_RATE.point,
     listItem: false,
-    defaultValue: "لايوجد",
+    secondaryListItem: STUDENT_RATE.rate,
   },
 ];
 

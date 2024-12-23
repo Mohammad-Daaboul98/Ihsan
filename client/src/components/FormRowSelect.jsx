@@ -25,9 +25,7 @@ const FormRowSelect = ({
   const [selectedValue, setSelectedValue] = useState(value || null);
   const customStyles = useSelectStyles();
 
-  
-
-  const CustomOption = ({ label, studentCount }) => (
+  const CustomOption = ({ label, secondaryList }) => (
     <Box
       display="flex"
       alignItems="center"
@@ -38,20 +36,22 @@ const FormRowSelect = ({
         {label}
       </Text>
       <Badge colorScheme={"blue"} borderRadius="full" px="2">
-        {studentCount} طلاب
+        {secondaryList} {!secondaryList.length > 0 && "طلاب"}
       </Badge>
     </Box>
   );
 
   useEffect(() => {
-    const formattedOptions = list.map((item) => ({
+    const formattedOptions = list.map((item, index) => ({
       value: selectParams
         ? item[listItem]
         : item._id || item.id || item[listItem] || item,
       label: secondaryListItem ? (
         <CustomOption
-          label={item[listItem]}
-          studentCount={item[secondaryListItem]}
+          label={item[listItem] || item}
+          secondaryList={
+            listItem ? item[secondaryListItem] : secondaryListItem[index]
+          }
         />
       ) : listItem ? (
         item[listItem]
@@ -60,10 +60,10 @@ const FormRowSelect = ({
       ),
     }));
     setOptions(formattedOptions);
-  }, [list, listItem, secondaryListItem]);
+  }, [list, listItem, secondaryListItem, selectedValue]);
 
   const handleChange = (e) => {
-    const selected = e.label;
+    const selected = secondaryListItem ? e.value : e.label;
 
     setSelectedValue(e);
     onChange && onChange(selected ? selected : null);
@@ -89,7 +89,16 @@ const FormRowSelect = ({
           onChange={(e) => handleChange(e)}
           placeholder={isRange ? "من" : placeholder}
           options={options}
-          value={defaultValue?{label:defaultValue}:selectedValue}
+          value={
+            defaultValue && !secondaryListItem
+              ? { label: defaultValue }
+              : selectedValue ||
+                (secondaryListItem &&
+                  defaultValue && {
+                    label: defaultValue,
+                    value: selectedValue?.label?.props?.secondaryList,
+                  })
+          }
           menuPortalTarget={document.body}
           isDisabled={disable ? disable[listItem] : false}
         />

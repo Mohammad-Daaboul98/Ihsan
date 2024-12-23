@@ -16,6 +16,7 @@ import {
   Button,
   Link as ChakraLink,
   Heading,
+  Flex,
 } from "@chakra-ui/react";
 import FormRowSelect from "./FormRowSelect";
 import { STUDENT_RATE } from "../../../server/shared/constants";
@@ -45,6 +46,23 @@ const StudentInfo = ({
         return acc;
       }, {})
     );
+  const calculateTotalRate = (data) => {
+    let totalRate = 0;
+
+    data.forEach((juz) => {
+      if (juz.surahs) {
+        juz.surahs.forEach((surah) => {
+          if (surah.pages) {
+            surah.pages.forEach((page) => {
+              totalRate += page.rate || 0;
+            });
+          }
+        });
+      }
+    });
+
+    return totalRate;
+  };
 
   const originalData = groupedJuzData(originalStudentState);
   const filteredData = groupedJuzData(student);
@@ -54,11 +72,12 @@ const StudentInfo = ({
 
   student.studentAttendance.map((i) => {
     if (i.status === "موجود") presentCount++;
-    else if((i.status === "غائب")) absentCount++;
+    else if (i.status === "غائب") absentCount++;
 
     studentAttendPoint = presentCount * 10 - absentCount * 10;
   });
 
+  const studentRatePoint = calculateTotalRate(filteredData);
 
   const filtersConfig = [
     {
@@ -78,13 +97,21 @@ const StudentInfo = ({
     {
       id: "rate",
       labelText: "اختر التقييم",
-      list: STUDENT_RATE,
+      list: STUDENT_RATE.point,
+      listItem: false,
+      secondaryListItem: STUDENT_RATE.rate,
       defaultValue: rate,
     },
   ];
 
   const studentData = [
-    { label: "", value: student.studentName, isBold: true, fontSize: "2xl" },
+    {
+      label: "",
+      value: student.studentName,
+      isBold: true,
+      fontSize: "2xl",
+      w: "100%",
+    },
     { label: "العمر:", value: student.age },
     {
       label: "ولي الأمر:",
@@ -100,6 +127,7 @@ const StudentInfo = ({
     },
     { label: "المعلم:", value: student.teacherId?.teacherName },
     { label: "مجموع نقاط الحضور:", value: studentAttendPoint },
+    { label: "مجموع نقاط التقيم:", value: studentRatePoint },
   ];
 
   const handleFilterChange = (name, value) => {
@@ -137,17 +165,25 @@ const StudentInfo = ({
             maxW="200px"
             mx="auto"
           />
-          <VStack align="start" spacing={2}>
+          <Flex
+            align="start"
+            flexWrap="wrap"
+            justifyContent="space-between"
+            alignItems="center"
+            gap="10px"
+            width="100%"
+          >
             {studentData.map((item, index) => (
               <Text
                 key={index}
                 fontSize={item.fontSize || "md"}
                 fontWeight={item.isBold ? "bold" : "normal"}
+                w={item.w || { lg: "48%", md: "48%", sm: "100%", base: "100%" }}
               >
                 {item.label} {item.value}
               </Text>
             ))}
-          </VStack>
+          </Flex>
         </SimpleGrid>
 
         <Divider my={6} />
@@ -158,7 +194,14 @@ const StudentInfo = ({
         </Text>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
           {filtersConfig.map(
-            ({ id, labelText, list, listItem, defaultValue }) => (
+            ({
+              id,
+              labelText,
+              list,
+              listItem,
+              defaultValue,
+              secondaryListItem,
+            }) => (
               <FormRowSelect
                 key={id}
                 name={id}
@@ -168,6 +211,7 @@ const StudentInfo = ({
                 placeholder={`اختر ${labelText}`}
                 onChange={(newValue) => handleFilterChange(id, newValue)}
                 defaultValue={defaultValue}
+                secondaryListItem={secondaryListItem}
               />
             )
           )}
@@ -223,7 +267,7 @@ const StudentInfo = ({
                                 {page.pageTo ?? "النهاية"}
                               </Text>
                               <Badge colorScheme={getBadgeColor(page.rate)}>
-                                {page.rate}
+                                {getBadgeLabel(page.rate)}
                               </Badge>
                             </HStack>
                             <Text fontSize="sm">
@@ -251,14 +295,30 @@ const StudentInfo = ({
 
 const getBadgeColor = (rate) => {
   switch (rate) {
-    case "ممتاز":
+    case 10:
       return "green";
-    case "جيد":
+    case 9:
+      return "blue";
+    case 7:
       return "teal";
-    case "وسط":
+    case 5:
       return "yellow";
     default:
       return "red";
+  }
+};
+const getBadgeLabel = (rate) => {
+  switch (rate) {
+    case 10:
+      return "ممتاز";
+    case 9:
+      return "جيد جدا";
+    case 7:
+      return "جيد";
+    case 5:
+      return "وسط";
+    default:
+      return "سيء";
   }
 };
 

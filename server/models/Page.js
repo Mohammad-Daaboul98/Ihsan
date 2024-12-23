@@ -6,8 +6,8 @@ export const Page = new mongoose.Schema({
   pageFrom: { type: Number },
   pageTo: { type: Number },
   rate: {
-    type: String,
-    enum: Object.values(STUDENT_RATE),
+    type: Number,
+    enum: Object.values(STUDENT_RATE.point),
   },
   date: {
     type: Date,

@@ -15,6 +15,7 @@ const originalStudentQuery = (id) => ({
 
 const singleStudentQuery = (params, id) => {
   const { rate, surahName, juzName } = params;
+  
   return {
     queryKey: [
       "student",

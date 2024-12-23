@@ -159,7 +159,7 @@ export const getStudent = async (req, res) => {
             $filter: {
               input: "$studentJuz.surahs.pages",
               as: "page",
-              cond: rate ? { $eq: ["$$page.rate", rate] } : true,
+              cond: rate ? { $eq: ["$$page.rate", Number(rate)] } : true,
             },
           },
         },

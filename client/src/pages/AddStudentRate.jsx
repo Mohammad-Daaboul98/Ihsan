@@ -40,7 +40,8 @@ export const loader =
 
 export const action =
   (queryClient) =>
-  async ({ request }) => {
+  async ({ request, params }) => {
+    const { id } = params;
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
     const juzId = data?.juzName;
@@ -63,6 +64,8 @@ export const action =
         ...newSurah,
       });
       queryClient.invalidateQueries(["students&Teachers"]);
+      queryClient.invalidateQueries(["student", id]);
+
       toast.success("تم حفظ التقيم", { theme: "colored" });
 
       return redirect("../students");
@@ -76,12 +79,10 @@ const AddStudentRate = () => {
   const date = useActionData();
   const id = useLoaderData();
 
-
   const {
     data: { student },
   } = useQuery(singleStudentQuery(id));
 
-  
   const juzName = student.studentJuz;
   const navigation = useNavigation();
   const isLoading = navigation.state === "submitting";
@@ -137,7 +138,15 @@ const AddStudentRate = () => {
           spacing={{ md: "10px 20px", base: "10px" }}
         >
           {studentInputRate.map(
-            ({ type, id, labelText, list, listItem, defaultValue }) => {
+            ({
+              type,
+              id,
+              labelText,
+              list,
+              listItem,
+              defaultValue,
+              secondaryListItem,
+            }) => {
               if (type !== "select") {
                 return (
                   <FormRow
@@ -194,6 +203,7 @@ const AddStudentRate = () => {
                     onChange={listItem === "juzName" ? handleJuzChange : null}
                     isMulti={listItem === "juzName"}
                     value={selectedSurah}
+                    secondaryListItem={secondaryListItem}
                   />
                 );
               }
