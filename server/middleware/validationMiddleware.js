@@ -44,12 +44,17 @@ export const validateUserInput = withValidationErrors([
 ]);
 
 export const validateIdParam = withValidationErrors([
-  param("id").custom(async (id, { req }) => {    
+  param("id").custom(async (id, { req }) => {
     const isValidId = mongoose.Types.ObjectId.isValid(id);
     if (!isValidId) throw new BadRequestError("invalid MongoDB id");
 
     const user = await User.findById(id);
-    const student = await Student.findById(id);
+    console.log(req.user.role);
+
+    const student =
+      req.user.role === "teacher"
+        ? await Student.findById(id)
+        : await Student.find({ teacherId: id });
     if (!user) throw new NotFoundError(`لا يوجد مستخدم بالمعرف: ${id}`);
 
     const isAdmin = req.user.role === "admin";

@@ -1,7 +1,6 @@
 import Teacher from "../models/TeacherProfile.js";
 import Student from "../models/StudentProfile.js";
 import { StatusCodes } from "http-status-codes";
-import qrCodeGenerator from "../utils/qrCodeGenerator.js";
 
 export const getAllTeachers = async (req, res) => {
   const { search } = req.query;

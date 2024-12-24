@@ -1,4 +1,9 @@
-import { redirect, useActionData, useLoaderData, useNavigation } from "react-router-dom";
+import {
+  redirect,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "react-router-dom";
 import { TeacherFrom } from "../components";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
@@ -35,35 +40,12 @@ export const action =
     const data = Object.fromEntries(formData);
     const role = "teacher";
     try {
-      const teacher = await customFetch.patch(`teacher/${params.id}`, {
+      await customFetch.patch(`teacher/${params.id}`, {
         ...data,
         role,
       });
       queryClient.invalidateQueries(["teachers"]);
       toast.success("تم تعديل معلومات الاستاذ", { theme: "colored" });
-
-      // const teacherData = teacher?.data?.updatedUser;
-      // const oldUserName = student?.data?.oldUserName;
-
-      // const updateTeacherData = [
-      //   {
-      //     "اسم الاستاذ": data.teacherName,
-      //     "عمل الاستاذ": data.teacherWork,
-      //     "المستوى العلمي": data.teacherStudy,
-      //     "عمر الاستاذ": data.age,
-      //     "رقم الهاتق": data.teacherPhone,
-      //   },
-      // ];
-
-      // data.password
-      //   ? (updateStudentData[0]["كلمة السر"] = data.password)
-      //   : null;
-      // data.userName
-      //   ? (updateStudentData[0]["اسم المستخدم"] = teacherData?.userName)
-      //   : null;
-
-      // await patchData(updateTeacherData, "ملف الاساتذه", oldUserName);
-
       return redirect("../teachers");
     } catch (error) {
       console.error("Error:", error);

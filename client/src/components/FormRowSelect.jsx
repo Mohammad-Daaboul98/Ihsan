@@ -60,14 +60,14 @@ const FormRowSelect = ({
       ),
     }));
     setOptions(formattedOptions);
-  }, [list, listItem, secondaryListItem, selectedValue]);
+  }, [list, listItem, selectedValue]);
 
   const handleChange = (e) => {
     const selected = secondaryListItem ? e.value : e.label;
 
     setSelectedValue(e);
     onChange && onChange(selected ? selected : null);
-  };
+  };  
 
   return (
     <FormControl>
