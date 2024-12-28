@@ -12,7 +12,8 @@ const StudentProfile = new mongoose.Schema({
   parentPhone: String,
   StudentStudy: String,
   age: Number,
-  studentPoint: Number,
+  pointSpent: Number,
+  studentExtraPoint: Number,
   studentJuz: [
     {
       type: mongoose.Types.ObjectId,

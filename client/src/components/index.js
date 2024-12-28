@@ -19,3 +19,4 @@ export { default as AccordionComponents } from "./AccordionComponents";
 export { default as JuzForm } from "./JuzFrom";
 export { default as QRCodeComponent } from "./QRCodeComponent";
 export { default as MenuComponent } from "./MenuComponent";
+export { default as FormComponents } from "./FormComponents";

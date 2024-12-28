@@ -27,11 +27,15 @@ function FormRow({
   btnPassword,
   disable,
   phone,
+  max,
+  placeholder,
+  onInvalid,
 }) {
   const [show, setShow] = useState(false);
   const [password, setPassword] = useState("");
-  const [phoneValue, setPhoneValue] = useState(phone? defaultValue[defaultKey]:'');
-  
+  const [phoneValue, setPhoneValue] = useState(
+    phone ? defaultValue[defaultKey] : ""
+  );
 
   const inputBg = useColorModeValue("#fff", "#2D3748");
   const borderColor = useColorModeValue("#cbd5e0", "#4A5568");
@@ -153,7 +157,7 @@ function FormRow({
           id={id}
           type={type}
           name={name}
-          placeholder={labelText}
+          placeholder={placeholder || labelText}
           defaultValue={defaultKey ? defaultValue[defaultKey] : defaultValue}
           size="lg"
           textAlign="right"
@@ -164,6 +168,9 @@ function FormRow({
           _placeholder={{
             color: placeholderColor,
           }}
+          max={max}
+          onInvalid={(e) => e.target.setCustomValidity(onInvalid)}
+          required
         />
       )}
     </FormControl>

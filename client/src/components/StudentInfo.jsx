@@ -78,6 +78,10 @@ const StudentInfo = ({
   });
 
   const studentRatePoint = calculateTotalRate(filteredData);
+  const studentExtraPoint = student?.studentExtraPoint || 0;
+  const pointSpent = student?.pointSpent || 0;
+  const studentPoint =
+    studentAttendPoint + studentRatePoint + studentExtraPoint - pointSpent;
 
   const filtersConfig = [
     {
@@ -128,6 +132,9 @@ const StudentInfo = ({
     { label: "المعلم:", value: student.teacherId?.teacherName },
     { label: "مجموع نقاط الحضور:", value: studentAttendPoint },
     { label: "مجموع نقاط التقيم:", value: studentRatePoint },
+    { label: "مجموع نقاط النشاط:", value: studentExtraPoint },
+    { label: "مجموع نقاط المصروفة:", value: pointSpent },
+    { label: "مجموع نقاط الكلي:", value: studentPoint },
   ];
 
   const handleFilterChange = (name, value) => {

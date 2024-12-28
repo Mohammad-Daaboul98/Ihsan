@@ -1,15 +1,23 @@
 import {
+  Form,
   redirect,
   useActionData,
   useLoaderData,
   useNavigation,
 } from "react-router-dom";
-import { AccordionComponents, JuzForm, StudentForm } from "../components";
+import {
+  AccordionComponents,
+  FormComponents,
+  JuzForm,
+  StudentForm,
+} from "../components";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import { Box } from "@chakra-ui/react";
 import { QURAN_INDEX } from "../../../server/shared/constants";
+import { studentPointCalc } from "../utils/studentPointCalc";
+import { useState } from "react";
 
 const studentsTeachersQuery = (id) => {
   return {
@@ -49,11 +57,6 @@ export const action =
 
     const { juzName } = data;
     const { oldJuz, newJuz } = data;
-    const { students } = queryClient.getQueryData([
-      "students",
-      "teachers",
-      params.id,
-    ]);
 
     try {
       let toastMsg;
@@ -72,11 +75,11 @@ export const action =
           ...data,
         });
         toastMsg = student.data.msg;
-
       }
       queryClient.invalidateQueries(["students&Teachers"]);
       queryClient.invalidateQueries(["teachers"]);
       queryClient.invalidateQueries(["students"]);
+      queryClient.invalidateQueries(["student", params.id]);
       toast.success(toastMsg, { theme: "colored" });
       return redirect("../students");
     } catch (error) {
@@ -104,6 +107,10 @@ const EditStudent = () => {
   });
 
   const juzName = quranJuzName?.filter((juz) => !currentJuz.includes(juz));
+  const studentExtraPoint = students?.studentExtraPoint || 0;
+  const pointSpent = students?.pointSpent || 0;
+  const studentPoint =
+    studentPointCalc(students) + studentExtraPoint - pointSpent;
 
   const accordionItems = [
     {
@@ -133,6 +140,32 @@ const EditStudent = () => {
       ),
     },
     {
+      title: "صرف نقاط الطالب",
+      component: (
+        <FormComponents
+          btnTitle="صرف نقاط"
+          id="pointSpent"
+          type="Number"
+          labelText="نقاط الطالب"
+          max={studentPoint}
+          placeholder={`عدد نقاط الطالب (${studentPoint}) نقطة`}
+          onInvalid={`القيمة يجب ان تكون أقل من (${studentPoint}) نقطة`}
+        />
+      ),
+    },
+    {
+      title: "اضافة نقاط نشاط",
+      component: (
+        <FormComponents
+          btnTitle="اضافة نقاط"
+          id="studentExtraPoint"
+          type="Number"
+          labelText="نقاط النشاط"
+          placeholder=" "
+        />
+      ),
+    },
+    {
       title: "تعديل معلومات الطالب",
       component: (
         <StudentForm
@@ -148,6 +181,7 @@ const EditStudent = () => {
       ),
     },
   ];
+
   return (
     <Box
       padding={{
@@ -156,7 +190,7 @@ const EditStudent = () => {
         base: "20px 10px",
       }}
     >
-      <AccordionComponents items={accordionItems} defaultIndex={2} />
+      <AccordionComponents items={accordionItems} defaultIndex={4} />
     </Box>
   );
 };
