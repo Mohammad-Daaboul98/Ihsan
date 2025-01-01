@@ -16,9 +16,11 @@ export const action =
 
       queryClient.invalidateQueries();
       toast.success("تم تسجيل الدخول", { theme: "colored" });
-            
+
       return redirect(
-        role === "student" ? `/dashboard/student-profile` : "/dashboard"
+        role === "student"
+          ? `/dashboard/student-profile`
+          : "/dashboard/students"
       );
     } catch (error) {
       toast.error(error?.response?.data?.msg, { theme: "colored" });

@@ -44,7 +44,7 @@ export const teacherInput = [
   {
     type: "tel",
     id: "teacherPhone",
-    labelText: "رقم الهاتق",
+    labelText: "رقم الهاتف",
     defaultKey: "teacherPhone",
     phone: true,
   },

@@ -1,28 +1,13 @@
 import { Button, Input } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import QrReader from "react-qr-scanner";
+import Scanner from "react-qr-barcode-scanner";
 import ModalComponent from "./ModalComponent";
 
 const QrReaderComponent = () => {
   const [scanResult, setScanResult] = useState("");
   const [showScanner, setShowScanner] = useState(false);
-  const [selectedDeviceId, setSelectedDeviceId] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    navigator.mediaDevices
-      .enumerateDevices()
-      .then((devices) => {
-        const videoDevices = devices.filter(
-          (device) => device.kind === "videoinput"
-        );
-        const backCamera = videoDevices.find((device) =>
-          device.label.toLowerCase().includes("back")
-        );
-        setSelectedDeviceId(backCamera?.deviceId || videoDevices[0]?.deviceId);
-      })
-      .catch((error) => console.error("Error accessing media devices:", error));
-  }, []);
 
   useEffect(() => {
     if (scanResult) {
@@ -35,19 +20,15 @@ const QrReaderComponent = () => {
     }
   }, [scanResult]);
 
-  const handleScan = (data) => {
-    if (data?.text) {
-      try {
-        setScanResult(data?.text);
-        setShowScanner(false);
-      } catch (error) {
-        console.error("Invalid QR code format:", error);
-      }
+  const handleScan = (result) => {
+    if (result) {      
+      setScanResult(result?.text);
+      setShowScanner(false);
     }
   };
 
   const handleError = (err) => {
-    console.error(err);
+    console.error("QR Scanner Error:", err);
   };
 
   return (
@@ -64,26 +45,28 @@ const QrReaderComponent = () => {
         تصوير الباركود
       </Button>
 
-      {showScanner && selectedDeviceId && (
+      {showScanner && (
         <ModalComponent
           isOpen={isModalOpen}
           onClose={() => {
-            setShowScanner((prev) => !prev);
+            setShowScanner(false);
             setIsModalOpen(false);
           }}
           components={
-            <QrReader
-              delay={300}
-              onError={handleError}
-              onScan={handleScan}
-              style={{ width: "100%" }}
-              constraints={{
-                video: { deviceId: selectedDeviceId },
+            <Scanner
+              onUpdate={(err, result) => {
+                if (result) {
+                  handleScan(result);
+                } else if (err) {
+                  handleError(err);
+                }
               }}
+              style={{ width: "100%" }}
             />
           }
         />
       )}
+
       {scanResult && (
         <>
           <Input type="hidden" name="status" value="موجود" />

@@ -9,6 +9,7 @@ const FormComponents = ({
   type,
   labelText,
   max,
+  min,
   placeholder,
   onInvalid
 }) => {
@@ -21,6 +22,7 @@ const FormComponents = ({
         labelText={labelText}
         placeholder={placeholder}
         max={max}
+        min={min}
         onInvalid={onInvalid}
       />
       <Button type="submit" colorScheme="teal">

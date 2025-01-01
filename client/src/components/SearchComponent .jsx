@@ -1,5 +1,5 @@
 import FormRow from "./FormRow";
-import { Form, Link, useSubmit } from "react-router-dom";
+import { Form, useSubmit } from "react-router-dom";
 import useDebounce from "../hooks/useDebounce"; // Adjust the import path as needed
 import { Box } from "@chakra-ui/react";
 
@@ -33,6 +33,7 @@ const SearchComponent = ({ labelText, searchValue }) => {
           labelText={labelText}
           isRequired="no"
           defaultValue={search}
+          autoFocus={true}
         />
       </Form>
     </Box>

@@ -13,7 +13,7 @@ const ModalComponent = ({ isOpen, onClose, title, overlay, components }) => {
     <Modal onClose={onClose} isOpen={isOpen} size="xl" isCentered>
       {overlay}
       <ModalOverlay />
-      <ModalContent h='300px' w='450px'>
+      <ModalContent>
         {title ? <ModalHeader>{title}</ModalHeader> : null}
         <ModalCloseButton />
         <ModalBody
@@ -21,8 +21,7 @@ const ModalComponent = ({ isOpen, onClose, title, overlay, components }) => {
           alignItems="center"
           justifyContent="center"
           gap="10px 20px"
-          // h="100%"
-          // w="100%"
+          py='60px'
         >
           {components}
         </ModalBody>

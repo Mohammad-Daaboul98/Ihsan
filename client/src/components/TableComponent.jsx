@@ -36,7 +36,6 @@ const TableComponent = ({
   editAndDelete,
   editPage,
   deletePage,
-  width
 }) => {
   const buttonSize = useBreakpointValue({ base: "sm", md: "md" });
 

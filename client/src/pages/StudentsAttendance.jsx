@@ -28,9 +28,11 @@ export const action =
   async ({ request }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
-
     let studentAttendance;
-    if ((data.status, length > 0)) {
+
+    
+    
+    if ((data?.status?.length > 0)) {
       studentAttendance = {
         date: data.date,
         attendance: [
@@ -155,7 +157,7 @@ const StudentsAttendance = () => {
     },
     {
       header: " عدد ايام الغياب المبرر",
-      accessorKey: "absent",
+      accessorKey: "excusedAbsence",
       isNumeric: true,
       cell: ({ row }) => {
         let absentCount = 0;

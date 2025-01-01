@@ -30,6 +30,8 @@ function FormRow({
   max,
   placeholder,
   onInvalid,
+  min,
+  autoFocus,
 }) {
   const [show, setShow] = useState(false);
   const [password, setPassword] = useState("");
@@ -169,7 +171,9 @@ function FormRow({
             color: placeholderColor,
           }}
           max={max}
+          min={min}
           onInvalid={(e) => e.target.setCustomValidity(onInvalid)}
+          autoFocus={autoFocus}
           required
         />
       )}

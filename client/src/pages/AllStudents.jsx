@@ -11,8 +11,6 @@ import { IoAddCircleSharp } from "react-icons/io5";
 import { BiShow } from "react-icons/bi";
 import {
   IconButton,
-  // useDisclosure,
-  // ModalOverlay,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import "dayjs/locale/ar";
@@ -56,13 +54,6 @@ const AllStudents = () => {
   const isAdmin = user?.role === "admin" ? true : false;
 
   const students = data?.students || [];
-
-  // const Overlay = () => (
-  //   <ModalOverlay
-  //     bg="blackAlpha.100"
-  //     backdropFilter="blur(10px) hue-rotate(90deg)"
-  //   />
-  // );
 
   const columns = [
     { id: "studentName", header: "الطالب", accessorKey: "studentName" },

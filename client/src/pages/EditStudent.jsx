@@ -17,7 +17,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Box } from "@chakra-ui/react";
 import { QURAN_INDEX } from "../../../server/shared/constants";
 import { studentPointCalc } from "../utils/studentPointCalc";
-import { useState } from "react";
 
 const studentsTeachersQuery = (id) => {
   return {
@@ -71,6 +70,16 @@ export const action =
         });
         toastMsg = juz.data.msg;
       } else {
+        if (data.pointSpent) {
+          const studentData = queryClient.getQueryData([
+            "students",
+            "teachers",
+            params.id,
+          ]);
+          const pointSpent = studentData?.students?.pointSpent || 0;
+
+          data.pointSpent = Number(data.pointSpent) + pointSpent;
+        }
         const student = await customFetch.patch(`student/${params.id}`, {
           ...data,
         });
@@ -148,8 +157,13 @@ const EditStudent = () => {
           type="Number"
           labelText="نقاط الطالب"
           max={studentPoint}
+          min={1}
           placeholder={`عدد نقاط الطالب (${studentPoint}) نقطة`}
-          onInvalid={`القيمة يجب ان تكون أقل من (${studentPoint}) نقطة`}
+          onInvalid={
+            studentPoint === 0
+              ? `لايوجد للطالب نقاط`
+              : `القيمة يجب ان تكون أقل من (${studentPoint}) نقطة`
+          }
         />
       ),
     },
