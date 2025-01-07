@@ -28,6 +28,7 @@ import {
   ChevronUpIcon,
 } from "@chakra-ui/icons";
 import { Form, Link } from "react-router-dom";
+import ModalComponent from "./ModalComponent";
 
 const TableComponent = ({
   title,
@@ -39,8 +40,8 @@ const TableComponent = ({
 }) => {
   const buttonSize = useBreakpointValue({ base: "sm", md: "md" });
 
-  // State for sorting
   const [sorting, setSorting] = useState([]);
+  const [modalState, setModalState] = useState(false);
 
   // Create table instance
   const table = useReactTable({
@@ -65,7 +66,7 @@ const TableComponent = ({
       p="4"
       h="100%"
       overflow="hidden"
-      width={'100%'}
+      width={"100%"}
     >
       <TableContainer
         width={{ base: "100%", md: "80%" }}
@@ -162,20 +163,48 @@ const TableComponent = ({
                           ml="10px"
                         />
                       </Link>
-                      <Form
-                        method="post"
-                        action={`../${deletePage}/${row.original._id}`}
-                        style={{ display: "inline-block" }}
-                      >
-                        <IconButton
-                          type="submit"
-                          aria-label="Delete"
-                          icon={<DeleteIcon />}
-                          variant="outline"
-                          colorScheme="red"
-                          size={buttonSize}
-                        />
-                      </Form>
+                      <IconButton
+                        aria-label="Delete"
+                        icon={<DeleteIcon />}
+                        variant="outline"
+                        colorScheme="red"
+                        size={buttonSize}
+                        onClick={() => setModalState(true)}
+                      />
+                      <ModalComponent
+                        title="هل انت متأكد"
+                        isOpen={modalState}
+                        onClose={() => setModalState(false)}
+                        components={
+                          <Form
+                            method="post"
+                            action={`../${deletePage}/${row.original._id}`}
+                            style={{ display: "inline-block" }}
+                          >
+                            <Box
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              gap="10px 20px"
+                            >
+                              <Button
+                                onClick={() => setModalState(false)}
+                                colorScheme="red"
+                                minW="75px"
+                              >
+                                لا
+                              </Button>
+                              <Button
+                                type="submit"
+                                colorScheme="teal"
+                                minW="75px"
+                              >
+                                نعم
+                              </Button>
+                            </Box>
+                          </Form>
+                        }
+                      />
                     </Td>
                   ) : null}
                 </Tr>

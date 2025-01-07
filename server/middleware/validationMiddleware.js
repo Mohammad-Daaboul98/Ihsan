@@ -99,20 +99,19 @@ export const validateStudentProfileInput = withValidationErrors([
   }),
 ]);
 export const validateStudentRateInput = withValidationErrors([
-  body("StudentJuz.*.surahs.*.surahName")
-    .notEmpty()
-    .withMessage("يجب اختيار السورة"),
-  // body("StudentJuz.*.surahs.*.pages.*.pageFrom")
-  //   .notEmpty()
-  //   .withMessage("يجب اختيار الصفحة"),
-
-  // body("StudentJuz.*.surahs.*.pages.*.rate")
-  //   .notEmpty()
-  //   .withMessage("يجب اختيار التقيم"),
-
-  // body("StudentJuz.*.surahs.*.pages.*.date")
-  //   .notEmpty()
-  //   .withMessage("يجب اختيار التاريخ"),
+  body("juzId").notEmpty().withMessage("يجب اختيار الجزء"),
+  body("surahName").notEmpty().withMessage("يجب اختيار السورة"),
+  body("pageFrom").notEmpty().withMessage("يجب اختيار الصفحة"),
+  body().custom((res) => {
+    const { pageFrom, pageTo } = res;
+    if (pageTo && pageTo <= pageFrom)
+      throw new BadRequestError(
+        " يجب ان تكون الصفحة الثانيه أكبر من الصفحة الأولى "
+      );
+    return true;
+  }),
+  body("rate").notEmpty().withMessage("يجب اختيار التقيم"),
+  body("date").notEmpty().withMessage("يجب اختيار التاريخ"),
 ]);
 
 export const validateTeacherProfileInput = withValidationErrors([

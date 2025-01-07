@@ -6,6 +6,7 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
+  Text,
 } from "@chakra-ui/react";
 
 const ModalComponent = ({ isOpen, onClose, title, overlay, components }) => {
@@ -14,14 +15,18 @@ const ModalComponent = ({ isOpen, onClose, title, overlay, components }) => {
       {overlay}
       <ModalOverlay />
       <ModalContent>
-        {title ? <ModalHeader>{title}</ModalHeader> : null}
+        {title ? (
+          <ModalHeader>
+            <Text textAlign="center">{title}</Text>
+          </ModalHeader>
+        ) : null}
         <ModalCloseButton />
         <ModalBody
           display="flex"
           alignItems="center"
           justifyContent="center"
           gap="10px 20px"
-          py='60px'
+          py="60px"
         >
           {components}
         </ModalBody>

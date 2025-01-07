@@ -9,9 +9,7 @@ import {
 import customFetch from "../utils/customFetch";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { BiShow } from "react-icons/bi";
-import {
-  IconButton,
-} from "@chakra-ui/react";
+import { IconButton } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import "dayjs/locale/ar";
 dayjs.locale("ar");
@@ -50,7 +48,7 @@ const AllStudents = () => {
   const { searchValue } = useLoaderData();
   const { data } = useQuery(allStudentsQuery(searchValue));
   const { user } = useOutletContext();
-  
+
   const isAdmin = user?.role === "admin" ? true : false;
 
   const students = data?.students || [];
@@ -118,16 +116,14 @@ const AllStudents = () => {
         labelText="بحث عن طريق اسم الطالب او العمر"
       />
 
-      <>
-        <TableComponent
-          title="معلومات الطالب"
-          columns={columns}
-          data={students}
-          editAndDelete={isAdmin}
-          editPage="edit-student"
-          deletePage="delete-student"
-        />
-      </>
+      <TableComponent
+        title="معلومات الطالب"
+        columns={columns}
+        data={students}
+        editAndDelete={isAdmin}
+        editPage="edit-student"
+        deletePage="delete-student"
+      />
     </>
   );
 };
