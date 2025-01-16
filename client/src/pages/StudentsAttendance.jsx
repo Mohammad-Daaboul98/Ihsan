@@ -249,6 +249,7 @@ const StudentsAttendance = () => {
         columns={columns}
         data={students}
         editAndDelete={false}
+        // downloadBtn={true}
       />
     </>
   );

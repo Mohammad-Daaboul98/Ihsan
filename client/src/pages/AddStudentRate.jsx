@@ -94,15 +94,22 @@ const AddStudentRate = () => {
 
   const errorMessage = date?.response?.data?.msg;
 
+
+  // Handle selection change for Surah
   const handleSurahChange = (selectedSurah) => {
     const surah = juzSurah.find((surah) => surah.id === selectedSurah);
     setSelectedSurah(selectedSurah);
     setSurahPages(surah ? surah.pages : []);
+    setSelectedPages([]); // Reset only Pages when Surah changes
   };
 
+  // Handle selection change for Juz
   const handleJuzChange = (selectedJuz) => {
     const juz = QURAN_INDEX.JUZ.find((juz) => juz.juzName === selectedJuz);
+
     setJuzSurah(juz ? juz.surahs : []);
+    setSelectedSurah(null); // Reset Surah when Juz changes
+    setSelectedPages([]); // Reset Pages when Juz changes
   };
 
   return (
@@ -166,7 +173,7 @@ const AddStudentRate = () => {
                     listItem={listItem}
                     onChange={handleSurahChange}
                     value={selectedSurah}
-                    defaultValue={defaultValue}
+                    // defaultValue={defaultValue}
                   />
                 );
               } else if (listItem === "pages") {

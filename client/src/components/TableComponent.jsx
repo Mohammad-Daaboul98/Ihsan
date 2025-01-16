@@ -13,6 +13,7 @@ import {
   Button,
   useBreakpointValue,
   IconButton,
+  Flex,
 } from "@chakra-ui/react";
 import {
   useReactTable,
@@ -29,6 +30,7 @@ import {
 } from "@chakra-ui/icons";
 import { Form, Link } from "react-router-dom";
 import ModalComponent from "./ModalComponent";
+import ExportExcel from "./ExportExcel";
 
 const TableComponent = ({
   title,
@@ -37,6 +39,7 @@ const TableComponent = ({
   editAndDelete,
   editPage,
   deletePage,
+  downloadBtn
 }) => {
   const buttonSize = useBreakpointValue({ base: "sm", md: "md" });
 
@@ -86,7 +89,14 @@ const TableComponent = ({
             mb="10px"
             borderBottom="1px solid #000"
           >
-            {title}
+            {downloadBtn ? (
+              <Flex alignItems="center" justifyContent="center">
+                <Box mx="auto"> {title}</Box>
+                <ExportExcel data={data} />
+              </Flex>
+            ) : (
+              title
+            )}
           </TableCaption>
           <Thead bg="blue.600" color="white">
             {table.getHeaderGroups().map((headerGroup) => (
