@@ -295,6 +295,7 @@ export const QURAN_INDEX = {
       surahs: [
         {
           id: "الفرقان",
+
           surahName: "الفرقان",
           pages: [311, 312, 313],
         },
@@ -460,6 +461,7 @@ export const QURAN_INDEX = {
         { id: "العلق", surahName: "العلق", pages: [490] },
         { id: "القدر", surahName: "القدر", pages: [491] },
         { id: "البينة", surahName: "البينة", pages: [492] },
+
         { id: "الزلزلة", surahName: "الزلزلة", pages: [493] },
         { id: "العاديات", surahName: "العاديات", pages: [494] },
         { id: "القارعة", surahName: "القارعة", pages: [495] },
